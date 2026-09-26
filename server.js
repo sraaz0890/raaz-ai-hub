@@ -6,7 +6,9 @@ const app = express();
 const PORT = process.env.PORT || 10000;
 
 app.use(express.json());
-app.use(express.static("."));
+
+// Serve all HTML/CSS/JS files from the GitHub repository
+app.use(express.static(process.cwd()));
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
@@ -14,9 +16,9 @@ const ai = new GoogleGenAI({
 
 app.post("/api/chat", async (req, res) => {
   try {
-    const message = req.body.message;
+    const message = req.body?.message?.trim();
 
-    if (!message || !message.trim()) {
+    if (!message) {
       return res.status(400).json({
         error: "Message is required."
       });
@@ -35,11 +37,22 @@ app.post("/api/chat", async (req, res) => {
     console.error("AI Error:", error);
 
     res.status(500).json({
-      error: "AI response failed. Please try again."
+      error: "AI response failed."
     });
   }
 });
 
+// Home page
+app.get("/", (req, res) => {
+  res.sendFile(process.cwd() + "/index.html");
+});
+
+// Chat page
+app.get("/chat.html", (req, res) => {
+  res.sendFile(process.cwd() + "/chat.html");
+});
+
+// Health check
 app.get("/health", (req, res) => {
   res.json({
     status: "ok",
@@ -47,6 +60,6 @@ app.get("/health", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`RAAZ AI HUB running on port ${PORT}`);
 });
