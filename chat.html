@@ -32,23 +32,17 @@
       min-height: 100vh;
     }
 
-    /* HEADER */
-
     header {
       height: 68px;
       padding: 0 20px;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       position: sticky;
       top: 0;
       z-index: 10;
-
       background: rgba(7,7,11,.78);
       backdrop-filter: blur(18px);
-
       border-bottom: 1px solid var(--border);
     }
 
@@ -77,15 +71,11 @@
       border-color: rgba(155,92,255,.4);
     }
 
-    /* CHAT */
-
     .chat-container {
       width: 100%;
       max-width: 850px;
       margin: auto;
-
       min-height: calc(100vh - 68px);
-
       display: flex;
       flex-direction: column;
     }
@@ -99,18 +89,13 @@
       width: 58px;
       height: 58px;
       margin: auto;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       border-radius: 18px;
-
       background: rgba(155,92,255,.12);
       border: 1px solid rgba(155,92,255,.25);
-
       font-size: 27px;
-
       box-shadow: 0 0 35px rgba(155,92,255,.12);
     }
 
@@ -124,8 +109,6 @@
       color: var(--muted);
       font-size: 14px;
     }
-
-    /* MESSAGES */
 
     #messages {
       flex: 1;
@@ -144,6 +127,7 @@
         opacity: 0;
         transform: translateY(6px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
@@ -157,12 +141,11 @@
     .bubble {
       max-width: 78%;
       padding: 13px 15px;
-
       border-radius: 16px;
-
       font-size: 14px;
       line-height: 1.6;
       white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
 
     .assistant .bubble {
@@ -178,17 +161,13 @@
       border-top-right-radius: 5px;
     }
 
-    /* TYPING */
-
     .typing {
       display: none;
       align-items: center;
       gap: 5px;
       padding: 14px 17px;
       margin: 0 20px 15px;
-
       width: fit-content;
-
       background: #111119;
       border: 1px solid var(--border);
       border-radius: 15px;
@@ -199,7 +178,6 @@
       height: 6px;
       border-radius: 50%;
       background: #9b5cff;
-
       animation: bounce 1s infinite;
     }
 
@@ -216,22 +194,19 @@
         transform: translateY(0);
         opacity: .4;
       }
+
       30% {
         transform: translateY(-5px);
         opacity: 1;
       }
     }
 
-    /* INPUT AREA */
-
     .input-area {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-
       padding: 15px 18px 18px;
-
       background: linear-gradient(
         to top,
         #07070b 70%,
@@ -242,37 +217,27 @@
     .input-box {
       max-width: 850px;
       margin: auto;
-
       display: flex;
       align-items: flex-end;
       gap: 9px;
-
       padding: 8px;
-
       background: rgba(17,17,25,.94);
       border: 1px solid rgba(255,255,255,.1);
       border-radius: 17px;
-
       box-shadow: 0 10px 35px rgba(0,0,0,.35);
       backdrop-filter: blur(15px);
     }
 
     textarea {
       flex: 1;
-
       min-height: 42px;
       max-height: 120px;
-
       resize: none;
-
       border: none;
       outline: none;
-
       background: transparent;
       color: white;
-
       padding: 11px 9px;
-
       font-size: 14px;
     }
 
@@ -283,228 +248,11 @@
     #send {
       width: 43px;
       height: 43px;
-
       border: none;
       border-radius: 13px;
-
       background: linear-gradient(
         135deg,
         var(--purple),
         var(--purple2)
       );
-
-      color: white;
-      font-size: 18px;
-
-      cursor: pointer;
-
-      transition: .2s;
-    }
-
-    #send:hover {
-      transform: translateY(-2px);
-    }
-
-    #send:active {
-      transform: scale(.95);
-    }
-
-    .disclaimer {
-      text-align: center;
-      color: #555560;
-      font-size: 10px;
-      margin-top: 7px;
-    }
-
-    @media(max-width:600px) {
-
-      header {
-        height: 62px;
-      }
-
-      .welcome {
-        padding-top: 42px;
-      }
-
-      .welcome h1 {
-        font-size: 26px;
-      }
-
-      .bubble {
-        max-width: 88%;
-      }
-
-      #messages {
-        padding-left: 14px;
-        padding-right: 14px;
-      }
-
-      .typing {
-        margin-left: 14px;
-      }
-
-      .input-area {
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <header>
-    <div class="brand">
-      RAAZ <span>AI</span>
-    </div>
-
-    <a href="index.html" class="back">
-      ← Home
-    </a>
-  </header>
-
-
-  <main class="chat-container">
-
-    <section class="welcome" id="welcome">
-
-      <div class="ai-icon">
-        🤖
-      </div>
-
-      <h1>How can I help you?</h1>
-
-      <p>
-        Ask anything. Learn anything. Let's explore together.
-      </p>
-
-    </section>
-
-
-    <div id="messages"></div>
-
-
-    <div class="typing" id="typing">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-
-  </main>
-
-
-  <div class="input-area">
-
-    <div class="input-box">
-
-      <textarea
-        id="input"
-        placeholder="Ask RAAZ AI anything..."
-        rows="1"
-      ></textarea>
-
-      <button id="send">
-        ➤
-      </button>
-
-    </div>
-
-    <div class="disclaimer">
-      RAAZ AI can make mistakes. Check important information.
-    </div>
-
-  </div>
-
-
-  <script>
-
-    const input = document.getElementById("input");
-    const send = document.getElementById("send");
-    const messages = document.getElementById("messages");
-    const typing = document.getElementById("typing");
-    const welcome = document.getElementById("welcome");
-
-
-    function addMessage(text, type) {
-
-      welcome.style.display = "none";
-
-      const message = document.createElement("div");
-      message.className = "message " + type;
-
-      const bubble = document.createElement("div");
-      bubble.className = "bubble";
-
-      bubble.textContent = text;
-
-      message.appendChild(bubble);
-      messages.appendChild(message);
-
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth"
-      });
-    }
-
-
-    function sendMessage() {
-
-      const text = input.value.trim();
-
-      if (!text) return;
-
-      addMessage(text, "user");
-
-      input.value = "";
-
-      typing.style.display = "flex";
-
-      /*
-        TEMPORARY RESPONSE
-
-        Yaha baad mein tumhara
-        REAL AI BACKEND/API connect hoga.
-      */
-
-      setTimeout(() => {
-
-        typing.style.display = "none";
-
-        addMessage(
-          "Hello! 👋 I'm RAAZ AI.\n\nYour AI backend is not connected yet. We'll connect it in the next step.",
-          "assistant"
-        );
-
-      }, 900);
-    }
-
-
-    send.addEventListener("click", sendMessage);
-
-
-    input.addEventListener("keydown", function(e) {
-
-      if (e.key === "Enter" && !e.shiftKey) {
-
-        e.preventDefault();
-
-        sendMessage();
-
-      }
-
-    });
-
-
-    input.addEventListener("input", function() {
-
-      this.style.height = "auto";
-
-      this.style.height =
-        Math.min(this.scrollHeight, 120) + "px";
-
-    });
-
-  </script>
-
-</body>
-</html>
+      color
