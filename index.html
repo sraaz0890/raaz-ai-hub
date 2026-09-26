@@ -3,127 +3,507 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RAAZ AI HUB</title>
+
+  <title>RAAZ AI HUB — AI Learning Platform</title>
+  <meta name="description" content="RAAZ AI HUB — Learn, create, ask and explore with AI.">
 
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: Arial, sans-serif;
+    }
+
+    :root {
+      --bg: #07070b;
+      --card: rgba(18, 18, 27, 0.72);
+      --card-border: rgba(255,255,255,0.09);
+      --purple: #9b5cff;
+      --purple-light: #c49aff;
+      --text: #ffffff;
+      --muted: #92929f;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      background: #08080c;
-      color: white;
+      font-family: Inter, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 50% -10%, rgba(132, 65, 255, 0.20), transparent 35%),
+        radial-gradient(circle at 100% 40%, rgba(86, 42, 180, 0.10), transparent 30%),
+        var(--bg);
+      color: var(--text);
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
+    /* ================= HEADER ================= */
+
     header {
-      padding: 22px;
-      border-bottom: 1px solid #25252d;
       position: sticky;
       top: 0;
-      background: rgba(8,8,12,0.95);
-      z-index: 10;
+      z-index: 100;
+      height: 70px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 6%;
+      background: rgba(7, 7, 11, 0.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
 
     .logo {
-      font-size: 25px;
-      font-weight: bold;
-      letter-spacing: 1px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
     }
 
     .logo span {
-      color: #9b5cff;
+      color: var(--purple-light);
     }
 
+    .header-badge {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 8px 13px;
+      border: 1px solid rgba(155,92,255,0.25);
+      border-radius: 30px;
+
+      color: #c7a6ff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .5px;
+      background: rgba(155,92,255,0.07);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: #8effb0;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #8effb0;
+    }
+
+    /* ================= HERO ================= */
+
     .hero {
-      padding: 60px 22px 35px;
+      position: relative;
+      max-width: 900px;
+      margin: auto;
+      padding: 90px 22px 65px;
       text-align: center;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(140, 70, 255, 0.12);
+      filter: blur(100px);
+      border-radius: 50%;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: -1;
     }
 
     .badge {
-      display: inline-block;
-      padding: 8px 14px;
-      border: 1px solid #6935b8;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      padding: 9px 16px;
+      border: 1px solid rgba(155,92,255,0.35);
       border-radius: 30px;
-      color: #c59aff;
-      font-size: 13px;
-      margin-bottom: 20px;
+
+      color: #c8a7ff;
+      background: rgba(155,92,255,0.08);
+
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .8px;
+
+      box-shadow: 0 0 25px rgba(155,92,255,0.08);
     }
 
-    h1 {
-      font-size: 42px;
-      line-height: 1.1;
-      margin-bottom: 18px;
+    .hero h1 {
+      margin-top: 24px;
+      font-size: clamp(42px, 8vw, 76px);
+      line-height: 1.02;
+      letter-spacing: -3px;
+      font-weight: 850;
     }
 
-    h1 span {
-      color: #a96cff;
+    .gradient-text {
+      background: linear-gradient(
+        90deg,
+        #ffffff,
+        #bd91ff,
+        #9250ff
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .hero p {
-      color: #aaa;
-      line-height: 1.6;
-      max-width: 500px;
-      margin: auto;
+      max-width: 620px;
+      margin: 24px auto 0;
+
+      color: #9999a5;
+      font-size: 16px;
+      line-height: 1.7;
     }
 
-    .cards {
-      padding: 25px 18px 50px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      max-width: 900px;
-      margin: auto;
+    /* ================= CTA ================= */
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 32px;
+      flex-wrap: wrap;
     }
 
-    .card {
-      background: #111118;
-      border: 1px solid #292932;
-      border-radius: 18px;
-      padding: 22px 16px;
-      transition: 0.25s;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 13px 22px;
+      border-radius: 12px;
+
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+
+      transition: .25s ease;
       cursor: pointer;
     }
 
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, #a866ff, #7540dc);
+      box-shadow: 0 8px 30px rgba(130,65,230,0.28);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(130,65,230,0.38);
+    }
+
+    .btn-secondary {
+      color: #d1d1d8;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-2px);
+    }
+
+    /* ================= SECTION ================= */
+
+    .section {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px 20px 80px;
+    }
+
+    .section-heading {
+      margin-bottom: 22px;
+    }
+
+    .section-heading small {
+      color: #a873ff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      margin-top: 6px;
+      font-size: 27px;
+      letter-spacing: -0.7px;
+    }
+
+    .section-heading p {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* ================= CARDS ================= */
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+
+      min-height: 190px;
+      padding: 25px;
+
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+
+      background: var(--card);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+
+      transition: .3s ease;
+      cursor: pointer;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      background: rgba(155,92,255,0.08);
+      filter: blur(50px);
+      top: -60px;
+      right: -50px;
+      opacity: 0;
+      transition: .3s ease;
+    }
+
     .card:hover {
-      transform: translateY(-4px);
-      border-color: #8c4dff;
+      transform: translateY(-5px);
+      border-color: rgba(155,92,255,0.38);
+      box-shadow: 0 15px 45px rgba(0,0,0,0.25);
     }
 
-    .icon {
-      font-size: 30px;
-      margin-bottom: 14px;
+    .card:hover::before {
+      opacity: 1;
     }
 
-    .card h2 {
-      font-size: 17px;
-      margin-bottom: 7px;
+    /* Featured AI card */
+
+    .card.featured {
+      grid-column: span 2;
+      min-height: 220px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(117,64,220,0.18),
+          rgba(18,18,27,0.75)
+        );
+
+      border-color: rgba(155,92,255,0.28);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .icon-box {
+      width: 48px;
+      height: 48px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 14px;
+      background: rgba(155,92,255,0.12);
+      border: 1px solid rgba(155,92,255,0.2);
+
+      font-size: 23px;
+    }
+
+    .arrow {
+      color: #777784;
+      font-size: 19px;
+      transition: .25s;
+    }
+
+    .card:hover .arrow {
+      color: #b98aff;
+      transform: translateX(4px);
+    }
+
+    .card h3 {
+      margin-top: 20px;
+      font-size: 20px;
     }
 
     .card p {
-      color: #8f8f99;
+      max-width: 520px;
+      margin-top: 8px;
+
+      color: #8f8f9b;
       font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .card-link {
+      display: inline-block;
+      margin-top: 18px;
+
+      color: #b88aff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* ================= MINI FEATURES ================= */
+
+    .mini-features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .mini {
+      padding: 19px;
+      border-radius: 16px;
+
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .mini-icon {
+      font-size: 20px;
+    }
+
+    .mini h4 {
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .mini p {
+      margin-top: 5px;
+      color: #777783;
+      font-size: 12px;
       line-height: 1.5;
     }
 
-    footer {
+    /* ================= CTA BOX ================= */
+
+    .bottom-cta {
+      max-width: 900px;
+      margin: 0 auto 70px;
+      padding: 38px 25px;
+
       text-align: center;
-      padding: 25px;
-      border-top: 1px solid #22222a;
-      color: #777;
-      font-size: 13px;
+
+      border-radius: 24px;
+      border: 1px solid rgba(155,92,255,0.18);
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(128,65,230,0.14),
+          rgba(20,20,28,0.5)
+        );
     }
 
-    @media (max-width: 500px) {
-      h1 {
-        font-size: 35px;
+    .bottom-cta h2 {
+      font-size: 25px;
+    }
+
+    .bottom-cta p {
+      color: #8d8d99;
+      font-size: 13px;
+      margin: 9px auto 20px;
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer {
+      padding: 30px 20px;
+      text-align: center;
+
+      border-top: 1px solid rgba(255,255,255,0.06);
+
+      color: #666671;
+      font-size: 12px;
+    }
+
+    footer strong {
+      color: #a873ff;
+    }
+
+    /* ================= MOBILE ================= */
+
+    @media (max-width: 650px) {
+
+      header {
+        height: 64px;
+        padding: 0 18px;
+      }
+
+      .logo {
+        font-size: 17px;
+      }
+
+      .header-badge {
+        padding: 7px 10px;
+        font-size: 9px;
+      }
+
+      .hero {
+        padding: 65px 20px 45px;
+      }
+
+      .hero h1 {
+        font-size: 45px;
+        letter-spacing: -2px;
+      }
+
+      .hero p {
+        font-size: 14px;
       }
 
       .cards {
         grid-template-columns: 1fr;
+      }
+
+      .card.featured {
+        grid-column: span 1;
+      }
+
+      .card {
+        min-height: 175px;
+      }
+
+      .mini-features {
+        grid-template-columns: 1fr;
+      }
+
+      .bottom-cta {
+        margin: 0 18px 55px;
+      }
+    }
+
+    @media (max-width: 380px) {
+
+      .hero h1 {
+        font-size: 39px;
+      }
+
+      .header-badge {
+        display: none;
       }
     }
   </style>
@@ -131,58 +511,232 @@
 
 <body>
 
+  <!-- HEADER -->
+
   <header>
-    <div class="logo">RAAZ <span>AI HUB</span></div>
+    <div class="logo">
+      RAAZ <span>AI HUB</span>
+    </div>
+
+    <div class="header-badge">
+      <span class="status-dot"></span>
+      AI ONLINE
+    </div>
   </header>
 
-  <section class="hero">
-    <div class="badge">✦ AI POWERED LEARNING</div>
 
-    <h1>Your AI Tutor<br><span>For Every Course</span></h1>
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="badge">
+      ✦ AI POWERED LEARNING
+    </div>
+
+    <h1>
+      Your AI Tutor<br>
+      <span class="gradient-text">For Every Course</span>
+    </h1>
 
     <p>
-      Learn, ask questions, create notes and explore useful AI-powered
-      tools — all in one place.
+      Learn smarter, ask questions, create notes and explore
+      powerful AI tools — all from one simple platform.
     </p>
-  </section>
 
-  <section class="cards">
+    <div class="hero-buttons">
+      <a href="#tools" class="btn btn-primary">
+        Start Learning →
+      </a>
 
-    <div class="card">
-      <div class="icon">🤖</div>
-      <h2>AI Chat</h2>
-      <p>Talk with your AI assistant and ask anything.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">🎓</div>
-      <h2>Study Tutor</h2>
-      <p>Learn any course or subject with your personal AI tutor.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">📚</div>
-      <h2>Study Tools</h2>
-      <p>Notes, quizzes, summaries, flashcards and more.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">🛠️</div>
-      <h2>Useful Tools</h2>
-      <p>Helpful everyday tools collected in one place.</p>
-    </div>
-
-    <div class="card">
-      <div class="icon">ℹ️</div>
-      <h2>About</h2>
-      <p>Learn more about RAAZ AI HUB.</p>
+      <a href="#features" class="btn btn-secondary">
+        Explore Features
+      </a>
     </div>
 
   </section>
+
+
+  <!-- FEATURES -->
+
+  <section class="section" id="features">
+
+    <div class="section-heading">
+      <small>EXPLORE RAAZ AI HUB</small>
+      <h2>Everything you need to learn</h2>
+      <p>Simple tools. Powerful AI. One learning space.</p>
+    </div>
+
+
+    <div class="cards">
+
+      <!-- FEATURED -->
+
+      <div class="card featured">
+
+        <div class="card-top">
+          <div class="icon-box">🤖</div>
+          <div class="arrow">↗</div>
+        </div>
+
+        <h3>AI Chat</h3>
+
+        <p>
+          Talk with your AI assistant, ask questions,
+          understand difficult topics and get instant help
+          whenever you need it.
+        </p>
+
+        <span class="card-link">
+          Open AI Chat →
+        </span>
+
+      </div>
+
+
+      <!-- STUDY TUTOR -->
+
+      <div class="card">
+
+        <div class="card-top">
+          <div class="icon-box">🎓</div>
+          <div class="arrow">↗</div>
+        </div>
+
+        <h3>Study Tutor</h3>
+
+        <p>
+          Learn subjects step-by-step with an AI tutor
+          designed to explain concepts clearly.
+        </p>
+
+        <span class="card-link">
+          Start Studying →
+        </span>
+
+      </div>
+
+
+      <!-- STUDY TOOLS -->
+
+      <div class="card" id="tools">
+
+        <div class="card-top">
+          <div class="icon-box">📚</div>
+          <div class="arrow">↗</div>
+        </div>
+
+        <h3>Study Tools</h3>
+
+        <p>
+          Create summaries, notes, quizzes and flashcards
+          to make your learning easier.
+        </p>
+
+        <span class="card-link">
+          Explore Tools →
+        </span>
+
+      </div>
+
+
+      <!-- USEFUL TOOLS -->
+
+      <div class="card">
+
+        <div class="card-top">
+          <div class="icon-box">⚡</div>
+          <div class="arrow">↗</div>
+        </div>
+
+        <h3>Useful Tools</h3>
+
+        <p>
+          Discover helpful everyday tools collected
+          together inside RAAZ AI HUB.
+        </p>
+
+        <span class="card-link">
+          View Tools →
+        </span>
+
+      </div>
+
+
+      <!-- ABOUT -->
+
+      <div class="card">
+
+        <div class="card-top">
+          <div class="icon-box">✦</div>
+          <div class="arrow">↗</div>
+        </div>
+
+        <h3>About RAAZ AI HUB</h3>
+
+        <p>
+          A growing AI learning platform built to make
+          technology and education easier to access.
+        </p>
+
+        <span class="card-link">
+          Learn More →
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- MINI FEATURES -->
+
+    <div class="mini-features">
+
+      <div class="mini">
+        <div class="mini-icon">⚡</div>
+        <h4>Fast Assistance</h4>
+        <p>Get quick AI-powered help when you need it.</p>
+      </div>
+
+      <div class="mini">
+        <div class="mini-icon">🧠</div>
+        <h4>Learn Smarter</h4>
+        <p>Understand concepts instead of just memorizing them.</p>
+      </div>
+
+      <div class="mini">
+        <div class="mini-icon">📱</div>
+        <h4>Mobile Friendly</h4>
+        <p>Designed to work smoothly on phones and desktops.</p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- BOTTOM CTA -->
+
+  <section class="bottom-cta">
+
+    <h2>Ready to learn with AI?</h2>
+
+    <p>
+      Your next question could be the beginning of something new.
+    </p>
+
+    <a href="#features" class="btn btn-primary">
+      Enter RAAZ AI HUB →
+    </a>
+
+  </section>
+
+
+  <!-- FOOTER -->
 
   <footer>
-    © 2026 RAAZ AI HUB • Learn Anything. Anywhere.
+    © 2026 <strong>RAAZ AI HUB</strong> · Learn Anything. Anywhere.
   </footer>
+
 
 </body>
 </html>
