@@ -1,0 +1,13 @@
+{
+  "name": "raaz-ai-hub",
+  "version": "1.0.0",
+  "description": "RAAZ AI HUB",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.0.0",
+    "express": "^5.1.0"
+  }
+}
