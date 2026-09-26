@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAAZ AI HUB</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #08080c;
+      color: white;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 22px;
+      border-bottom: 1px solid #25252d;
+      position: sticky;
+      top: 0;
+      background: rgba(8,8,12,0.95);
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      color: #9b5cff;
+    }
+
+    .hero {
+      padding: 60px 22px 35px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border: 1px solid #6935b8;
+      border-radius: 30px;
+      color: #c59aff;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 42px;
+      line-height: 1.1;
+      margin-bottom: 18px;
+    }
+
+    h1 span {
+      color: #a96cff;
+    }
+
+    .hero p {
+      color: #aaa;
+      line-height: 1.6;
+      max-width: 500px;
+      margin: auto;
+    }
+
+    .cards {
+      padding: 25px 18px 50px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .card {
+      background: #111118;
+      border: 1px solid #292932;
+      border-radius: 18px;
+      padding: 22px 16px;
+      transition: 0.25s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #8c4dff;
+    }
+
+    .icon {
+      font-size: 30px;
+      margin-bottom: 14px;
+    }
+
+    .card h2 {
+      font-size: 17px;
+      margin-bottom: 7px;
+    }
+
+    .card p {
+      color: #8f8f99;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      border-top: 1px solid #22222a;
+      color: #777;
+      font-size: 13px;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 35px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">RAAZ <span>AI HUB</span></div>
+  </header>
+
+  <section class="hero">
+    <div class="badge">✦ AI POWERED LEARNING</div>
+
+    <h1>Your AI Tutor<br><span>For Every Course</span></h1>
+
+    <p>
+      Learn, ask questions, create notes and explore useful AI-powered
+      tools — all in one place.
+    </p>
+  </section>
+
+  <section class="cards">
+
+    <div class="card">
+      <div class="icon">🤖</div>
+      <h2>AI Chat</h2>
+      <p>Talk with your AI assistant and ask anything.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🎓</div>
+      <h2>Study Tutor</h2>
+      <p>Learn any course or subject with your personal AI tutor.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">📚</div>
+      <h2>Study Tools</h2>
+      <p>Notes, quizzes, summaries, flashcards and more.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">🛠️</div>
+      <h2>Useful Tools</h2>
+      <p>Helpful everyday tools collected in one place.</p>
+    </div>
+
+    <div class="card">
+      <div class="icon">ℹ️</div>
+      <h2>About</h2>
+      <p>Learn more about RAAZ AI HUB.</p>
+    </div>
+
+  </section>
+
+  <footer>
+    © 2026 RAAZ AI HUB • Learn Anything. Anywhere.
+  </footer>
+
+</body>
+</html>
