@@ -6,10 +6,7 @@
 
 <title>PDF & Photo Tutor — RAAZ AI HUB</title>
 
-<!-- Markdown Renderer -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-<!-- Security Sanitizer -->
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
 
 <style>
@@ -173,6 +170,10 @@ button{
   outline:none;
 }
 
+textarea{
+  resize:vertical;
+}
+
 select:focus,
 textarea:focus{
   border-color:#8d54e8;
@@ -220,8 +221,6 @@ button:disabled{
   color:#e8e5ed;
 }
 
-/* Headings */
-
 .result h1,
 .result h2,
 .result h3,
@@ -232,23 +231,10 @@ button:disabled{
   margin-bottom:10px;
 }
 
-.result h1{
-  font-size:25px;
-}
-
-.result h2{
-  font-size:21px;
-}
-
-.result h3{
-  font-size:18px;
-}
-
-.result h4{
-  font-size:16px;
-}
-
-/* First heading */
+.result h1{font-size:25px}
+.result h2{font-size:21px}
+.result h3{font-size:18px}
+.result h4{font-size:16px}
 
 .result h1:first-child,
 .result h2:first-child,
@@ -256,21 +242,15 @@ button:disabled{
   margin-top:0;
 }
 
-/* Paragraph */
-
 .result p{
   margin:10px 0;
   color:#d8d5de;
 }
 
-/* Bold */
-
 .result strong{
   color:#caa5ff;
   font-weight:700;
 }
-
-/* Lists */
 
 .result ul,
 .result ol{
@@ -286,21 +266,15 @@ button:disabled{
   color:#a866ff;
 }
 
-/* Links */
-
 .result a{
   color:#c49aff;
 }
-
-/* Horizontal line */
 
 .result hr{
   border:0;
   border-top:1px solid #2b2335;
   margin:22px 0;
 }
-
-/* Inline code */
 
 .result code{
   background:#181320;
@@ -310,8 +284,6 @@ button:disabled{
   border-radius:6px;
   font-size:.9em;
 }
-
-/* Code blocks */
 
 .result pre{
   background:#08070c;
@@ -330,8 +302,6 @@ button:disabled{
   white-space:pre;
 }
 
-/* Blockquotes */
-
 .result blockquote{
   margin:15px 0;
   padding:12px 15px;
@@ -340,8 +310,6 @@ button:disabled{
   color:#bbb5c5;
   border-radius:0 10px 10px 0;
 }
-
-/* Tables */
 
 .result table{
   width:100%;
@@ -368,10 +336,49 @@ button:disabled{
   color:#d2ced8;
 }
 
-/* Error */
-
 .result.error{
   color:#ff9b9b;
+}
+
+/* =========================
+   FOLLOW UP AREA
+========================= */
+
+.followup{
+  display:none;
+  margin-top:24px;
+  padding:20px;
+  border-radius:18px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(117,64,220,.12),
+      rgba(18,18,27,.8)
+    );
+  border:1px solid rgba(155,92,255,.2);
+}
+
+.followup-title{
+  font-size:18px;
+  font-weight:700;
+}
+
+.followup-subtitle{
+  margin-top:6px;
+  color:#8f8f9b;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.ask-btn{
+  background:linear-gradient(135deg,#8f55e8,#6437bf);
+}
+
+.ask-status{
+  margin-top:12px;
+  color:#aaa;
+  font-size:13px;
+  text-align:center;
 }
 
 @media(max-width:650px){
@@ -451,6 +458,10 @@ button:disabled{
 
   <div class="upload-card">
 
+    <!-- =========================
+         UPLOAD
+    ========================= -->
+
     <div
       class="drop-zone"
       onclick="document.getElementById('fileInput').click()"
@@ -478,6 +489,10 @@ button:disabled{
 
     <div id="fileName" class="file-name"></div>
 
+
+    <!-- =========================
+         ACTION
+    ========================= -->
 
     <select id="action">
 
@@ -526,7 +541,54 @@ button:disabled{
 
     <div id="status" class="status"></div>
 
+
+    <!-- =========================
+         MAIN RESULT
+    ========================= -->
+
     <div id="result" class="result"></div>
+
+
+    <!-- =========================
+         FOLLOW UP
+    ========================= -->
+
+    <div id="followup" class="followup">
+
+      <div class="followup-title">
+        💬 Ask About This Material
+      </div>
+
+      <div class="followup-subtitle">
+        Your uploaded material is still selected.
+        Ask another question without uploading the file again.
+      </div>
+
+      <textarea
+        id="question"
+        rows="3"
+        placeholder="Example: Explain the Control Unit in simple language..."
+      ></textarea>
+
+      <button
+        id="askBtn"
+        class="ask-btn"
+        onclick="askQuestion()"
+      >
+        💬 Ask RAAZ AI
+      </button>
+
+      <div
+        id="askStatus"
+        class="ask-status"
+      ></div>
+
+      <div
+        id="answer"
+        class="result"
+      ></div>
+
+    </div>
 
   </div>
 
@@ -562,9 +624,15 @@ function fileSelected(){
   const result =
     document.getElementById("result");
 
+  const followup =
+    document.getElementById("followup");
+
 
   result.style.display = "none";
+
   result.classList.remove("error");
+
+  followup.style.display = "none";
 
   status.textContent = "";
 
@@ -653,7 +721,38 @@ function formatSize(bytes){
 
 
 /* =========================
-   ANALYZE
+   MARKDOWN RENDER
+========================= */
+
+function renderMarkdown(text, element){
+
+  if(
+    typeof marked === "undefined" ||
+    typeof DOMPurify === "undefined"
+  ){
+
+    element.textContent = text;
+
+    return;
+
+  }
+
+
+  const html =
+    marked.parse(text,{
+      breaks:true,
+      gfm:true
+    });
+
+
+  element.innerHTML =
+    DOMPurify.sanitize(html);
+
+}
+
+
+/* =========================
+   ANALYZE FILE
 ========================= */
 
 async function analyzeFile(){
@@ -678,6 +777,9 @@ async function analyzeFile(){
   const button =
     document.getElementById("analyzeBtn");
 
+  const followup =
+    document.getElementById("followup");
+
 
   button.disabled = true;
 
@@ -691,20 +793,26 @@ async function analyzeFile(){
 
   result.classList.remove("error");
 
+  followup.style.display = "none";
+
 
   try{
 
-    const formData = new FormData();
+    const formData =
+      new FormData();
+
 
     formData.append(
       "file",
       selectedFile
     );
 
+
     formData.append(
       "action",
       action
     );
+
 
     formData.append(
       "instruction",
@@ -724,9 +832,11 @@ async function analyzeFile(){
 
     let data;
 
+
     try{
 
-      data = await response.json();
+      data =
+        await response.json();
 
     }catch(e){
 
@@ -747,37 +857,19 @@ async function analyzeFile(){
     }
 
 
-    /* =========================
-       MARKDOWN RENDERING
-    ========================= */
-
     const reply =
       data.reply ||
       "RAAZ AI did not return a response.";
 
 
-    if(
-      typeof marked === "undefined" ||
-      typeof DOMPurify === "undefined"
-    ){
-
-      result.textContent = reply;
-
-    }else{
-
-      const html =
-        marked.parse(reply, {
-          breaks:true,
-          gfm:true
-        });
-
-      result.innerHTML =
-        DOMPurify.sanitize(html);
-
-    }
+    renderMarkdown(
+      reply,
+      result
+    );
 
 
-    result.style.display = "block";
+    result.style.display =
+      "block";
 
 
     status.textContent =
@@ -790,7 +882,11 @@ async function analyzeFile(){
       ".";
 
 
-    /* Scroll result into view */
+    /* Show follow-up section */
+
+    followup.style.display =
+      "block";
+
 
     setTimeout(() => {
 
@@ -804,7 +900,8 @@ async function analyzeFile(){
 
   }catch(error){
 
-    result.style.display = "block";
+    result.style.display =
+      "block";
 
     result.classList.add("error");
 
@@ -828,6 +925,236 @@ async function analyzeFile(){
   }
 
 }
+
+
+/* =========================
+   ASK FOLLOW-UP QUESTION
+========================= */
+
+async function askQuestion(){
+
+  if(!selectedFile){
+
+    return;
+  }
+
+
+  const questionBox =
+    document.getElementById("question");
+
+  const question =
+    questionBox.value.trim();
+
+  const askBtn =
+    document.getElementById("askBtn");
+
+  const askStatus =
+    document.getElementById("askStatus");
+
+  const answer =
+    document.getElementById("answer");
+
+
+  if(!question){
+
+    askStatus.textContent =
+      "✏️ Please enter a question first.";
+
+    questionBox.focus();
+
+    return;
+  }
+
+
+  askBtn.disabled = true;
+
+  askBtn.textContent =
+    "⏳ Thinking...";
+
+  askStatus.textContent =
+    "RAAZ AI is checking your material...";
+
+  answer.style.display =
+    "none";
+
+  answer.classList.remove("error");
+
+
+  try{
+
+    const formData =
+      new FormData();
+
+
+    /*
+      Send the SAME selected file again.
+      User does not have to manually upload it.
+    */
+
+    formData.append(
+      "file",
+      selectedFile
+    );
+
+
+    formData.append(
+      "action",
+      "question"
+    );
+
+
+    formData.append(
+      "instruction",
+      `
+Answer the student's question using the uploaded study material.
+
+Student's question:
+${question}
+
+Give a clear, student-friendly explanation.
+If the answer is found in the uploaded material, base the answer on it.
+If it is not clearly available in the material, say so instead of inventing information.
+Use headings, bullet points and examples when useful.
+      `.trim()
+    );
+
+
+    const response =
+      await fetch(
+        "/api/document-tutor",
+        {
+          method:"POST",
+          body:formData
+        }
+      );
+
+
+    let data;
+
+
+    try{
+
+      data =
+        await response.json();
+
+    }catch(e){
+
+      throw new Error(
+        "Server returned an invalid response."
+      );
+
+    }
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        "Question could not be answered."
+      );
+
+    }
+
+
+    const reply =
+      data.reply ||
+      "RAAZ AI did not return an answer.";
+
+
+    renderMarkdown(
+      reply,
+      answer
+    );
+
+
+    answer.style.display =
+      "block";
+
+
+    askStatus.textContent =
+      "✅ Answer generated" +
+      (
+        data.model
+        ? " using " + data.model
+        : ""
+      ) +
+      ".";
+
+
+    /*
+      Clear question box after successful answer.
+    */
+
+    questionBox.value = "";
+
+
+    setTimeout(() => {
+
+      answer.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+    },100);
+
+
+  }catch(error){
+
+    answer.style.display =
+      "block";
+
+    answer.classList.add("error");
+
+    answer.textContent =
+      "❌ " +
+      (
+        error.message ||
+        "Something went wrong."
+      ) +
+      "\n\nPlease try again.";
+
+    askStatus.textContent = "";
+
+  }finally{
+
+    askBtn.disabled = false;
+
+    askBtn.textContent =
+      "💬 Ask RAAZ AI";
+
+  }
+
+}
+
+
+/* =========================
+   ENTER TO ASK
+========================= */
+
+document
+  .getElementById("question")
+  .addEventListener(
+    "keydown",
+    function(event){
+
+      /*
+        Ctrl + Enter / Enter on mobile
+        can trigger the question.
+      */
+
+      if(
+        event.key === "Enter" &&
+        event.ctrlKey
+      ){
+
+        event.preventDefault();
+
+        askQuestion();
+
+      }
+
+    }
+  );
 
 </script>
 
