@@ -3,57 +3,632 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>Study Tutor — RAAZ AI HUB</title>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 <style>
-:root{--bg:#07070b;--card:#12121b;--border:rgba(255,255,255,.09);--light:#c49aff;--text:#fff}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 50% -10%,rgba(132,65,255,.2),transparent 35%),var(--bg);color:var(--text);min-height:100vh}
-header{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;background:rgba(7,7,11,.8);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;z-index:10}
-.logo{font-size:20px;font-weight:800;letter-spacing:1.5px}.logo span{color:var(--light)}
-.back{color:#c49aff;text-decoration:none;font-size:13px}
-.wrap{max-width:1000px;margin:auto;padding:55px 20px 80px}
-.badge{display:inline-block;padding:8px 13px;border:1px solid rgba(155,92,255,.3);border-radius:30px;color:#c8a7ff;background:rgba(155,92,255,.08);font-size:11px;font-weight:700;letter-spacing:.8px}
-h1{font-size:clamp(34px,7vw,58px);margin:18px 0 12px;letter-spacing:-2px}
-h1 span{background:linear-gradient(90deg,#fff,#bd91ff,#9250ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9999a5;line-height:1.7;max-width:700px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px}
-.card{background:rgba(18,18,27,.75);border:1px solid var(--border);border-radius:20px;padding:24px}
-.card h2{font-size:20px;margin-bottom:8px}.card p{color:#92929f;font-size:13px;line-height:1.6}
-select,input,textarea,button{width:100%;border:1px solid #30243d;background:#15101f;color:#fff;border-radius:12px;padding:13px;margin-top:10px;font:inherit;outline:none}
-button{background:linear-gradient(135deg,#a866ff,#7540dc);border:0;font-weight:700;cursor:pointer}
-.result{margin-top:15px;padding:15px;border-radius:13px;background:#0d0b13;border:1px solid #292033;line-height:1.6;white-space:pre-wrap}
-@media(max-width:650px){header{height:62px;padding:0 16px}.logo{font-size:17px}.grid{grid-template-columns:1fr}.wrap{padding:40px 15px 70px}}
+:root{
+  --bg:#07070b;
+  --card:#12121b;
+  --card2:#0d0b13;
+  --border:rgba(255,255,255,.09);
+  --light:#c49aff;
+  --purple:#8b4dff;
+  --text:#fff;
+  --muted:#9999a5;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(132,65,255,.2),transparent 35%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+header{
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6%;
+  background:rgba(7,7,11,.8);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.logo{
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:1.5px;
+}
+
+.logo span{
+  color:var(--light);
+}
+
+.back{
+  color:#c49aff;
+  text-decoration:none;
+  font-size:13px;
+}
+
+.wrap{
+  max-width:1000px;
+  margin:auto;
+  padding:55px 20px 80px;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 13px;
+  border:1px solid rgba(155,92,255,.3);
+  border-radius:30px;
+  color:#c8a7ff;
+  background:rgba(155,92,255,.08);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.8px;
+}
+
+h1{
+  font-size:clamp(34px,7vw,58px);
+  margin:18px 0 12px;
+  letter-spacing:-2px;
+}
+
+h1 span{
+  background:linear-gradient(90deg,#fff,#bd91ff,#9250ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.lead{
+  color:var(--muted);
+  line-height:1.7;
+  max-width:700px;
+}
+
+.card{
+  background:rgba(18,18,27,.75);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:24px;
+  margin-top:30px;
+}
+
+label{
+  display:block;
+  font-size:14px;
+  font-weight:700;
+  margin-top:5px;
+}
+
+select,
+textarea,
+button{
+  width:100%;
+  border:1px solid #30243d;
+  background:#15101f;
+  color:#fff;
+  border-radius:12px;
+  padding:13px;
+  margin-top:10px;
+  font:inherit;
+  outline:none;
+}
+
+select:focus,
+textarea:focus{
+  border-color:#8b4dff;
+}
+
+textarea{
+  resize:vertical;
+  min-height:130px;
+}
+
+button{
+  background:linear-gradient(135deg,#a866ff,#7540dc);
+  border:0;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover{
+  transform:translateY(-1px);
+  opacity:.95;
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.buttons{
+  display:grid;
+  grid-template-columns:1fr 150px;
+  gap:10px;
+}
+
+.clear-btn{
+  background:#191421;
+  border:1px solid #30243d;
+}
+
+.status{
+  display:none;
+  margin-top:18px;
+  padding:13px;
+  border-radius:12px;
+  background:#100d17;
+  border:1px solid #292033;
+  color:#bca8d3;
+  font-size:13px;
+}
+
+.result{
+  display:none;
+  margin-top:18px;
+  padding:20px;
+  border-radius:15px;
+  background:#0d0b13;
+  border:1px solid #292033;
+  line-height:1.7;
+  color:#eee;
+  overflow-wrap:anywhere;
+}
+
+.result h1,
+.result h2,
+.result h3{
+  margin:18px 0 8px;
+  letter-spacing:normal;
+}
+
+.result h1{
+  font-size:25px;
+}
+
+.result h2{
+  font-size:21px;
+}
+
+.result h3{
+  font-size:18px;
+}
+
+.result p{
+  margin:10px 0;
+}
+
+.result ul,
+.result ol{
+  margin:10px 0 10px 22px;
+}
+
+.result li{
+  margin:5px 0;
+}
+
+.result strong{
+  color:#d0adff;
+}
+
+.result code{
+  background:#191321;
+  padding:3px 6px;
+  border-radius:6px;
+  font-size:90%;
+}
+
+.result pre{
+  background:#09080d;
+  border:1px solid #27202f;
+  padding:15px;
+  border-radius:10px;
+  overflow-x:auto;
+  margin:12px 0;
+}
+
+.result pre code{
+  background:none;
+  padding:0;
+}
+
+.empty{
+  color:#999;
+  text-align:center;
+  padding:20px;
+}
+
+.features{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:18px;
+}
+
+.feature{
+  padding:15px;
+  border-radius:13px;
+  background:#0e0c13;
+  border:1px solid #27202f;
+}
+
+.feature b{
+  display:block;
+  margin-bottom:5px;
+}
+
+.feature span{
+  color:#888792;
+  font-size:12px;
+  line-height:1.5;
+}
+
+@media(max-width:650px){
+
+  header{
+    height:62px;
+    padding:0 16px;
+  }
+
+  .logo{
+    font-size:17px;
+  }
+
+  .wrap{
+    padding:40px 15px 70px;
+  }
+
+  .card{
+    padding:18px;
+  }
+
+  .buttons{
+    grid-template-columns:1fr;
+  }
+
+  .features{
+    grid-template-columns:1fr;
+  }
+}
 </style>
 </head>
+
 <body>
-<header><div class="logo">RAAZ <span>AI HUB</span></div><a class="back" href="/">← Home</a></header>
+
+<header>
+  <div class="logo">RAAZ <span>AI HUB</span></div>
+  <a class="back" href="/">← Home</a>
+</header>
+
 <main class="wrap">
-<span class="badge">🎓 AI STUDY TUTOR</span>
-<h1>Learn <span>Step by Step</span></h1>
-<p class="lead">Choose a subject, enter a topic or question, and RAAZ AI will explain it like a personal tutor.</p>
-<div class="card" style="margin-top:30px">
-<label>📚 Subject</label>
-<select id="subject">
-<option>Mathematics</option><option>Physics</option><option>Chemistry</option><option>Biology</option>
-<option>English</option><option>History</option><option>Geography</option><option>Computer Science</option>
-<option>Programming</option><option>ITI</option><option>Other</option>
-</select>
-<label style="display:block;margin-top:18px">🧠 What do you want to learn?</label>
-<textarea id="question" rows="5" placeholder="Example: Explain Ohm's Law with a simple example"></textarea>
-<button onclick="teach()">Teach Me →</button>
-<div id="result" class="result" style="display:none"></div>
-</div></main>
-<script>async function teach(){
-const q=document.getElementById('question').value.trim();
-const s=document.getElementById('subject').value;
-const r=document.getElementById('result');
-if(!q)return;
-r.style.display='block';r.textContent='RAAZ AI is preparing your lesson...';
-try{
-const x=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
-body:JSON.stringify({subject:s,message:'Act as a study tutor. Teach this topic step by step in simple student-friendly language. Topic/question: '+q})});
-const d=await x.json();if(!x.ok)throw Error(d.error);r.textContent=d.reply||'No response.';
-}catch(e){r.textContent='Something went wrong. Please try again.'}
-}</script>
+
+  <span class="badge">🎓 AI STUDY TUTOR</span>
+
+  <h1>
+    Learn <span>Step by Step</span>
+  </h1>
+
+  <p class="lead">
+    Choose a subject, enter your topic or question, and RAAZ AI will teach
+    you like a personal tutor.
+  </p>
+
+  <div class="card">
+
+    <label>📚 Select Subject</label>
+
+    <select id="subject">
+
+      <option>Mathematics</option>
+      <option>Physics</option>
+      <option>Chemistry</option>
+      <option>Biology</option>
+      <option>English</option>
+      <option>Hindi</option>
+      <option>Odia</option>
+      <option>History</option>
+      <option>Geography</option>
+      <option>Economics</option>
+      <option>Computer Science</option>
+      <option>Programming</option>
+      <option>ITI</option>
+      <option>General Knowledge</option>
+      <option>Other</option>
+
+    </select>
+
+
+    <label style="margin-top:20px">
+      🧠 What do you want to learn?
+    </label>
+
+    <textarea
+      id="question"
+      placeholder="Example: Explain Ohm's Law with a simple example..."
+    ></textarea>
+
+
+    <div class="buttons">
+
+      <button id="teachBtn" onclick="teach()">
+        🎓 Teach Me →
+      </button>
+
+      <button class="clear-btn" onclick="clearTutor()">
+        🗑️ Clear
+      </button>
+
+    </div>
+
+
+    <div id="status" class="status">
+      🤖 RAAZ AI is preparing your lesson...
+    </div>
+
+
+    <div id="result" class="result"></div>
+
+
+    <div class="features">
+
+      <div class="feature">
+        <b>🧠 Simple Explanation</b>
+        <span>
+          Difficult concepts explained in easy student-friendly language.
+        </span>
+      </div>
+
+      <div class="feature">
+        <b>📝 Step-by-Step</b>
+        <span>
+          Problems and topics broken into understandable steps.
+        </span>
+      </div>
+
+      <div class="feature">
+        <b>💡 Examples</b>
+        <span>
+          Practical examples to help you understand the concept better.
+        </span>
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+const subject = document.getElementById("subject");
+const question = document.getElementById("question");
+const result = document.getElementById("result");
+const statusBox = document.getElementById("status");
+const teachBtn = document.getElementById("teachBtn");
+
+
+async function teach(){
+
+  const q = question.value.trim();
+  const s = subject.value;
+
+  if(!q){
+
+    result.style.display = "block";
+
+    result.innerHTML = `
+      <div class="empty">
+        🧠 Please enter a topic or question first.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  teachBtn.disabled = true;
+  teachBtn.textContent = "⏳ Teaching...";
+
+  result.style.display = "none";
+
+  statusBox.style.display = "block";
+
+  statusBox.textContent =
+    "🤖 RAAZ AI is preparing your lesson...";
+
+
+  const tutorPrompt = `
+You are RAAZ AI Study Tutor.
+
+The student selected this subject:
+
+${s}
+
+The student wants to learn:
+
+${q}
+
+Teach the student like a friendly professional tutor.
+
+IMPORTANT INSTRUCTIONS:
+
+1. Start with a clear explanation of the main concept.
+
+2. Explain everything in simple student-friendly language.
+
+3. If this is a numerical/problem-solving question,
+   solve it step by step and show the calculations clearly.
+
+4. If formulas are required, explain what each variable means.
+
+5. Give a simple real-world or practical example when useful.
+
+6. Add a section called "Key Points" with the most important things to remember.
+
+7. If appropriate, add a short "Quick Check" section with 2-3 questions
+   the student can use to test their understanding.
+
+8. If the question is about programming,
+   provide clean code and explain the important parts.
+
+9. Do not unnecessarily make the answer extremely long.
+
+10. Do not simply give the final answer.
+    Help the student understand how the answer works.
+
+11. Use Markdown headings, bullet points and code blocks where useful.
+
+12. Be friendly, encouraging and clear.
+
+Use this structure when appropriate:
+
+## 📚 Concept
+
+## 🧠 Explanation
+
+## 💡 Example
+
+## 📝 Step-by-Step Solution
+
+## 🔑 Key Points
+
+## ✅ Quick Check
+
+Student's question:
+
+${q}
+`;
+
+
+  try{
+
+    const response = await fetch("/api/chat",{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+
+        subject:s,
+
+        message:tutorPrompt
+
+      })
+
+    });
+
+
+    const data = await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error || "AI response failed."
+      );
+
+    }
+
+
+    const reply = data.reply || "No response received.";
+
+
+    statusBox.style.display = "none";
+
+    result.style.display = "block";
+
+    if(window.marked){
+
+      result.innerHTML = marked.parse(reply);
+
+    }else{
+
+      result.textContent = reply;
+
+    }
+
+
+    result.scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+
+
+  }catch(error){
+
+    console.error(error);
+
+    statusBox.style.display = "none";
+
+    result.style.display = "block";
+
+    result.innerHTML = `
+      <div class="empty">
+        ❌ Something went wrong.<br><br>
+        Please try again in a moment.
+      </div>
+    `;
+
+  }finally{
+
+    teachBtn.disabled = false;
+
+    teachBtn.textContent = "🎓 Teach Me →";
+
+  }
+
+}
+
+
+function clearTutor(){
+
+  question.value = "";
+
+  result.innerHTML = "";
+
+  result.style.display = "none";
+
+  statusBox.style.display = "none";
+
+  question.focus();
+
+}
+
+
+question.addEventListener("keydown",function(event){
+
+  if(event.key === "Enter" && (event.ctrlKey || event.metaKey)){
+
+    teach();
+
+  }
+
+});
+
+
+</script>
+
 </body>
 </html>
