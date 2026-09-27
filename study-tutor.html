@@ -6,7 +6,32 @@
 
 <title>Study Tutor — RAAZ AI HUB</title>
 
+<!-- Markdown -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<!-- MathJax -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [
+      ['$', '$'],
+      ['\\(', '\\)']
+    ],
+    displayMath: [
+      ['$$', '$$'],
+      ['\\[', '\\]']
+    ]
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  }
+};
+</script>
+
+<script
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 
 <style>
 :root{
@@ -29,7 +54,11 @@
 body{
   font-family:Inter,Arial,sans-serif;
   background:
-    radial-gradient(circle at 50% -10%,rgba(132,65,255,.2),transparent 35%),
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(132,65,255,.2),
+      transparent 35%
+    ),
     var(--bg);
   color:var(--text);
   min-height:100vh;
@@ -140,6 +169,12 @@ textarea{
   min-height:130px;
 }
 
+.buttons{
+  display:grid;
+  grid-template-columns:1fr 150px;
+  gap:10px;
+}
+
 button{
   background:linear-gradient(135deg,#a866ff,#7540dc);
   border:0;
@@ -157,12 +192,6 @@ button:disabled{
   opacity:.6;
   cursor:not-allowed;
   transform:none;
-}
-
-.buttons{
-  display:grid;
-  grid-template-columns:1fr 150px;
-  gap:10px;
 }
 
 .clear-btn{
@@ -192,6 +221,8 @@ button:disabled{
   color:#eee;
   overflow-wrap:anywhere;
 }
+
+/* Markdown */
 
 .result h1,
 .result h2,
@@ -248,6 +279,19 @@ button:disabled{
 .result pre code{
   background:none;
   padding:0;
+}
+
+/* Maths */
+
+.result mjx-container{
+  color:#ffffff !important;
+}
+
+.result mjx-container[display="true"]{
+  margin:18px 0 !important;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:5px 0;
 }
 
 .empty{
@@ -336,7 +380,6 @@ button:disabled{
     <label>📚 Select Subject</label>
 
     <select id="subject">
-
       <option>Mathematics</option>
       <option>Physics</option>
       <option>Chemistry</option>
@@ -352,9 +395,7 @@ button:disabled{
       <option>ITI</option>
       <option>General Knowledge</option>
       <option>Other</option>
-
     </select>
-
 
     <label style="margin-top:20px">
       🧠 What do you want to learn?
@@ -362,9 +403,8 @@ button:disabled{
 
     <textarea
       id="question"
-      placeholder="Example: Explain Ohm's Law with a simple example..."
+      placeholder="Example: Solve 2x + 5 = 10 step by step..."
     ></textarea>
-
 
     <div class="buttons">
 
@@ -378,14 +418,11 @@ button:disabled{
 
     </div>
 
-
     <div id="status" class="status">
       🤖 RAAZ AI is preparing your lesson...
     </div>
 
-
     <div id="result" class="result"></div>
-
 
     <div class="features">
 
@@ -416,7 +453,6 @@ button:disabled{
 
 </main>
 
-
 <script>
 
 const subject = document.getElementById("subject");
@@ -424,6 +460,31 @@ const question = document.getElementById("question");
 const result = document.getElementById("result");
 const statusBox = document.getElementById("status");
 const teachBtn = document.getElementById("teachBtn");
+
+
+async function renderMath(){
+
+  if(
+    window.MathJax &&
+    typeof MathJax.typesetPromise === "function"
+  ){
+
+    try{
+
+      await MathJax.typesetPromise([result]);
+
+    }catch(error){
+
+      console.error(
+        "MathJax rendering error:",
+        error
+      );
+
+    }
+
+  }
+
+}
 
 
 async function teach(){
@@ -475,29 +536,46 @@ IMPORTANT INSTRUCTIONS:
 
 2. Explain everything in simple student-friendly language.
 
-3. If this is a numerical/problem-solving question,
-   solve it step by step and show the calculations clearly.
+3. If this is a numerical or problem-solving question,
+   solve it step by step and show calculations clearly.
 
-4. If formulas are required, explain what each variable means.
+4. For mathematics and science formulas,
+   use LaTeX notation.
 
-5. Give a simple real-world or practical example when useful.
+   Use $...$ for short inline formulas.
 
-6. Add a section called "Key Points" with the most important things to remember.
+   Use $$...$$ for important formulas or equations
+   that should appear on their own line.
 
-7. If appropriate, add a short "Quick Check" section with 2-3 questions
+   Example:
+
+   $$2x + 5 = 10$$
+
+   and:
+
+   $x = 2.5$
+
+5. If formulas are required, explain what each variable means.
+
+6. Give a simple real-world or practical example when useful.
+
+7. Add a section called "Key Points" with the most important things
+   to remember.
+
+8. If appropriate, add a short "Quick Check" section with 2-3 questions
    the student can use to test their understanding.
 
-8. If the question is about programming,
+9. If the question is about programming,
    provide clean code and explain the important parts.
 
-9. Do not unnecessarily make the answer extremely long.
+10. Do not unnecessarily make the answer extremely long.
 
-10. Do not simply give the final answer.
+11. Do not simply give the final answer.
     Help the student understand how the answer works.
 
-11. Use Markdown headings, bullet points and code blocks where useful.
+12. Use Markdown headings, bullet points and code blocks where useful.
 
-12. Be friendly, encouraging and clear.
+13. Be friendly, encouraging and clear.
 
 Use this structure when appropriate:
 
@@ -552,12 +630,14 @@ ${q}
     }
 
 
-    const reply = data.reply || "No response received.";
+    const reply =
+      data.reply || "No response received.";
 
 
     statusBox.style.display = "none";
 
     result.style.display = "block";
+
 
     if(window.marked){
 
@@ -568,6 +648,18 @@ ${q}
       result.textContent = reply;
 
     }
+
+
+    /*
+      Wait a tiny moment so the browser has inserted
+      the Markdown HTML before MathJax scans it.
+    */
+
+    await new Promise(resolve =>
+      setTimeout(resolve, 50)
+    );
+
+    await renderMath();
 
 
     result.scrollIntoView({
@@ -619,14 +711,16 @@ function clearTutor(){
 
 question.addEventListener("keydown",function(event){
 
-  if(event.key === "Enter" && (event.ctrlKey || event.metaKey)){
+  if(
+    event.key === "Enter" &&
+    (event.ctrlKey || event.metaKey)
+  ){
 
     teach();
 
   }
 
 });
-
 
 </script>
 
