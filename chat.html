@@ -7,6 +7,21 @@
   <title>RAAZ AI HUB</title>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+  <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      displayMath: [['$$', '$$'], ['\\[', '\\]']]
+    },
+    svg: {
+      fontCache: 'global'
+    }
+  };
+</script>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+</script>
 
   <style>
     * {
@@ -686,11 +701,19 @@
 
       messages.appendChild(message);
 
+if (
+  type === "assistant" &&
+  window.MathJax
+) {
+  MathJax.typesetPromise([bubble]).catch((error) => {
+    console.error("MathJax Error:", error);
+  });
+}
 
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth"
-      });
+window.scrollTo({
+  top: document.body.scrollHeight,
+  behavior: "smooth"
+});
 
     }
 
