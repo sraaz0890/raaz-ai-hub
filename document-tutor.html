@@ -341,7 +341,7 @@ button:disabled{
 }
 
 /* =========================
-   FOLLOW UP AREA
+   FOLLOW UP
 ========================= */
 
 .followup{
@@ -380,6 +380,112 @@ button:disabled{
   font-size:13px;
   text-align:center;
 }
+
+/* =========================
+   CHAT HISTORY
+========================= */
+
+.chat-history{
+  display:none;
+  margin-top:24px;
+}
+
+.chat-history-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.chat-history-title{
+  font-size:18px;
+  font-weight:700;
+}
+
+.clear-btn{
+  width:auto;
+  margin:0;
+  padding:8px 12px;
+  background:#17111f;
+  border:1px solid #342744;
+  color:#c9a9f7;
+  font-size:12px;
+}
+
+.clear-btn:hover{
+  background:#21162d;
+}
+
+.chat-empty{
+  padding:18px;
+  border:1px dashed #30243d;
+  border-radius:14px;
+  color:#888794;
+  text-align:center;
+  font-size:13px;
+}
+
+.chat-item{
+  margin-bottom:18px;
+}
+
+.chat-user{
+  background:linear-gradient(
+    135deg,
+    rgba(168,102,255,.18),
+    rgba(117,64,220,.08)
+  );
+  border:1px solid rgba(168,102,255,.2);
+  border-radius:16px 16px 4px 16px;
+  padding:14px 16px;
+  margin-left:10%;
+}
+
+.chat-user-label,
+.chat-ai-label{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.6px;
+  margin-bottom:7px;
+}
+
+.chat-user-label{
+  color:#c49aff;
+}
+
+.chat-ai-label{
+  color:#9c9aa7;
+}
+
+.chat-user-text{
+  color:#eeeaf4;
+  line-height:1.6;
+  font-size:14px;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+.chat-ai{
+  margin-top:10px;
+  background:#0d0b13;
+  border:1px solid #292033;
+  border-radius:4px 16px 16px 16px;
+  padding:18px;
+  margin-right:5%;
+}
+
+.chat-ai .result{
+  display:block;
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+}
+
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:650px){
 
@@ -420,6 +526,19 @@ button:disabled{
   .result table{
     font-size:13px;
   }
+
+  .chat-user{
+    margin-left:3%;
+  }
+
+  .chat-ai{
+    margin-right:2%;
+  }
+
+  .chat-history-header{
+    align-items:flex-start;
+  }
+
 }
 
 </style>
@@ -583,10 +702,32 @@ button:disabled{
         class="ask-status"
       ></div>
 
-      <div
-        id="answer"
-        class="result"
-      ></div>
+    </div>
+
+
+    <!-- =========================
+         CHAT HISTORY
+    ========================= -->
+
+    <div id="chatHistory" class="chat-history">
+
+      <div class="chat-history-header">
+
+        <div class="chat-history-title">
+          💬 Document Chat
+        </div>
+
+        <button
+          id="clearChatBtn"
+          class="clear-btn"
+          onclick="clearChat()"
+        >
+          🗑️ Clear Chat
+        </button>
+
+      </div>
+
+      <div id="chatMessages"></div>
 
     </div>
 
@@ -598,6 +739,13 @@ button:disabled{
 <script>
 
 let selectedFile = null;
+
+/*
+  Stores the current document conversation
+  in browser memory.
+*/
+
+let chatHistory = [];
 
 
 /* =========================
@@ -627,6 +775,9 @@ function fileSelected(){
   const followup =
     document.getElementById("followup");
 
+  const chatHistoryBox =
+    document.getElementById("chatHistory");
+
 
   result.style.display = "none";
 
@@ -634,7 +785,11 @@ function fileSelected(){
 
   followup.style.display = "none";
 
+  chatHistoryBox.style.display = "none";
+
   status.textContent = "";
+
+  clearChat();
 
 
   if(!file){
@@ -780,6 +935,9 @@ async function analyzeFile(){
   const followup =
     document.getElementById("followup");
 
+  const chatHistoryBox =
+    document.getElementById("chatHistory");
+
 
   button.disabled = true;
 
@@ -794,6 +952,8 @@ async function analyzeFile(){
   result.classList.remove("error");
 
   followup.style.display = "none";
+
+  chatHistoryBox.style.display = "none";
 
 
   try{
@@ -882,7 +1042,12 @@ async function analyzeFile(){
       ".";
 
 
-    /* Show follow-up section */
+    /*
+      Start a fresh chat for this document.
+    */
+
+    chatHistory = [];
+
 
     followup.style.display =
       "block";
@@ -928,13 +1093,12 @@ async function analyzeFile(){
 
 
 /* =========================
-   ASK FOLLOW-UP QUESTION
+   ASK QUESTION
 ========================= */
 
 async function askQuestion(){
 
   if(!selectedFile){
-
     return;
   }
 
@@ -950,9 +1114,6 @@ async function askQuestion(){
 
   const askStatus =
     document.getElementById("askStatus");
-
-  const answer =
-    document.getElementById("answer");
 
 
   if(!question){
@@ -974,22 +1135,12 @@ async function askQuestion(){
   askStatus.textContent =
     "RAAZ AI is checking your material...";
 
-  answer.style.display =
-    "none";
-
-  answer.classList.remove("error");
-
 
   try{
 
     const formData =
       new FormData();
 
-
-    /*
-      Send the SAME selected file again.
-      User does not have to manually upload it.
-    */
 
     formData.append(
       "file",
@@ -1003,17 +1154,52 @@ async function askQuestion(){
     );
 
 
+    /*
+      Include previous conversation context
+      so the AI can understand follow-up questions.
+    */
+
+    const previousConversation =
+      chatHistory
+        .map(item =>
+          "Student: " +
+          item.question +
+          "\nRAAZ AI: " +
+          item.answer
+        )
+        .join("\n\n");
+
+
+    const contextText =
+      previousConversation
+      ? `
+Previous conversation:
+
+${previousConversation}
+
+Now answer the new question.
+`
+      : "";
+
+
     formData.append(
       "instruction",
       `
 Answer the student's question using the uploaded study material.
 
-Student's question:
+${contextText}
+
+Student's new question:
 ${question}
 
 Give a clear, student-friendly explanation.
-If the answer is found in the uploaded material, base the answer on it.
-If it is not clearly available in the material, say so instead of inventing information.
+
+If the answer is found in the uploaded material,
+base the answer on it.
+
+If it is not clearly available in the material,
+say so instead of inventing information.
+
 Use headings, bullet points and examples when useful.
       `.trim()
     );
@@ -1061,14 +1247,17 @@ Use headings, bullet points and examples when useful.
       "RAAZ AI did not return an answer.";
 
 
-    renderMarkdown(
-      reply,
-      answer
-    );
+    /*
+      Save conversation.
+    */
+
+    chatHistory.push({
+      question:question,
+      answer:reply
+    });
 
 
-    answer.style.display =
-      "block";
+    renderChatHistory();
 
 
     askStatus.textContent =
@@ -1081,16 +1270,15 @@ Use headings, bullet points and examples when useful.
       ".";
 
 
-    /*
-      Clear question box after successful answer.
-    */
-
     questionBox.value = "";
 
 
     setTimeout(() => {
 
-      answer.scrollIntoView({
+      const chatHistoryBox =
+        document.getElementById("chatHistory");
+
+      chatHistoryBox.scrollIntoView({
         behavior:"smooth",
         block:"start"
       });
@@ -1100,20 +1288,15 @@ Use headings, bullet points and examples when useful.
 
   }catch(error){
 
-    answer.style.display =
-      "block";
+    askStatus.textContent = "";
 
-    answer.classList.add("error");
-
-    answer.textContent =
+    alert(
       "❌ " +
       (
         error.message ||
         "Something went wrong."
-      ) +
-      "\n\nPlease try again.";
-
-    askStatus.textContent = "";
+      )
+    );
 
   }finally{
 
@@ -1128,7 +1311,178 @@ Use headings, bullet points and examples when useful.
 
 
 /* =========================
-   ENTER TO ASK
+   RENDER CHAT HISTORY
+========================= */
+
+function renderChatHistory(){
+
+  const historyBox =
+    document.getElementById("chatHistory");
+
+  const messages =
+    document.getElementById("chatMessages");
+
+
+  if(chatHistory.length === 0){
+
+    historyBox.style.display = "none";
+
+    messages.innerHTML = "";
+
+    return;
+  }
+
+
+  historyBox.style.display =
+    "block";
+
+
+  messages.innerHTML = "";
+
+
+  chatHistory.forEach(
+    (item,index) => {
+
+      const chatItem =
+        document.createElement("div");
+
+      chatItem.className =
+        "chat-item";
+
+
+      /* USER MESSAGE */
+
+      const user =
+        document.createElement("div");
+
+      user.className =
+        "chat-user";
+
+
+      const userLabel =
+        document.createElement("div");
+
+      userLabel.className =
+        "chat-user-label";
+
+      userLabel.textContent =
+        "👤 YOU";
+
+
+      const userText =
+        document.createElement("div");
+
+      userText.className =
+        "chat-user-text";
+
+      userText.textContent =
+        item.question;
+
+
+      user.appendChild(
+        userLabel
+      );
+
+      user.appendChild(
+        userText
+      );
+
+
+      /* AI MESSAGE */
+
+      const ai =
+        document.createElement("div");
+
+      ai.className =
+        "chat-ai";
+
+
+      const aiLabel =
+        document.createElement("div");
+
+      aiLabel.className =
+        "chat-ai-label";
+
+      aiLabel.textContent =
+        "🤖 RAAZ AI";
+
+
+      const aiResult =
+        document.createElement("div");
+
+      aiResult.className =
+        "result";
+
+
+      renderMarkdown(
+        item.answer,
+        aiResult
+      );
+
+
+      ai.appendChild(
+        aiLabel
+      );
+
+      ai.appendChild(
+        aiResult
+      );
+
+
+      chatItem.appendChild(
+        user
+      );
+
+      chatItem.appendChild(
+        ai
+      );
+
+
+      messages.appendChild(
+        chatItem
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   CLEAR CHAT
+========================= */
+
+function clearChat(){
+
+  chatHistory = [];
+
+
+  const historyBox =
+    document.getElementById("chatHistory");
+
+  const messages =
+    document.getElementById("chatMessages");
+
+
+  if(messages){
+
+    messages.innerHTML = "";
+
+  }
+
+
+  if(historyBox){
+
+    historyBox.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =========================
+   CTRL + ENTER
 ========================= */
 
 document
@@ -1136,11 +1490,6 @@ document
   .addEventListener(
     "keydown",
     function(event){
-
-      /*
-        Ctrl + Enter / Enter on mobile
-        can trigger the question.
-      */
 
       if(
         event.key === "Enter" &&
