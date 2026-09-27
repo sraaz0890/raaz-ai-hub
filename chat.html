@@ -6,7 +6,6 @@
 
   <title>RAAZ AI HUB</title>
 
-  <!-- Markdown -->
   <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
 
   <style>
@@ -52,15 +51,15 @@
     .chat-container {
       max-width: 900px;
       margin: auto;
-      padding: 35px 18px 130px;
+      padding: 35px 18px 150px;
     }
 
     /* WELCOME */
 
     .welcome {
       text-align: center;
-      margin-top: 80px;
-      margin-bottom: 40px;
+      margin-top: 55px;
+      margin-bottom: 35px;
     }
 
     .welcome-icon {
@@ -87,11 +86,64 @@
     }
 
     .welcome p {
-      margin: 0 auto;
+      margin: 0 auto 22px;
       max-width: 600px;
       color: #aaa0b8;
       line-height: 1.6;
       font-size: 15px;
+    }
+
+    /* SUBJECT SELECTOR */
+
+    .subject-box {
+      max-width: 430px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .subject-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #cfc5d8;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .subject-select {
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      border-radius: 13px;
+      border: 1px solid #30243d;
+      outline: none;
+      background: #15101f;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .subject-select:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15);
+    }
+
+    .subject-select option {
+      background: #15101f;
+      color: white;
+    }
+
+    /* SELECTED SUBJECT */
+
+    .selected-subject {
+      margin-top: 12px;
+      text-align: center;
+      color: #9b8faa;
+      font-size: 13px;
+    }
+
+    .selected-subject span {
+      color: #c084fc;
+      font-weight: bold;
     }
 
     /* MESSAGES */
@@ -331,11 +383,11 @@
       }
 
       .chat-container {
-        padding: 25px 12px 125px;
+        padding: 25px 12px 150px;
       }
 
       .welcome {
-        margin-top: 55px;
+        margin-top: 45px;
       }
 
       .welcome h1 {
@@ -377,6 +429,8 @@
 
   <main class="chat-container">
 
+    <!-- WELCOME -->
+
     <div class="welcome" id="welcome">
 
       <div class="welcome-icon">
@@ -390,8 +444,107 @@
         coding, science, mathematics, English and more.
       </p>
 
+
+      <!-- SUBJECT SELECTOR -->
+
+      <div class="subject-box">
+
+        <label
+          class="subject-label"
+          for="subjectSelect"
+        >
+          📚 Choose your course / subject
+        </label>
+
+        <select
+          id="subjectSelect"
+          class="subject-select"
+        >
+
+          <option value="">
+            🌐 All Courses / General
+          </option>
+
+          <option value="Mathematics">
+            🧮 Mathematics
+          </option>
+
+          <option value="Physics">
+            ⚡ Physics
+          </option>
+
+          <option value="Chemistry">
+            🧪 Chemistry
+          </option>
+
+          <option value="Biology">
+            🧬 Biology
+          </option>
+
+          <option value="English">
+            🇬🇧 English
+          </option>
+
+          <option value="Hindi">
+            🇮🇳 Hindi
+          </option>
+
+          <option value="Odia">
+            🪷 Odia
+          </option>
+
+          <option value="History">
+            📜 History
+          </option>
+
+          <option value="Geography">
+            🌍 Geography
+          </option>
+
+          <option value="Economics">
+            💰 Economics
+          </option>
+
+          <option value="Computer Science">
+            💻 Computer Science
+          </option>
+
+          <option value="Programming">
+            👨‍💻 Programming
+          </option>
+
+          <option value="IT / Vocational">
+            🔧 IT / Vocational
+          </option>
+
+          <option value="ITI">
+            ⚙️ ITI
+          </option>
+
+          <option value="General Knowledge">
+            🧠 General Knowledge
+          </option>
+
+          <option value="Other">
+            📚 Other
+          </option>
+
+        </select>
+
+
+        <div class="selected-subject">
+          Current subject:
+          <span id="selectedSubjectText">
+            All Courses / General
+          </span>
+        </div>
+
+      </div>
+
     </div>
 
+
+    <!-- MESSAGES -->
 
     <div id="messages"></div>
 
@@ -421,7 +574,10 @@
         rows="1"
       ></textarea>
 
-      <button id="sendButton">
+      <button
+        id="sendButton"
+        type="button"
+      >
         ➤
       </button>
 
@@ -434,25 +590,80 @@
 
     const API_URL = "/api/chat";
 
-    const messages = document.getElementById("messages");
-    const messageInput = document.getElementById("messageInput");
-    const sendButton = document.getElementById("sendButton");
-    const typing = document.getElementById("typing");
-    const welcome = document.getElementById("welcome");
+
+    const messages =
+      document.getElementById("messages");
+
+    const messageInput =
+      document.getElementById("messageInput");
+
+    const sendButton =
+      document.getElementById("sendButton");
+
+    const typing =
+      document.getElementById("typing");
+
+    const welcome =
+      document.getElementById("welcome");
+
+    const subjectSelect =
+      document.getElementById("subjectSelect");
+
+    const selectedSubjectText =
+      document.getElementById("selectedSubjectText");
 
 
-    /* ADD MESSAGE */
+    /* ===============================
+       SUBJECT SELECTION
+    =============================== */
+
+    subjectSelect.addEventListener(
+      "change",
+      function () {
+
+        const subject =
+          subjectSelect.value;
+
+        if (subject) {
+
+          selectedSubjectText.textContent =
+            subject;
+
+          messageInput.placeholder =
+            `Ask anything about ${subject}...`;
+
+        } else {
+
+          selectedSubjectText.textContent =
+            "All Courses / General";
+
+          messageInput.placeholder =
+            "Ask anything about your course...";
+
+        }
+
+      }
+    );
+
+
+    /* ===============================
+       ADD MESSAGE
+    =============================== */
 
     function addMessage(text, type) {
 
-      const message = document.createElement("div");
+      const message =
+        document.createElement("div");
 
-      message.className = "message " + type;
+      message.className =
+        "message " + type;
 
 
-      const bubble = document.createElement("div");
+      const bubble =
+        document.createElement("div");
 
-      bubble.className = "bubble";
+      bubble.className =
+        "bubble";
 
 
       if (
@@ -460,11 +671,13 @@
         typeof marked !== "undefined"
       ) {
 
-        bubble.innerHTML = marked.parse(text);
+        bubble.innerHTML =
+          marked.parse(text);
 
       } else {
 
-        bubble.textContent = text;
+        bubble.textContent =
+          text;
 
       }
 
@@ -482,67 +695,95 @@
     }
 
 
-    /* SEND MESSAGE */
+    /* ===============================
+       SEND MESSAGE
+    =============================== */
 
     async function sendMessage() {
 
-      const text = messageInput.value.trim();
+      const text =
+        messageInput.value.trim();
 
 
       if (!text) return;
 
 
-      // Hide welcome screen
+      /* GET SUBJECT */
 
-      welcome.style.display = "none";
-
-
-      // User message
-
-      addMessage(text, "user");
+      const selectedSubject =
+        subjectSelect.value ||
+        "All Courses / General";
 
 
-      // Clear input
+      /* HIDE WELCOME */
+
+      welcome.style.display =
+        "none";
+
+
+      /* SHOW USER MESSAGE */
+
+      addMessage(
+        text,
+        "user"
+      );
+
+
+      /* CLEAR INPUT */
 
       messageInput.value = "";
 
-      messageInput.style.height = "42px";
+      messageInput.style.height =
+        "42px";
 
 
-      // Disable button
+      /* DISABLE SEND */
 
-      sendButton.disabled = true;
+      sendButton.disabled =
+        true;
 
 
-      // Show typing
+      /* SHOW TYPING */
 
-      typing.style.display = "flex";
+      typing.style.display =
+        "flex";
 
 
       try {
 
-        const response = await fetch(API_URL, {
+        const response =
+          await fetch(
+            API_URL,
+            {
+              method: "POST",
 
-          method: "POST",
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
 
-          headers: {
-            "Content-Type": "application/json"
-          },
+              body: JSON.stringify({
 
-          body: JSON.stringify({
-            message: text
-          })
+                message: text,
 
-        });
+                subject:
+                  selectedSubject
+
+              })
+
+            }
+          );
 
 
-        const data = await response.json();
+        const data =
+          await response.json();
 
 
         if (!response.ok) {
 
           throw new Error(
-            data.error || "AI response failed."
+            data.error ||
+            "AI response failed."
           );
 
         }
@@ -557,7 +798,10 @@
 
       } catch (error) {
 
-        console.error("Chat Error:", error);
+        console.error(
+          "Chat Error:",
+          error
+        );
 
 
         addMessage(
@@ -567,9 +811,11 @@
 
       } finally {
 
-        typing.style.display = "none";
+        typing.style.display =
+          "none";
 
-        sendButton.disabled = false;
+        sendButton.disabled =
+          false;
 
         messageInput.focus();
 
@@ -578,7 +824,9 @@
     }
 
 
-    /* SEND BUTTON */
+    /* ===============================
+       SEND BUTTON
+    =============================== */
 
     sendButton.addEventListener(
       "click",
@@ -586,11 +834,13 @@
     );
 
 
-    /* ENTER KEY */
+    /* ===============================
+       ENTER KEY
+    =============================== */
 
     messageInput.addEventListener(
       "keydown",
-      function(event) {
+      function (event) {
 
         if (
           event.key === "Enter" &&
@@ -607,13 +857,16 @@
     );
 
 
-    /* AUTO RESIZE */
+    /* ===============================
+       AUTO RESIZE
+    =============================== */
 
     messageInput.addEventListener(
       "input",
-      function() {
+      function () {
 
-        this.style.height = "42px";
+        this.style.height =
+          "42px";
 
         this.style.height =
           Math.min(
