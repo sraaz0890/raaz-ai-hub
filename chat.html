@@ -6,6 +6,9 @@
 
   <title>RAAZ AI — Chat</title>
 
+  <!-- Markdown Renderer -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
+
   <style>
     * {
       margin: 0;
@@ -143,7 +146,6 @@
       border-radius: 16px;
       font-size: 14px;
       line-height: 1.6;
-      white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
 
@@ -158,6 +160,90 @@
       background: linear-gradient(135deg, #8e51ed, #6d38cb);
       color: white;
       border-top-right-radius: 5px;
+      white-space: pre-wrap;
+    }
+
+    /* Markdown */
+
+    .bubble p {
+      margin: 0 0 12px;
+    }
+
+    .bubble p:last-child {
+      margin-bottom: 0;
+    }
+
+    .bubble h1,
+    .bubble h2,
+    .bubble h3 {
+      margin: 12px 0 8px;
+      color: white;
+    }
+
+    .bubble h1 {
+      font-size: 22px;
+    }
+
+    .bubble h2 {
+      font-size: 19px;
+    }
+
+    .bubble h3 {
+      font-size: 16px;
+    }
+
+    .bubble ul,
+    .bubble ol {
+      padding-left: 24px;
+      margin: 8px 0 12px;
+    }
+
+    .bubble li {
+      margin: 4px 0;
+    }
+
+    .bubble strong {
+      font-weight: 700;
+      color: white;
+    }
+
+    .bubble em {
+      font-style: italic;
+    }
+
+    .bubble code {
+      background: rgba(255,255,255,.08);
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 13px;
+    }
+
+    .bubble pre {
+      background: #08080d;
+      padding: 13px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin: 10px 0;
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .bubble pre code {
+      background: transparent;
+      padding: 0;
+      font-size: 13px;
+      color: #eee;
+    }
+
+    .bubble blockquote {
+      border-left: 3px solid var(--purple);
+      padding-left: 12px;
+      margin: 10px 0;
+      color: #bbb;
+    }
+
+    .bubble a {
+      color: #b98aff;
     }
 
     .typing {
@@ -287,35 +373,6 @@
         margin-left: 12px;
       }
     }
-    .bubble p {
-  margin: 0 0 12px;
-}
-
-.bubble p:last-child {
-  margin-bottom: 0;
-}
-
-.bubble h1,
-.bubble h2,
-.bubble h3 {
-  margin: 10px 0;
-}
-
-.bubble ul,
-.bubble ol {
-  padding-left: 24px;
-}
-
-.bubble code {
-  padding: 2px 6px;
-  border-radius: 5px;
-}
-
-.bubble pre {
-  padding: 12px;
-  border-radius: 10px;
-  overflow-x: auto;
-}
   </style>
 </head>
 
@@ -383,7 +440,14 @@
 
       const bubble = document.createElement("div");
       bubble.className = "bubble";
-      bubble.innerHTML = marked.parse(text);
+
+      // User message = plain text
+      // AI message = Markdown
+      if (type === "assistant" && typeof marked !== "undefined") {
+        bubble.innerHTML = marked.parse(text);
+      } else {
+        bubble.textContent = text;
+      }
 
       message.appendChild(bubble);
       messages.appendChild(message);
@@ -431,7 +495,7 @@
 
       } catch (error) {
 
-        console.error(error);
+        console.error("Chat Error:", error);
 
         addMessage(
           "Sorry, something went wrong. Please try again.",
@@ -447,8 +511,11 @@
       }
     }
 
+    // Send button
     sendButton.addEventListener("click", sendMessage);
 
+    // Enter = Send
+    // Shift + Enter = New line
     messageInput.addEventListener("keydown", function(event) {
 
       if (event.key === "Enter" && !event.shiftKey) {
@@ -458,6 +525,7 @@
 
     });
 
+    // Auto resize textarea
     messageInput.addEventListener("input", function() {
 
       this.style.height = "42px";
