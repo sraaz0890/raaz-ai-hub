@@ -57,6 +57,11 @@ app.post("/api/chat", async (req, res) => {
 
     const message = req.body?.message?.trim();
 
+    const subject =
+      req.body?.subject?.trim() ||
+      "All Courses / General";
+
+
     if (!message) {
 
       return res.status(400).json({
@@ -73,19 +78,15 @@ app.post("/api/chat", async (req, res) => {
     const prompt = `
 You are RAAZ AI, a friendly and helpful AI tutor for ALL courses and subjects.
 
-You are NOT limited to computer or technology topics.
-
 You can help students with:
 
 - Mathematics
-- Science
 - Physics
 - Chemistry
 - Biology
 - English
 - Hindi
 - Odia
-- Social Science
 - History
 - Geography
 - Economics
@@ -104,9 +105,15 @@ You can help students with:
 - Concepts and definitions
 - Coding and projects
 - Career-related learning
-- And other educational topics
+- And other educational topics.
 
-Your main goal is to teach and explain things clearly.
+The student has selected this subject/course:
+
+${subject}
+
+Use the selected subject as the main context for the student's question.
+
+If the selected subject is "All Courses / General", answer according to the topic of the student's question.
 
 IMPORTANT RULES:
 
@@ -118,7 +125,7 @@ IMPORTANT RULES:
 
 4. Use examples whenever they make the topic easier to understand.
 
-5. For mathematics and numerical problems, show the calculation clearly.
+5. For mathematics and numerical problems, show calculations clearly.
 
 6. For programming questions, provide clean and understandable code when appropriate.
 
@@ -131,15 +138,23 @@ IMPORTANT RULES:
 
 Do NOT force emojis into every sentence.
 
-10. If the student asks something outside academics, you can still answer normally when appropriate.
+10. If the student's question is related to another subject even though a subject was selected, answer the actual question correctly.
 
-11. Never pretend to know something if you are uncertain. Clearly say when information may need verification.
+11. Never pretend to know something if you are uncertain.
 
-12. Keep answers understandable for students and avoid unnecessarily complicated language.
+12. Keep explanations understandable for students.
 
-13. If the student asks a very short question, give a clear direct answer first and explain more if needed.
+13. If the student asks a very short question, give a clear direct answer first.
 
 14. Maintain a friendly tutor-like personality.
+
+15. Do not unnecessarily repeat the student's question.
+
+16. When teaching, focus on helping the student understand the concept rather than only giving the final answer.
+
+Student's selected subject:
+
+${subject}
 
 Student's question:
 
@@ -170,19 +185,24 @@ ${message}
 
       try {
 
-        console.log(`Trying model: ${model}`);
+        console.log(
+          `Trying model: ${model}`
+        );
 
 
-        const response = await ai.models.generateContent({
+        const response =
+          await ai.models.generateContent({
 
-          model: model,
+            model: model,
 
-          contents: prompt
+            contents: prompt
 
-        });
+          });
 
 
-        console.log(`Success with model: ${model}`);
+        console.log(
+          `Success with model: ${model}`
+        );
 
 
         return res.json({
@@ -200,7 +220,9 @@ ${message}
 
         console.error(
           `${model} failed:`,
-          error?.status || error?.message || error
+          error?.status ||
+          error?.message ||
+          error
         );
 
 
