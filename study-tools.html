@@ -3,48 +3,1127 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>Study Tools — RAAZ AI HUB</title>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 <style>
-:root{--bg:#07070b;--card:#12121b;--border:rgba(255,255,255,.09);--light:#c49aff;--text:#fff}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 50% -10%,rgba(132,65,255,.2),transparent 35%),var(--bg);color:var(--text);min-height:100vh}
-header{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;background:rgba(7,7,11,.8);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;z-index:10}
-.logo{font-size:20px;font-weight:800;letter-spacing:1.5px}.logo span{color:var(--light)}
-.back{color:#c49aff;text-decoration:none;font-size:13px}
-.wrap{max-width:1000px;margin:auto;padding:55px 20px 80px}
-.badge{display:inline-block;padding:8px 13px;border:1px solid rgba(155,92,255,.3);border-radius:30px;color:#c8a7ff;background:rgba(155,92,255,.08);font-size:11px;font-weight:700;letter-spacing:.8px}
-h1{font-size:clamp(34px,7vw,58px);margin:18px 0 12px;letter-spacing:-2px}
-h1 span{background:linear-gradient(90deg,#fff,#bd91ff,#9250ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9999a5;line-height:1.7;max-width:700px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px}
-.card{background:rgba(18,18,27,.75);border:1px solid var(--border);border-radius:20px;padding:24px}
-.card h2{font-size:20px;margin-bottom:8px}.card p{color:#92929f;font-size:13px;line-height:1.6}
-select,input,textarea,button{width:100%;border:1px solid #30243d;background:#15101f;color:#fff;border-radius:12px;padding:13px;margin-top:10px;font:inherit;outline:none}
-button{background:linear-gradient(135deg,#a866ff,#7540dc);border:0;font-weight:700;cursor:pointer}
-.result{margin-top:15px;padding:15px;border-radius:13px;background:#0d0b13;border:1px solid #292033;line-height:1.6;white-space:pre-wrap}
-@media(max-width:650px){header{height:62px;padding:0 16px}.logo{font-size:17px}.grid{grid-template-columns:1fr}.wrap{padding:40px 15px 70px}}
+:root{
+  --bg:#07070b;
+  --card:#12121b;
+  --card2:#0d0b13;
+  --border:rgba(255,255,255,.09);
+  --light:#c49aff;
+  --text:#fff;
+  --muted:#9999a5;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 50% -10%,rgba(132,65,255,.2),transparent 35%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+header{
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6%;
+  background:rgba(7,7,11,.8);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.logo{
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:1.5px;
+}
+
+.logo span{
+  color:var(--light);
+}
+
+.back{
+  color:#c49aff;
+  text-decoration:none;
+  font-size:13px;
+}
+
+.wrap{
+  max-width:1050px;
+  margin:auto;
+  padding:50px 20px 80px;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 13px;
+  border:1px solid rgba(155,92,255,.3);
+  border-radius:30px;
+  color:#c8a7ff;
+  background:rgba(155,92,255,.08);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.8px;
+}
+
+h1{
+  font-size:clamp(34px,7vw,58px);
+  margin:18px 0 12px;
+  letter-spacing:-2px;
+}
+
+h1 span{
+  background:linear-gradient(90deg,#fff,#bd91ff,#9250ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.lead{
+  color:var(--muted);
+  line-height:1.7;
+  max-width:720px;
+}
+
+.section-title{
+  margin-top:40px;
+  margin-bottom:15px;
+  font-size:22px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+.card{
+  background:rgba(18,18,27,.78);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:22px;
+}
+
+.card h2{
+  font-size:19px;
+  margin-bottom:7px;
+}
+
+.card p{
+  color:#92929f;
+  font-size:13px;
+  line-height:1.6;
+  margin-bottom:8px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-top:13px;
+}
+
+input,
+select,
+textarea,
+button{
+  width:100%;
+  border:1px solid #30243d;
+  background:#15101f;
+  color:#fff;
+  border-radius:12px;
+  padding:12px;
+  margin-top:9px;
+  font:inherit;
+  outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:#8b4dff;
+}
+
+textarea{
+  resize:vertical;
+  min-height:105px;
+}
+
+button{
+  background:linear-gradient(135deg,#a866ff,#7540dc);
+  border:0;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+}
+
+button:hover{
+  opacity:.95;
+  transform:translateY(-1px);
+}
+
+button:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.result{
+  display:none;
+  margin-top:14px;
+  padding:15px;
+  border-radius:13px;
+  background:#0d0b13;
+  border:1px solid #292033;
+  line-height:1.65;
+  overflow-wrap:anywhere;
+}
+
+.result h1,
+.result h2,
+.result h3{
+  margin:12px 0 7px;
+}
+
+.result h2{
+  font-size:19px;
+}
+
+.result h3{
+  font-size:16px;
+}
+
+.result p{
+  margin:7px 0;
+}
+
+.result ul,
+.result ol{
+  margin:8px 0 8px 20px;
+}
+
+.result li{
+  margin:4px 0;
+}
+
+.result strong{
+  color:#d0adff;
+}
+
+.calculator-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+.calc-result{
+  margin-top:12px;
+  padding:13px;
+  border-radius:12px;
+  background:#0d0b13;
+  border:1px solid #292033;
+  color:#d8c5ef;
+  display:none;
+  line-height:1.6;
+}
+
+.calc-value{
+  font-size:22px;
+  font-weight:800;
+  color:#fff;
+}
+
+.small-note{
+  color:#777582;
+  font-size:11px;
+  margin-top:7px;
+}
+
+.clear-btn{
+  background:#191421;
+  border:1px solid #30243d;
+}
+
+@media(max-width:700px){
+
+  header{
+    height:62px;
+    padding:0 16px;
+  }
+
+  .logo{
+    font-size:17px;
+  }
+
+  .wrap{
+    padding:40px 15px 70px;
+  }
+
+  .grid,
+  .calculator-grid{
+    grid-template-columns:1fr;
+  }
+
+  .card{
+    padding:18px;
+  }
+}
 </style>
 </head>
+
 <body>
-<header><div class="logo">RAAZ <span>AI HUB</span></div><a class="back" href="/">← Home</a></header>
+
+<header>
+  <div class="logo">RAAZ <span>AI HUB</span></div>
+  <a class="back" href="/">← Home</a>
+</header>
+
 <main class="wrap">
+
 <span class="badge">📚 STUDY TOOLS</span>
+
 <h1>Study <span>Smarter</span></h1>
-<p class="lead">Use AI to create summaries, quizzes and revision flashcards from any topic.</p>
+
+<p class="lead">
+  Use RAAZ AI for summaries, quizzes, flashcards and explanations,
+  plus useful calculators for everyday study.
+</p>
+
+
+<!-- ================= AI TOOLS ================= -->
+
+<h2 class="section-title">🤖 AI Learning Tools</h2>
+
 <div class="grid">
-<div class="card"><h2>📝 AI Summary</h2><p>Turn a topic into short, easy revision notes.</p><textarea id="sum" rows="4" placeholder="Paste a topic or notes"></textarea><button onclick="ai('sum','summary')">Create Summary</button><div id="sumout" class="result" style="display:none"></div></div>
-<div class="card"><h2>❓ Quiz Generator</h2><p>Generate practice questions from a topic.</p><textarea id="quiz" rows="4" placeholder="Example: Indian Constitution"></textarea><button onclick="ai('quiz','quiz')">Generate Quiz</button><div id="quizout" class="result" style="display:none"></div></div>
-<div class="card"><h2>🃏 Flashcards</h2><p>Create quick question-answer revision cards.</p><textarea id="flash" rows="4" placeholder="Example: Cell organelles"></textarea><button onclick="ai('flash','flashcards')">Create Flashcards</button><div id="flashout" class="result" style="display:none"></div></div>
-<div class="card"><h2>💡 Quick Explanation</h2><p>Get a simple explanation of a difficult concept.</p><textarea id="explain" rows="4" placeholder="Enter a concept"></textarea><button onclick="ai('explain','explanation')">Explain</button><div id="explainout" class="result" style="display:none"></div></div>
-</div></main>
-<script>async function ai(id,type){
-const q=document.getElementById(id).value.trim(),out=document.getElementById(id+'out');if(!q)return;
-out.style.display='block';out.textContent='RAAZ AI is working...';
-const prompts={summary:'Create concise student-friendly revision notes with headings and bullet points.',quiz:'Create 8 practice questions with answers. Do not make them excessively difficult.',flashcards:'Create 10 concise flashcards with a question and answer for each.',explanation:'Explain the concept in simple language with an example.'};
-try{
-const x=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subject:'All Courses / General',message:prompts[type]+' Topic: '+q})});
-const d=await x.json();if(!x.ok)throw Error(d.error);out.textContent=d.reply||'No response.';
-}catch(e){out.textContent='Something went wrong. Please try again.'}
-}</script>
+
+  <!-- SUMMARY -->
+
+  <div class="card">
+
+    <h2>📝 AI Summary</h2>
+
+    <p>
+      Turn a topic or notes into short, easy revision notes.
+    </p>
+
+    <textarea
+      id="sum"
+      placeholder="Example: Explain the Indian Constitution"
+    ></textarea>
+
+    <button id="sumbtn" onclick="ai('sum','summary')">
+      Create Summary
+    </button>
+
+    <div id="sumout" class="result"></div>
+
+  </div>
+
+
+  <!-- QUIZ -->
+
+  <div class="card">
+
+    <h2>❓ Quiz Generator</h2>
+
+    <p>
+      Generate practice questions from any topic.
+    </p>
+
+    <textarea
+      id="quiz"
+      placeholder="Example: Indian Constitution"
+    ></textarea>
+
+    <button id="quizbtn" onclick="ai('quiz','quiz')">
+      Generate Quiz
+    </button>
+
+    <div id="quizout" class="result"></div>
+
+  </div>
+
+
+  <!-- FLASHCARDS -->
+
+  <div class="card">
+
+    <h2>🃏 Flashcards</h2>
+
+    <p>
+      Create quick question-answer revision cards.
+    </p>
+
+    <textarea
+      id="flash"
+      placeholder="Example: Cell organelles"
+    ></textarea>
+
+    <button id="flashbtn" onclick="ai('flash','flashcards')">
+      Create Flashcards
+    </button>
+
+    <div id="flashout" class="result"></div>
+
+  </div>
+
+
+  <!-- EXPLANATION -->
+
+  <div class="card">
+
+    <h2>💡 Quick Explanation</h2>
+
+    <p>
+      Understand a difficult concept in simple language.
+    </p>
+
+    <textarea
+      id="explain"
+      placeholder="Example: What is photosynthesis?"
+    ></textarea>
+
+    <button id="explainbtn" onclick="ai('explain','explanation')">
+      Explain
+    </button>
+
+    <div id="explainout" class="result"></div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= CALCULATORS ================= -->
+
+<h2 class="section-title">🧮 Study Calculators</h2>
+
+<div class="calculator-grid">
+
+
+  <!-- BASIC CALCULATOR -->
+
+  <div class="card">
+
+    <h2>🧮 Basic Calculator</h2>
+
+    <p>
+      Calculate basic mathematical expressions.
+    </p>
+
+    <input
+      id="expression"
+      placeholder="Example: 25 × 4 + 10"
+    >
+
+    <button onclick="basicCalc()">
+      Calculate
+    </button>
+
+    <div id="calcResult" class="calc-result"></div>
+
+  </div>
+
+
+  <!-- PERCENTAGE -->
+
+  <div class="card">
+
+    <h2>📊 Percentage Calculator</h2>
+
+    <p>
+      Find what percentage one number is of another.
+    </p>
+
+    <input
+      id="percentValue"
+      type="number"
+      placeholder="Value"
+    >
+
+    <input
+      id="percentTotal"
+      type="number"
+      placeholder="Total"
+    >
+
+    <button onclick="percentageCalc()">
+      Calculate Percentage
+    </button>
+
+    <div id="percentResult" class="calc-result"></div>
+
+  </div>
+
+
+  <!-- AREA -->
+
+  <div class="card">
+
+    <h2>📐 Area Calculator</h2>
+
+    <p>
+      Calculate area of common shapes.
+    </p>
+
+    <select id="shape">
+
+      <option value="rectangle">
+        Rectangle
+      </option>
+
+      <option value="square">
+        Square
+      </option>
+
+      <option value="triangle">
+        Triangle
+      </option>
+
+      <option value="circle">
+        Circle
+      </option>
+
+    </select>
+
+    <input
+      id="sideA"
+      type="number"
+      placeholder="Length / Base / Radius"
+    >
+
+    <input
+      id="sideB"
+      type="number"
+      placeholder="Width / Height (if needed)"
+    >
+
+    <button onclick="areaCalc()">
+      Calculate Area
+    </button>
+
+    <div id="areaResult" class="calc-result"></div>
+
+    <div class="small-note">
+      For square and circle, only the first value is needed.
+    </div>
+
+  </div>
+
+
+  <!-- OHM'S LAW -->
+
+  <div class="card">
+
+    <h2>⚡ Ohm's Law Calculator</h2>
+
+    <p>
+      Calculate Voltage, Current or Resistance.
+    </p>
+
+    <select id="ohmType">
+
+      <option value="voltage">
+        Find Voltage (V)
+      </option>
+
+      <option value="current">
+        Find Current (I)
+      </option>
+
+      <option value="resistance">
+        Find Resistance (R)
+      </option>
+
+    </select>
+
+    <input
+      id="ohmA"
+      type="number"
+      placeholder="First value"
+    >
+
+    <input
+      id="ohmB"
+      type="number"
+      placeholder="Second value"
+    >
+
+    <button onclick="ohmCalc()">
+      Calculate
+    </button>
+
+    <div id="ohmResult" class="calc-result"></div>
+
+    <div class="small-note">
+      V = I × R
+    </div>
+
+  </div>
+
+
+  <!-- AVERAGE -->
+
+  <div class="card">
+
+    <h2>📈 Average Calculator</h2>
+
+    <p>
+      Find the average of multiple numbers.
+    </p>
+
+    <input
+      id="averageInput"
+      placeholder="Example: 70, 80, 90, 85"
+    >
+
+    <button onclick="averageCalc()">
+      Calculate Average
+    </button>
+
+    <div id="averageResult" class="calc-result"></div>
+
+  </div>
+
+</div>
+
+</main>
+
+
+<script>
+
+/* =========================================
+   AI TOOLS
+========================================= */
+
+async function ai(id,type){
+
+  const input = document.getElementById(id);
+  const out = document.getElementById(id + "out");
+  const btn = document.getElementById(id + "btn");
+
+  const q = input.value.trim();
+
+  if(!q){
+
+    out.style.display = "block";
+
+    out.innerHTML =
+      "🧠 Please enter a topic first.";
+
+    return;
+  }
+
+
+  btn.disabled = true;
+
+  btn.textContent = "⏳ RAAZ AI is working...";
+
+  out.style.display = "block";
+
+  out.textContent =
+    "🤖 RAAZ AI is preparing your result...";
+
+
+  const prompts = {
+
+    summary:
+      `Create concise student-friendly revision notes.
+Use clear headings, bullet points and important definitions.
+Keep it useful for exam revision.
+Topic: ${q}`,
+
+    quiz:
+      `Create 8 practice questions about the topic.
+Mix easy, medium and slightly challenging questions.
+Give the correct answer after each question.
+Topic: ${q}`,
+
+    flashcards:
+      `Create 10 concise study flashcards.
+Format each as:
+Card 1
+Question:
+Answer:
+Keep answers short and useful for revision.
+Topic: ${q}`,
+
+    explanation:
+      `Explain this concept in very simple student-friendly language.
+Use a practical example and important points.
+Topic: ${q}`
+
+  };
+
+
+  try{
+
+    const response = await fetch("/api/chat",{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+
+        subject:"All Courses / General",
+
+        message:prompts[type]
+
+      })
+
+    });
+
+
+    const data = await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error || "AI response failed."
+      );
+
+    }
+
+
+    const reply =
+      data.reply || "No response received.";
+
+
+    if(window.marked){
+
+      out.innerHTML = marked.parse(reply);
+
+    }else{
+
+      out.textContent = reply;
+
+    }
+
+
+  }catch(error){
+
+    console.error(error);
+
+    out.textContent =
+      "❌ Something went wrong. Please try again.";
+
+  }finally{
+
+    btn.disabled = false;
+
+    if(type === "summary")
+      btn.textContent = "Create Summary";
+
+    if(type === "quiz")
+      btn.textContent = "Generate Quiz";
+
+    if(type === "flashcards")
+      btn.textContent = "Create Flashcards";
+
+    if(type === "explanation")
+      btn.textContent = "Explain";
+
+  }
+
+}
+
+
+/* =========================================
+   BASIC CALCULATOR
+========================================= */
+
+function basicCalc(){
+
+  const input =
+    document.getElementById("expression").value.trim();
+
+  const result =
+    document.getElementById("calcResult");
+
+
+  if(!input){
+
+    result.style.display = "block";
+
+    result.innerHTML =
+      "🧮 Enter a calculation.";
+
+    return;
+  }
+
+
+  try{
+
+    /*
+      Convert common mathematical symbols
+      into JavaScript operators.
+    */
+
+    let expression = input
+      .replace(/×/g,"*")
+      .replace(/÷/g,"/")
+      .replace(/−/g,"-");
+
+
+    /*
+      Allow only numbers, operators,
+      decimal points and parentheses.
+    */
+
+    if(!/^[0-9+\-*/().%\s]+$/.test(expression)){
+
+      throw new Error("Invalid characters");
+
+    }
+
+
+    const answer =
+      Function('"use strict";return (' +
+      expression +
+      ')')();
+
+
+    if(!Number.isFinite(answer)){
+
+      throw new Error("Invalid result");
+
+    }
+
+
+    result.style.display = "block";
+
+    result.innerHTML = `
+      Result:
+      <div class="calc-value">${answer}</div>
+    `;
+
+
+  }catch(error){
+
+    result.style.display = "block";
+
+    result.innerHTML =
+      "❌ Invalid calculation.";
+
+  }
+
+}
+
+
+/* =========================================
+   PERCENTAGE
+========================================= */
+
+function percentageCalc(){
+
+  const value =
+    Number(document.getElementById("percentValue").value);
+
+  const total =
+    Number(document.getElementById("percentTotal").value);
+
+  const result =
+    document.getElementById("percentResult");
+
+
+  if(!Number.isFinite(value) ||
+     !Number.isFinite(total) ||
+     total === 0){
+
+    result.style.display = "block";
+
+    result.innerHTML =
+      "📊 Please enter valid numbers.";
+
+    return;
+  }
+
+
+  const answer =
+    (value / total) * 100;
+
+
+  result.style.display = "block";
+
+  result.innerHTML = `
+    Percentage:
+    <div class="calc-value">
+      ${answer.toFixed(2)}%
+    </div>
+  `;
+
+}
+
+
+/* =========================================
+   AREA
+========================================= */
+
+function areaCalc(){
+
+  const shape =
+    document.getElementById("shape").value;
+
+  const a =
+    Number(document.getElementById("sideA").value);
+
+  const b =
+    Number(document.getElementById("sideB").value);
+
+  const result =
+    document.getElementById("areaResult");
+
+
+  if(!Number.isFinite(a) || a <= 0){
+
+    result.style.display = "block";
+
+    result.innerHTML =
+      "📐 Please enter a valid value.";
+
+    return;
+  }
+
+
+  let area;
+
+
+  if(shape === "rectangle"){
+
+    if(!Number.isFinite(b) || b <= 0){
+
+      result.style.display = "block";
+
+      result.innerHTML =
+        "Enter both length and width.";
+
+      return;
+
+    }
+
+    area = a * b;
+
+  }
+
+
+  if(shape === "square"){
+
+    area = a * a;
+
+  }
+
+
+  if(shape === "triangle"){
+
+    if(!Number.isFinite(b) || b <= 0){
+
+      result.style.display = "block";
+
+      result.innerHTML =
+        "Enter both base and height.";
+
+      return;
+
+    }
+
+    area = (a * b) / 2;
+
+  }
+
+
+  if(shape === "circle"){
+
+    area = Math.PI * a * a;
+
+  }
+
+
+  result.style.display = "block";
+
+  result.innerHTML = `
+    Area:
+    <div class="calc-value">
+      ${area.toFixed(2)} square units
+    </div>
+  `;
+
+}
+
+
+/* =========================================
+   OHM'S LAW
+========================================= */
+
+function ohmCalc(){
+
+  const type =
+    document.getElementById("ohmType").value;
+
+  const a =
+    Number(document.getElementById("ohmA").value);
+
+  const b =
+    Number(document.getElementById("ohmB").value);
+
+  const result =
+    document.getElementById("ohmResult");
+
+
+  if(!Number.isFinite(a) ||
+     !Number.isFinite(b) ||
+     a <= 0 ||
+     b <= 0){
+
+    result.style.display = "block";
+
+    result.innerHTML =
+      "⚡ Please enter valid positive values.";
+
+    return;
+  }
+
+
+  let answer;
+  let unit;
+
+
+  if(type === "voltage"){
+
+    /*
+      V = I × R
+    */
+
+    answer = a * b;
+
+    unit = "V";
+
+  }
+
+
+  if(type === "current"){
+
+    /*
+      I = V / R
+    */
+
+    answer = a / b;
+
+    unit = "A";
+
+  }
+
+
+  if(type === "resistance"){
+
+    /*
+      R = V / I
+    */
+
+    answer = a / b;
+
+    unit = "Ω";
+
+  }
+
+
+  result.style.display = "block";
+
+  result.innerHTML = `
+    Result:
+    <div class="calc-value">
+      ${answer.toFixed(4)} ${unit}
+    </div>
+  `;
+
+}
+
+
+/* =========================================
+   AVERAGE
+========================================= */
+
+function averageCalc(){
+
+  const input =
+    document.getElementById("averageInput").value.trim();
+
+  const result =
+    document.getElementById("averageResult");
+
+
+  if(!input){
+
+    result.style.display = "block";
+
+    result.innerHTML =
+      "📈 Enter numbers separated by commas.";
+
+    return;
+  }
+
+
+  const numbers =
+    input
+      .split(",")
+      .map(x => Number(x.trim()));
+
+
+  if(
+    numbers.length === 0 ||
+    numbers.some(x => !Number.isFinite(x))
+  ){
+
+    result.style.display = "block";
+
+    result.innerHTML =
+      "❌ Please enter valid numbers.";
+
+    return;
+  }
+
+
+  const total =
+    numbers.reduce(
+      (sum,num) => sum + num,
+      0
+    );
+
+
+  const average =
+    total / numbers.length;
+
+
+  result.style.display = "block";
+
+  result.innerHTML = `
+    Average:
+    <div class="calc-value">
+      ${average.toFixed(2)}
+    </div>
+  `;
+
+}
+
+</script>
+
 </body>
 </html>
