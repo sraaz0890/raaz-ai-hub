@@ -6,7 +6,14 @@
 
 <title>PDF & Photo Tutor — RAAZ AI HUB</title>
 
+<!-- Markdown Renderer -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<!-- Security Sanitizer -->
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+
 <style>
+
 :root{
   --bg:#07070b;
   --card:#12121b;
@@ -197,19 +204,173 @@ button:disabled{
   line-height:1.6;
 }
 
+/* =========================
+   AI RESULT
+========================= */
+
 .result{
   margin-top:22px;
-  padding:20px;
+  padding:22px;
   border-radius:15px;
   background:#0d0b13;
   border:1px solid #292033;
-  line-height:1.7;
-  white-space:pre-wrap;
+  line-height:1.75;
   word-break:break-word;
   display:none;
+  color:#e8e5ed;
 }
 
-.error{
+/* Headings */
+
+.result h1,
+.result h2,
+.result h3,
+.result h4{
+  color:#fff;
+  line-height:1.35;
+  margin-top:22px;
+  margin-bottom:10px;
+}
+
+.result h1{
+  font-size:25px;
+}
+
+.result h2{
+  font-size:21px;
+}
+
+.result h3{
+  font-size:18px;
+}
+
+.result h4{
+  font-size:16px;
+}
+
+/* First heading */
+
+.result h1:first-child,
+.result h2:first-child,
+.result h3:first-child{
+  margin-top:0;
+}
+
+/* Paragraph */
+
+.result p{
+  margin:10px 0;
+  color:#d8d5de;
+}
+
+/* Bold */
+
+.result strong{
+  color:#caa5ff;
+  font-weight:700;
+}
+
+/* Lists */
+
+.result ul,
+.result ol{
+  margin:10px 0 15px 24px;
+}
+
+.result li{
+  margin:6px 0;
+  color:#d8d5de;
+}
+
+.result li::marker{
+  color:#a866ff;
+}
+
+/* Links */
+
+.result a{
+  color:#c49aff;
+}
+
+/* Horizontal line */
+
+.result hr{
+  border:0;
+  border-top:1px solid #2b2335;
+  margin:22px 0;
+}
+
+/* Inline code */
+
+.result code{
+  background:#181320;
+  border:1px solid #2d2440;
+  color:#d4b4ff;
+  padding:2px 6px;
+  border-radius:6px;
+  font-size:.9em;
+}
+
+/* Code blocks */
+
+.result pre{
+  background:#08070c;
+  border:1px solid #292033;
+  border-radius:12px;
+  padding:15px;
+  overflow-x:auto;
+  margin:15px 0;
+}
+
+.result pre code{
+  background:transparent;
+  border:0;
+  padding:0;
+  color:#e8e1f1;
+  white-space:pre;
+}
+
+/* Blockquotes */
+
+.result blockquote{
+  margin:15px 0;
+  padding:12px 15px;
+  border-left:3px solid #a866ff;
+  background:rgba(168,102,255,.06);
+  color:#bbb5c5;
+  border-radius:0 10px 10px 0;
+}
+
+/* Tables */
+
+.result table{
+  width:100%;
+  border-collapse:collapse;
+  margin:18px 0;
+  display:block;
+  overflow-x:auto;
+}
+
+.result th,
+.result td{
+  padding:10px 12px;
+  border:1px solid #30273a;
+  text-align:left;
+  min-width:120px;
+}
+
+.result th{
+  background:#17111f;
+  color:#cba7ff;
+}
+
+.result td{
+  color:#d2ced8;
+}
+
+/* Error */
+
+.result.error{
   color:#ff9b9b;
 }
 
@@ -235,7 +396,25 @@ button:disabled{
   .drop-zone{
     padding:32px 15px;
   }
+
+  .result{
+    padding:17px;
+    font-size:14px;
+  }
+
+  .result h2{
+    font-size:19px;
+  }
+
+  .result h3{
+    font-size:17px;
+  }
+
+  .result table{
+    font-size:13px;
+  }
 }
+
 </style>
 </head>
 
@@ -243,113 +422,113 @@ button:disabled{
 
 <header>
 
-<div class="logo">
-RAAZ <span>AI HUB</span>
-</div>
+  <div class="logo">
+    RAAZ <span>AI HUB</span>
+  </div>
 
-<a class="back" href="/">
-← Home
-</a>
+  <a class="back" href="/">
+    ← Home
+  </a>
 
 </header>
 
 
 <main class="wrap">
 
-<span class="badge">
-📚 PDF & PHOTO TUTOR
-</span>
+  <span class="badge">
+    📚 PDF & PHOTO TUTOR
+  </span>
 
-<h1>
-Learn From Your <span>Books</span>
-</h1>
+  <h1>
+    Learn From Your <span>Books</span>
+  </h1>
 
-<p class="lead">
-Upload a PDF or a photo of your study material and let RAAZ AI
-summarise, explain and turn it into useful study material.
-</p>
-
-
-<div class="upload-card">
-
-<div
-class="drop-zone"
-onclick="document.getElementById('fileInput').click()"
->
-
-<div class="icon">📄</div>
-
-<h2>
-Upload PDF or Photo
-</h2>
-
-<p>
-Tap here to choose PDF, JPG, JPEG, PNG or WEBP.
-</p>
-
-<input
-id="fileInput"
-type="file"
-accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp"
-onchange="fileSelected()"
->
-
-</div>
+  <p class="lead">
+    Upload a PDF or a photo of your study material and let RAAZ AI
+    summarise, explain and turn it into useful study material.
+  </p>
 
 
-<div id="fileName" class="file-name"></div>
+  <div class="upload-card">
+
+    <div
+      class="drop-zone"
+      onclick="document.getElementById('fileInput').click()"
+    >
+
+      <div class="icon">📄</div>
+
+      <h2>
+        Upload PDF or Photo
+      </h2>
+
+      <p>
+        Tap here to choose PDF, JPG, JPEG, PNG or WEBP.
+      </p>
+
+      <input
+        id="fileInput"
+        type="file"
+        accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp"
+        onchange="fileSelected()"
+      >
+
+    </div>
 
 
-<select id="action">
-
-<option value="summary">
-🧠 Summarise this material
-</option>
-
-<option value="explain">
-📚 Explain it in simple language
-</option>
-
-<option value="notes">
-📝 Make study notes
-</option>
-
-<option value="important">
-🎯 Find important points
-</option>
-
-<option value="questions">
-❓ Create questions and answers
-</option>
-
-<option value="exam">
-🔥 Prepare exam-focused revision
-</option>
-
-</select>
+    <div id="fileName" class="file-name"></div>
 
 
-<textarea
-id="instruction"
-rows="4"
-placeholder="Optional: Tell RAAZ AI what you want to know..."
-></textarea>
+    <select id="action">
+
+      <option value="summary">
+        🧠 Summarise this material
+      </option>
+
+      <option value="explain">
+        📚 Explain it in simple language
+      </option>
+
+      <option value="notes">
+        📝 Make study notes
+      </option>
+
+      <option value="important">
+        🎯 Find important points
+      </option>
+
+      <option value="questions">
+        ❓ Create questions and answers
+      </option>
+
+      <option value="exam">
+        🔥 Prepare exam-focused revision
+      </option>
+
+    </select>
 
 
-<button
-id="analyzeBtn"
-onclick="analyzeFile()"
-disabled
->
-🚀 Analyze with RAAZ AI
-</button>
+    <textarea
+      id="instruction"
+      rows="4"
+      placeholder="Optional: Tell RAAZ AI what you want to know..."
+    ></textarea>
 
 
-<div id="status" class="status"></div>
+    <button
+      id="analyzeBtn"
+      onclick="analyzeFile()"
+      disabled
+    >
+      🚀 Analyze with RAAZ AI
+    </button>
 
-<div id="result" class="result"></div>
 
-</div>
+    <div id="status" class="status"></div>
+
+    <div id="result" class="result"></div>
+
+  </div>
 
 </main>
 
@@ -385,6 +564,8 @@ function fileSelected(){
 
 
   result.style.display = "none";
+  result.classList.remove("error");
+
   status.textContent = "";
 
 
@@ -423,8 +604,6 @@ function fileSelected(){
   }
 
 
-  /* 20 MB frontend check */
-
   if(file.size > 20 * 1024 * 1024){
 
     selectedFile = null;
@@ -457,7 +636,7 @@ function fileSelected(){
 
 
 /* =========================
-   FORMAT FILE SIZE
+   FILE SIZE
 ========================= */
 
 function formatSize(bytes){
@@ -474,13 +653,12 @@ function formatSize(bytes){
 
 
 /* =========================
-   ANALYZE FILE
+   ANALYZE
 ========================= */
 
 async function analyzeFile(){
 
   if(!selectedFile){
-
     return;
   }
 
@@ -569,18 +747,59 @@ async function analyzeFile(){
     }
 
 
-    result.style.display = "block";
+    /* =========================
+       MARKDOWN RENDERING
+    ========================= */
 
-    result.textContent =
+    const reply =
       data.reply ||
       "RAAZ AI did not return a response.";
 
+
+    if(
+      typeof marked === "undefined" ||
+      typeof DOMPurify === "undefined"
+    ){
+
+      result.textContent = reply;
+
+    }else{
+
+      const html =
+        marked.parse(reply, {
+          breaks:true,
+          gfm:true
+        });
+
+      result.innerHTML =
+        DOMPurify.sanitize(html);
+
+    }
+
+
+    result.style.display = "block";
+
+
     status.textContent =
       "✅ Analysis completed" +
-      (data.model
+      (
+        data.model
         ? " using " + data.model
-        : "") +
+        : ""
+      ) +
       ".";
+
+
+    /* Scroll result into view */
+
+    setTimeout(() => {
+
+      result.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+    },100);
 
 
   }catch(error){
@@ -591,8 +810,10 @@ async function analyzeFile(){
 
     result.textContent =
       "❌ " +
-      (error.message ||
-      "Something went wrong.") +
+      (
+        error.message ||
+        "Something went wrong."
+      ) +
       "\n\nPlease try again.";
 
     status.textContent = "";
