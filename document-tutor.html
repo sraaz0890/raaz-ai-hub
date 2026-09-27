@@ -166,6 +166,11 @@ button{
   outline:none;
 }
 
+select:focus,
+textarea:focus{
+  border-color:#8d54e8;
+}
+
 button{
   background:linear-gradient(135deg,#a866ff,#7540dc);
   border:0;
@@ -184,6 +189,14 @@ button:disabled{
   transform:none;
 }
 
+.status{
+  margin-top:15px;
+  color:#aaa;
+  font-size:13px;
+  text-align:center;
+  line-height:1.6;
+}
+
 .result{
   margin-top:22px;
   padding:20px;
@@ -192,14 +205,12 @@ button:disabled{
   border:1px solid #292033;
   line-height:1.7;
   white-space:pre-wrap;
+  word-break:break-word;
   display:none;
 }
 
-.status{
-  margin-top:15px;
-  color:#aaa;
-  font-size:13px;
-  text-align:center;
+.error{
+  color:#ff9b9b;
 }
 
 @media(max-width:650px){
@@ -254,15 +265,17 @@ Learn From Your <span>Books</span>
 </h1>
 
 <p class="lead">
-Upload a PDF or a photo of your study material and use RAAZ AI to understand it,
-summarise it and create useful study notes.
+Upload a PDF or a photo of your study material and let RAAZ AI
+summarise, explain and turn it into useful study material.
 </p>
 
 
 <div class="upload-card">
 
-<div class="drop-zone"
-onclick="document.getElementById('fileInput').click()">
+<div
+class="drop-zone"
+onclick="document.getElementById('fileInput').click()"
+>
 
 <div class="icon">📄</div>
 
@@ -271,13 +284,13 @@ Upload PDF or Photo
 </h2>
 
 <p>
-Tap here to choose a PDF, JPG, JPEG or PNG file.
+Tap here to choose PDF, JPG, JPEG, PNG or WEBP.
 </p>
 
 <input
 id="fileInput"
 type="file"
-accept=".pdf,.jpg,.jpeg,.png"
+accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp"
 onchange="fileSelected()"
 >
 
@@ -343,133 +356,255 @@ disabled
 
 <script>
 
-let selectedFile=null;
+let selectedFile = null;
 
 
-/* FILE SELECTED */
+/* =========================
+   FILE SELECTED
+========================= */
 
 function fileSelected(){
 
-const input=document.getElementById("fileInput");
+  const input =
+    document.getElementById("fileInput");
 
-const file=input.files[0];
+  const file =
+    input.files[0];
 
-const nameBox=document.getElementById("fileName");
+  const nameBox =
+    document.getElementById("fileName");
 
-const button=document.getElementById("analyzeBtn");
+  const button =
+    document.getElementById("analyzeBtn");
 
-if(!file){
+  const status =
+    document.getElementById("status");
 
-selectedFile=null;
+  const result =
+    document.getElementById("result");
 
-nameBox.style.display="none";
 
-button.disabled=true;
+  result.style.display = "none";
+  status.textContent = "";
 
-return;
+
+  if(!file){
+
+    selectedFile = null;
+
+    nameBox.style.display = "none";
+
+    button.disabled = true;
+
+    return;
+  }
+
+
+  const allowedTypes = [
+    "application/pdf",
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ];
+
+
+  if(!allowedTypes.includes(file.type)){
+
+    selectedFile = null;
+
+    nameBox.style.display = "block";
+
+    nameBox.textContent =
+      "❌ Unsupported file type.";
+
+    button.disabled = true;
+
+    return;
+  }
+
+
+  /* 20 MB frontend check */
+
+  if(file.size > 20 * 1024 * 1024){
+
+    selectedFile = null;
+
+    nameBox.style.display = "block";
+
+    nameBox.textContent =
+      "❌ File is larger than 20 MB.";
+
+    button.disabled = true;
+
+    return;
+  }
+
+
+  selectedFile = file;
+
+  nameBox.style.display = "block";
+
+  nameBox.textContent =
+    "📎 Selected: " +
+    file.name +
+    " (" +
+    formatSize(file.size) +
+    ")";
+
+  button.disabled = false;
 
 }
 
-selectedFile=file;
 
-nameBox.style.display="block";
+/* =========================
+   FORMAT FILE SIZE
+========================= */
 
-nameBox.textContent=
-"📎 Selected: "+file.name;
+function formatSize(bytes){
 
-button.disabled=false;
+  if(bytes < 1024 * 1024){
 
-document.getElementById("status").textContent="";
+    return (bytes / 1024).toFixed(1) + " KB";
 
-document.getElementById("result").style.display="none";
+  }
+
+  return (bytes / (1024 * 1024)).toFixed(2) + " MB";
 
 }
 
 
-/* ANALYZE */
+/* =========================
+   ANALYZE FILE
+========================= */
 
 async function analyzeFile(){
 
-if(!selectedFile){
+  if(!selectedFile){
 
-return;
-
-}
-
-const action=
-document.getElementById("action").value;
-
-const instruction=
-document.getElementById("instruction").value.trim();
-
-const status=
-document.getElementById("status");
-
-const result=
-document.getElementById("result");
-
-const button=
-document.getElementById("analyzeBtn");
+    return;
+  }
 
 
-button.disabled=true;
+  const action =
+    document.getElementById("action").value;
 
-status.textContent=
-"⏳ Preparing your material...";
+  const instruction =
+    document.getElementById("instruction").value.trim();
 
-result.style.display="none";
+  const status =
+    document.getElementById("status");
 
+  const result =
+    document.getElementById("result");
 
-/*
-  STEP 1 UI ONLY
-
-  Backend file processing will be
-  connected in the next step.
-*/
-
-setTimeout(()=>{
-
-status.textContent="";
-
-result.style.display="block";
-
-result.textContent=
-"📚 File received successfully.\n\n"+
-"Selected file: "+selectedFile.name+
-"\n\n"+
-"Requested action: "+getActionName(action)+
-"\n\n"+
-"Your PDF/Photo AI analysis system is ready for the backend connection.\n\n"+
-"Next step: connect this upload page to the RAAZ AI backend so Gemini can actually read the PDF/photo and generate the summary.";
-
-button.disabled=false;
-
-},800);
-
-}
+  const button =
+    document.getElementById("analyzeBtn");
 
 
-/* ACTION NAME */
+  button.disabled = true;
 
-function getActionName(action){
+  button.textContent =
+    "⏳ RAAZ AI is reading...";
 
-const names={
+  status.textContent =
+    "Reading your study material. Please wait...";
 
-summary:"Summary",
+  result.style.display = "none";
 
-explain:"Simple Explanation",
+  result.classList.remove("error");
 
-notes:"Study Notes",
 
-important:"Important Points",
+  try{
 
-questions:"Questions & Answers",
+    const formData = new FormData();
 
-exam:"Exam Revision"
+    formData.append(
+      "file",
+      selectedFile
+    );
 
-};
+    formData.append(
+      "action",
+      action
+    );
 
-return names[action] || "AI Analysis";
+    formData.append(
+      "instruction",
+      instruction
+    );
+
+
+    const response =
+      await fetch(
+        "/api/document-tutor",
+        {
+          method:"POST",
+          body:formData
+        }
+      );
+
+
+    let data;
+
+    try{
+
+      data = await response.json();
+
+    }catch(e){
+
+      throw new Error(
+        "Server returned an invalid response."
+      );
+
+    }
+
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        "Document analysis failed."
+      );
+
+    }
+
+
+    result.style.display = "block";
+
+    result.textContent =
+      data.reply ||
+      "RAAZ AI did not return a response.";
+
+    status.textContent =
+      "✅ Analysis completed" +
+      (data.model
+        ? " using " + data.model
+        : "") +
+      ".";
+
+
+  }catch(error){
+
+    result.style.display = "block";
+
+    result.classList.add("error");
+
+    result.textContent =
+      "❌ " +
+      (error.message ||
+      "Something went wrong.") +
+      "\n\nPlease try again.";
+
+    status.textContent = "";
+
+  }finally{
+
+    button.disabled = false;
+
+    button.textContent =
+      "🚀 Analyze with RAAZ AI";
+
+  }
 
 }
 
