@@ -47,10 +47,9 @@ const ai = new GoogleGenAI({
 });
 
 
+
 app.post("/api/chat", async (req, res) => {
-
   try {
-
     const message = req.body?.message?.trim();
 
     if (!message) {
@@ -59,41 +58,57 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.8-flash",
-      contents: message
-    });
+    const models = [
+      "gemini-3.8-flash",
+      "gemini-3.7-flash",
+      "gemini-3.6-flash"
+    ];
 
-    res.json({
-      reply: response.text
+    let lastError;
+
+    for (const model of models) {
+      try {
+        console.log(`Trying model: ${model}`);
+
+        const response = await ai.models.generateContent({
+          model: model,
+          contents: message
+        });
+
+        console.log(`Success with model: ${model}`);
+
+        return res.json({
+          reply: response.text,
+          model: model
+        });
+
+      } catch (error) {
+        lastError = error;
+
+        console.error(
+          `${model} failed:`,
+          error?.status || error?.message || error
+        );
+
+        // Try the next model
+        continue;
+      }
+    }
+
+    console.error("All Gemini models failed:", lastError);
+
+    return res.status(503).json({
+      error: "All AI models are temporarily unavailable. Please try again."
     });
 
   } catch (error) {
-
     console.error("AI Error:", error);
 
     res.status(500).json({
       error: "AI response failed."
     });
-
   }
-
 });
-
-
-// ===============================
-// HEALTH
-// ===============================
-
-app.get("/health", (req, res) => {
-
-  res.json({
-    status: "ok",
-    service: "RAAZ AI HUB"
-  });
-
-});
-
 
 // ===============================
 // SERVER
