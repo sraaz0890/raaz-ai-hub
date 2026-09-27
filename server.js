@@ -14,24 +14,32 @@ app.use(express.json());
 
 
 // ===============================
-// WEBSITE FILES
+// STATIC WEBSITE
+// ===============================
+
+app.use(express.static(__dirname));
+
+
+// ===============================
+// HOME
 // ===============================
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
+
+// ===============================
+// AI CHAT PAGE
+// ===============================
+
 app.get("/chat.html", (req, res) => {
   res.sendFile(path.join(__dirname, "chat.html"));
 });
 
 
-// CSS / JS / other static files
-app.use(express.static(__dirname));
-
-
 // ===============================
-// GEMINI AI
+// GEMINI
 // ===============================
 
 const ai = new GoogleGenAI({
@@ -51,20 +59,14 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
-
     const response = await ai.models.generateContent({
-
       model: "gemini-2.5-flash",
-
       contents: message
-
     });
-
 
     res.json({
       reply: response.text
     });
-
 
   } catch (error) {
 
@@ -80,7 +82,7 @@ app.post("/api/chat", async (req, res) => {
 
 
 // ===============================
-// HEALTH CHECK
+// HEALTH
 // ===============================
 
 app.get("/health", (req, res) => {
@@ -94,13 +96,11 @@ app.get("/health", (req, res) => {
 
 
 // ===============================
-// START SERVER
+// SERVER
 // ===============================
 
 app.listen(PORT, "0.0.0.0", () => {
 
-  console.log(
-    `RAAZ AI HUB running on port ${PORT}`
-  );
+  console.log(`RAAZ AI HUB running on port ${PORT}`);
 
 });
