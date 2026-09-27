@@ -63,7 +63,6 @@
       padding: 9px 13px;
       border: 1px solid var(--border);
       border-radius: 10px;
-      transition: .2s;
     }
 
     .back:hover {
@@ -255,4 +254,190 @@
         var(--purple),
         var(--purple2)
       );
-      color
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    #send:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 600px) {
+      .welcome {
+        padding-top: 40px;
+      }
+
+      .welcome h1 {
+        font-size: 25px;
+      }
+
+      .bubble {
+        max-width: 88%;
+      }
+
+      #messages {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .typing {
+        margin-left: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="brand">
+      RAAZ <span>AI</span>
+    </div>
+
+    <a href="index.html" class="back">
+      ← Home
+    </a>
+  </header>
+
+  <main class="chat-container">
+
+    <section class="welcome">
+      <div class="ai-icon">✦</div>
+
+      <h1>How can I help you?</h1>
+
+      <p>
+        Ask me anything about computers, technology, coding and more.
+      </p>
+    </section>
+
+    <div id="messages"></div>
+
+    <div class="typing" id="typing">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+  </main>
+
+  <div class="input-area">
+    <div class="input-box">
+
+      <textarea
+        id="message"
+        placeholder="Ask RAAZ AI..."
+        rows="1"
+      ></textarea>
+
+      <button id="send" type="button">
+        ↑
+      </button>
+
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "/api/chat";
+
+    const messageInput = document.getElementById("message");
+    const sendButton = document.getElementById("send");
+    const messages = document.getElementById("messages");
+    const typing = document.getElementById("typing");
+
+    function addMessage(text, type) {
+      const message = document.createElement("div");
+      message.className = "message " + type;
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = text;
+
+      message.appendChild(bubble);
+      messages.appendChild(message);
+
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+
+    async function sendMessage() {
+      const text = messageInput.value.trim();
+
+      if (!text) return;
+
+      addMessage(text, "user");
+
+      messageInput.value = "";
+      messageInput.style.height = "42px";
+
+      sendButton.disabled = true;
+      typing.style.display = "flex";
+
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: text
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "AI response failed.");
+        }
+
+        addMessage(
+          data.reply || "Sorry, I couldn't generate a response.",
+          "assistant"
+        );
+
+      } catch (error) {
+
+        console.error(error);
+
+        addMessage(
+          "Sorry, something went wrong. Please try again.",
+          "assistant"
+        );
+
+      } finally {
+
+        typing.style.display = "none";
+        sendButton.disabled = false;
+        messageInput.focus();
+
+      }
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+
+    messageInput.addEventListener("keydown", function(event) {
+
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+
+    });
+
+    messageInput.addEventListener("input", function() {
+
+      this.style.height = "42px";
+
+      this.style.height =
+        Math.min(this.scrollHeight, 120) + "px";
+
+    });
+  </script>
+
+</body>
+</html>
