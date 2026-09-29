@@ -4,174 +4,356 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>RAAZ AI HUB</title>
+  <title>RAAZ AI HUB — AI Tutor</title>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/lib/marked.umd.js"></script>
-  <script>
-  window.MathJax = {
-    tex: {
-      inlineMath: [['$', '$'], ['\\(', '\\)']],
-      displayMath: [['$$', '$$'], ['\\[', '\\]']]
-    },
-    svg: {
-      fontCache: 'global'
-    }
-  };
-</script>
 
-<script
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-</script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 
   <style>
     * {
       box-sizing: border-box;
     }
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #090512;
-      color: white;
-      min-height: 100vh;
+    html {
+      scroll-behavior: smooth;
     }
 
-    /* HEADER */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #fff;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(124,58,237,.16), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(168,85,247,.10), transparent 25%),
+        #08040f;
+      overflow-x: hidden;
+    }
+
+    /* =========================
+       BACKGROUND
+    ========================= */
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+      background-size: 45px 45px;
+      mask-image: linear-gradient(to bottom, black, transparent 80%);
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
 
     .header {
-      height: 65px;
+      height: 68px;
       display: flex;
       align-items: center;
-      padding: 0 20px;
-      border-bottom: 1px solid #241537;
-      background: #0d0718;
+      padding: 0 24px;
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
+
+      background: rgba(10, 5, 18, .82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      box-shadow: 0 8px 30px rgba(0,0,0,.18);
+    }
+
+    .header-inner {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .logo {
-      font-size: 21px;
-      font-weight: bold;
-      color: #ffffff;
-      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: .4px;
     }
 
-    .logo span {
-      color: #9b5cff;
-    }
-
-    /* CHAT AREA */
-
-    .chat-container {
-      max-width: 900px;
-      margin: auto;
-      padding: 35px 18px 150px;
-    }
-
-    /* WELCOME */
-
-    .welcome {
-      text-align: center;
-      margin-top: 55px;
-      margin-bottom: 35px;
-    }
-
-    .welcome-icon {
-      width: 70px;
-      height: 70px;
-      margin: auto;
-      border-radius: 22px;
+    .logo-icon {
+      width: 34px;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 34px;
-      background: linear-gradient(
-        135deg,
-        #7c3aed,
-        #a855f7
-      );
-      box-shadow: 0 0 35px rgba(139, 92, 246, 0.35);
+      border-radius: 11px;
+
+      background: linear-gradient(135deg, #7c3aed, #c084fc);
+      box-shadow: 0 0 22px rgba(139,92,246,.35);
+
+      font-size: 17px;
+    }
+
+    .logo span {
+      background: linear-gradient(90deg, #a78bfa, #e879f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .online-status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #a9a0b2;
+      font-size: 12px;
+    }
+
+    .online-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #8b5cf6;
+      box-shadow: 0 0 10px #8b5cf6;
+      animation: onlinePulse 1.8s infinite;
+    }
+
+    @keyframes onlinePulse {
+      0%,100% {
+        opacity: .45;
+        transform: scale(.9);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.15);
+      }
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .chat-container {
+      width: 100%;
+      max-width: 920px;
+      margin: auto;
+      padding: 42px 18px 170px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* =========================
+       WELCOME
+    ========================= */
+
+    .welcome {
+      text-align: center;
+      margin: 45px auto 38px;
+      animation: welcomeIn .7s ease both;
+    }
+
+    @keyframes welcomeIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .welcome-icon {
+      width: 78px;
+      height: 78px;
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 25px;
+
+      background:
+        linear-gradient(135deg, #6d28d9, #a855f7);
+
+      border: 1px solid rgba(255,255,255,.14);
+
+      box-shadow:
+        0 0 35px rgba(139,92,246,.32),
+        inset 0 1px 0 rgba(255,255,255,.18);
+
+      font-size: 36px;
+
+      animation: iconFloat 3.5s ease-in-out infinite;
+    }
+
+    @keyframes iconFloat {
+      0%,100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
     }
 
     .welcome h1 {
-      margin-top: 22px;
-      margin-bottom: 10px;
-      font-size: 32px;
+      margin: 22px 0 10px;
+
+      font-size: clamp(29px, 5vw, 38px);
+      line-height: 1.15;
+      font-weight: 800;
+
+      background:
+        linear-gradient(
+          90deg,
+          #ffffff,
+          #c084fc,
+          #ffffff
+        );
+
+      background-size: 200% auto;
+
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      animation: headingShine 5s linear infinite;
+    }
+
+    @keyframes headingShine {
+      to {
+        background-position: 200% center;
+      }
     }
 
     .welcome p {
-      margin: 0 auto 22px;
-      max-width: 600px;
+      max-width: 620px;
+      margin: 0 auto 27px;
+
       color: #aaa0b8;
-      line-height: 1.6;
+      line-height: 1.7;
       font-size: 15px;
     }
 
-    /* SUBJECT SELECTOR */
+    /* =========================
+       SUBJECT
+    ========================= */
 
     .subject-box {
-      max-width: 430px;
-      margin: 0 auto;
+      max-width: 460px;
+      margin: auto;
       text-align: left;
+      padding: 18px;
+
+      border-radius: 18px;
+
+      background: rgba(21,16,31,.72);
+      border: 1px solid rgba(255,255,255,.07);
+
+      box-shadow:
+        0 15px 45px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(255,255,255,.03);
+
+      backdrop-filter: blur(12px);
     }
 
     .subject-label {
       display: block;
-      margin-bottom: 8px;
-      color: #cfc5d8;
-      font-size: 14px;
-      font-weight: bold;
+      margin-bottom: 9px;
+
+      color: #d8d0df;
+      font-size: 13px;
+      font-weight: 700;
     }
 
     .subject-select {
       width: 100%;
-      height: 48px;
+      height: 49px;
+
       padding: 0 14px;
+
       border-radius: 13px;
-      border: 1px solid #30243d;
+      border: 1px solid #332740;
       outline: none;
-      background: #15101f;
-      color: white;
+
+      background: #110b19;
+      color: #fff;
+
       font-size: 14px;
       cursor: pointer;
+
+      transition: .2s ease;
+    }
+
+    .subject-select:hover {
+      border-color: #51356b;
     }
 
     .subject-select:focus {
       border-color: #8b5cf6;
-      box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15);
+      box-shadow: 0 0 0 3px rgba(139,92,246,.13);
     }
 
     .subject-select option {
       background: #15101f;
-      color: white;
+      color: #fff;
     }
 
-    /* SELECTED SUBJECT */
-
     .selected-subject {
-      margin-top: 12px;
+      margin-top: 11px;
       text-align: center;
-      color: #9b8faa;
-      font-size: 13px;
+
+      color: #81768d;
+      font-size: 12px;
     }
 
     .selected-subject span {
       color: #c084fc;
-      font-weight: bold;
+      font-weight: 700;
     }
 
-    /* MESSAGES */
+    /* =========================
+       MESSAGES
+    ========================= */
 
     #messages {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 17px;
     }
 
     .message {
       display: flex;
       width: 100%;
+      animation: messageIn .3s ease both;
+    }
+
+    @keyframes messageIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .message.user {
@@ -184,32 +366,74 @@
 
     .bubble {
       max-width: 82%;
-      padding: 13px 16px;
-      border-radius: 16px;
-      line-height: 1.6;
+
+      padding: 14px 17px;
+
+      border-radius: 18px;
+
+      line-height: 1.65;
       font-size: 15px;
+
       word-wrap: break-word;
       overflow-wrap: break-word;
     }
 
+    /* USER */
+
     .user .bubble {
-      background: #6d28d9;
+      position: relative;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6d28d9,
+          #7c3aed
+        );
+
+      border: 1px solid rgba(192,132,252,.18);
+
       border-bottom-right-radius: 5px;
+
+      box-shadow:
+        0 8px 25px rgba(109,40,217,.18);
     }
+
+    /* AI */
 
     .assistant .bubble {
-      background: #15101f;
-      border: 1px solid #292033;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(24,17,34,.96),
+          rgba(17,12,25,.96)
+        );
+
+      border: 1px solid #2c2238;
+
       border-bottom-left-radius: 5px;
+
       color: #eee;
+
+      box-shadow:
+        0 8px 28px rgba(0,0,0,.14);
     }
 
-    /* MARKDOWN */
+    .assistant .bubble::before {
+      content: "🤖";
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      opacity: .85;
+    }
+
+    /* =========================
+       MARKDOWN
+    ========================= */
 
     .bubble h1,
     .bubble h2,
     .bubble h3 {
-      margin-top: 10px;
+      margin-top: 13px;
       margin-bottom: 8px;
     }
 
@@ -231,7 +455,7 @@
 
     .bubble ul,
     .bubble ol {
-      padding-left: 22px;
+      padding-left: 23px;
     }
 
     .bubble li {
@@ -243,166 +467,357 @@
     }
 
     .bubble code {
-      background: #0b0810;
-      padding: 2px 6px;
-      border-radius: 5px;
+      background: #0b0710;
+      padding: 3px 6px;
+      border-radius: 6px;
+
+      color: #e5d5ff;
+
       font-family: monospace;
       font-size: 13px;
     }
 
     .bubble pre {
-      background: #08060c;
-      padding: 14px;
-      border-radius: 10px;
+      margin: 12px 0;
+      padding: 15px;
+
+      background: #07050a;
+
+      border: 1px solid #2b2036;
+      border-radius: 11px;
+
       overflow-x: auto;
-      border: 1px solid #2a2035;
+
+      box-shadow:
+        inset 0 0 20px rgba(0,0,0,.18);
     }
 
     .bubble pre code {
       background: transparent;
       padding: 0;
+      color: #eee;
     }
 
     .bubble blockquote {
-      margin: 10px 0;
-      padding-left: 12px;
+      margin: 11px 0;
+      padding: 8px 12px;
+
       border-left: 3px solid #8b5cf6;
-      color: #bdb4c7;
+
+      color: #bbb2c4;
+      background: rgba(139,92,246,.05);
+
+      border-radius: 0 7px 7px 0;
     }
 
     .bubble a {
-      color: #a78bfa;
+      color: #c4b5fd;
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
 
-    /* TYPING */
+    .bubble hr {
+      border: none;
+      border-top: 1px solid #30243b;
+      margin: 15px 0;
+    }
+
+    .bubble table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      overflow: hidden;
+    }
+
+    .bubble th,
+    .bubble td {
+      padding: 8px;
+      border: 1px solid #332740;
+      text-align: left;
+    }
+
+    .bubble th {
+      background: #21172d;
+      color: #d8c8e8;
+    }
+
+    /* =========================
+       MATHJAX
+    ========================= */
+
+    .bubble mjx-container {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+      padding: 2px 0;
+    }
+
+    /* =========================
+       TYPING
+    ========================= */
 
     #typing {
       display: none;
       align-items: center;
       gap: 5px;
-      margin: 5px 0;
-      padding: 12px 16px;
+
       width: fit-content;
+
+      margin: 4px 0;
+      padding: 12px 15px;
+
       background: #15101f;
-      border: 1px solid #292033;
+      border: 1px solid #2c2238;
+
       border-radius: 15px;
+
+      box-shadow: 0 8px 25px rgba(0,0,0,.15);
+
+      animation: typingIn .25s ease both;
+    }
+
+    @keyframes typingIn {
+      from {
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .typing-label {
+      margin-right: 4px;
+      color: #8d8298;
+      font-size: 12px;
     }
 
     .dot {
       width: 7px;
       height: 7px;
+
       border-radius: 50%;
+
       background: #a855f7;
+
       animation: blink 1.4s infinite;
     }
 
-    .dot:nth-child(2) {
-      animation-delay: 0.2s;
+    .dot:nth-child(3) {
+      animation-delay: .2s;
     }
 
-    .dot:nth-child(3) {
-      animation-delay: 0.4s;
+    .dot:nth-child(4) {
+      animation-delay: .4s;
     }
 
     @keyframes blink {
-      0%, 80%, 100% {
-        opacity: 0.3;
+      0%,80%,100% {
+        opacity: .25;
+        transform: translateY(0);
       }
 
       40% {
         opacity: 1;
+        transform: translateY(-3px);
       }
     }
 
-    /* INPUT AREA */
+    /* =========================
+       INPUT
+    ========================= */
 
     .input-area {
       position: fixed;
-      bottom: 0;
+
       left: 0;
       right: 0;
-      padding: 14px 18px 18px;
-      background: linear-gradient(
-        transparent,
-        #090512 30%
-      );
-      z-index: 20;
+      bottom: 0;
+
+      padding: 16px 18px 20px;
+
+      background:
+        linear-gradient(
+          transparent,
+          #08040f 30%,
+          #08040f 100%
+        );
+
+      z-index: 50;
     }
 
     .input-box {
-      max-width: 900px;
+      max-width: 920px;
       margin: auto;
+
       display: flex;
       align-items: flex-end;
-      gap: 10px;
-      padding: 10px;
-      background: #15101f;
-      border: 1px solid #30243d;
-      border-radius: 18px;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
+      gap: 9px;
+
+      padding: 9px;
+
+      background:
+        rgba(21,16,31,.92);
+
+      border: 1px solid #342842;
+
+      border-radius: 19px;
+
+      box-shadow:
+        0 15px 45px rgba(0,0,0,.4),
+        0 0 0 1px rgba(255,255,255,.02);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      transition: .25s ease;
+    }
+
+    .input-box:focus-within {
+      border-color: rgba(139,92,246,.7);
+
+      box-shadow:
+        0 15px 45px rgba(0,0,0,.42),
+        0 0 0 3px rgba(139,92,246,.08),
+        0 0 25px rgba(124,58,237,.08);
     }
 
     textarea {
       flex: 1;
+
       resize: none;
+
       border: none;
       outline: none;
+
       background: transparent;
       color: white;
+
       font-size: 15px;
       line-height: 1.5;
+
       min-height: 42px;
       max-height: 150px;
+
       padding: 10px;
+
       font-family: Arial, Helvetica, sans-serif;
     }
 
     textarea::placeholder {
-      color: #777080;
+      color: #766b80;
     }
 
     #sendButton {
-      width: 42px;
-      height: 42px;
+      position: relative;
+
+      width: 44px;
+      height: 44px;
+
+      flex-shrink: 0;
+
       border: none;
-      border-radius: 13px;
+      border-radius: 14px;
+
       cursor: pointer;
-      background: #7c3aed;
+
+      background:
+        linear-gradient(
+          135deg,
+          #6d28d9,
+          #9333ea
+        );
+
       color: white;
+
       font-size: 19px;
-      transition: 0.2s;
+
+      box-shadow:
+        0 7px 20px rgba(109,40,217,.28);
+
+      transition: .2s ease;
+
+      overflow: hidden;
+    }
+
+    #sendButton::after {
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+      left: -80%;
+
+      width: 55%;
+      height: 100%;
+
+      background: rgba(255,255,255,.2);
+
+      transform: skewX(-20deg);
+
+      transition: .5s;
+    }
+
+    #sendButton:hover::after {
+      left: 130%;
     }
 
     #sendButton:hover {
-      background: #8b5cf6;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow:
+        0 10px 28px rgba(109,40,217,.38);
+    }
+
+    #sendButton:active {
+      transform: scale(.95);
     }
 
     #sendButton:disabled {
-      opacity: 0.5;
+      opacity: .45;
       cursor: not-allowed;
       transform: none;
+      box-shadow: none;
     }
 
-    /* MOBILE */
+    /* =========================
+       MOBILE
+    ========================= */
 
     @media (max-width: 600px) {
 
       .header {
-        height: 58px;
-        padding: 0 15px;
+        height: 59px;
+        padding: 0 14px;
       }
 
       .logo {
-        font-size: 18px;
+        font-size: 17px;
+      }
+
+      .logo-icon {
+        width: 31px;
+        height: 31px;
+        border-radius: 10px;
+        font-size: 15px;
+      }
+
+      .online-status {
+        font-size: 11px;
       }
 
       .chat-container {
-        padding: 25px 12px 150px;
+        padding: 28px 11px 155px;
       }
 
       .welcome {
-        margin-top: 45px;
+        margin-top: 35px;
+      }
+
+      .welcome-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 31px;
       }
 
       .welcome h1 {
@@ -410,20 +825,62 @@
       }
 
       .welcome p {
-        font-size: 14px;
+        font-size: 13.5px;
+        padding: 0 7px;
+      }
+
+      .subject-box {
+        padding: 15px;
+        border-radius: 16px;
       }
 
       .bubble {
-        max-width: 90%;
+        max-width: 91%;
         font-size: 14px;
+        padding: 12px 14px;
+      }
+
+      .assistant .bubble::before {
+        font-size: 12px;
       }
 
       .input-area {
-        padding: 10px;
+        padding: 9px 9px 12px;
       }
 
       .input-box {
         border-radius: 16px;
+        padding: 7px;
+      }
+
+      textarea {
+        font-size: 14px;
+        padding: 10px 8px;
+      }
+
+      #sendButton {
+        width: 42px;
+        height: 42px;
+        border-radius: 13px;
+      }
+
+      .typing-label {
+        font-size: 11px;
+      }
+    }
+
+    /* =========================
+       REDUCED MOTION
+    ========================= */
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
       }
     }
   </style>
@@ -433,11 +890,23 @@
 
   <!-- HEADER -->
 
-  <div class="header">
-    <div class="logo">
-      RAAZ <span>AI HUB</span>
+  <header class="header">
+
+    <div class="header-inner">
+
+      <div class="logo">
+        <div class="logo-icon">🤖</div>
+        RAAZ <span>AI HUB</span>
+      </div>
+
+      <div class="online-status">
+        <span class="online-dot"></span>
+        AI ONLINE
+      </div>
+
     </div>
-  </div>
+
+  </header>
 
 
   <!-- CHAT -->
@@ -446,7 +915,7 @@
 
     <!-- WELCOME -->
 
-    <div class="welcome" id="welcome">
+    <section class="welcome" id="welcome">
 
       <div class="welcome-icon">
         🤖
@@ -455,8 +924,8 @@
       <h1>How can I help you?</h1>
 
       <p>
-        Your AI tutor for all courses, learning, technology,
-        coding, science, mathematics, English and more.
+        Your AI tutor for courses, learning, technology,
+        coding, science, mathematics, languages and more.
       </p>
 
 
@@ -546,7 +1015,6 @@
 
         </select>
 
-
         <div class="selected-subject">
           Current subject:
           <span id="selectedSubjectText">
@@ -556,7 +1024,7 @@
 
       </div>
 
-    </div>
+    </section>
 
 
     <!-- MESSAGES -->
@@ -567,6 +1035,10 @@
     <!-- TYPING -->
 
     <div id="typing">
+
+      <span class="typing-label">
+        RAAZ AI is thinking
+      </span>
 
       <div class="dot"></div>
       <div class="dot"></div>
@@ -587,11 +1059,13 @@
         id="messageInput"
         placeholder="Ask anything about your course..."
         rows="1"
+        autocomplete="off"
       ></textarea>
 
       <button
         id="sendButton"
         type="button"
+        aria-label="Send message"
       >
         ➤
       </button>
@@ -701,19 +1175,35 @@
 
       messages.appendChild(message);
 
-if (
-  type === "assistant" &&
-  window.MathJax
-) {
-  MathJax.typesetPromise([bubble]).catch((error) => {
-    console.error("MathJax Error:", error);
-  });
-}
 
-window.scrollTo({
-  top: document.body.scrollHeight,
-  behavior: "smooth"
-});
+      /* MATHJAX */
+
+      if (
+        type === "assistant" &&
+        window.MathJax
+      ) {
+
+        MathJax.typesetPromise([bubble])
+          .catch((error) => {
+            console.error(
+              "MathJax Error:",
+              error
+            );
+          });
+
+      }
+
+
+      /* SCROLL */
+
+      setTimeout(() => {
+
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "smooth"
+        });
+
+      }, 50);
 
     }
 
@@ -731,7 +1221,7 @@ window.scrollTo({
       if (!text) return;
 
 
-      /* GET SUBJECT */
+      /* SUBJECT */
 
       const selectedSubject =
         subjectSelect.value ||
@@ -744,7 +1234,7 @@ window.scrollTo({
         "none";
 
 
-      /* SHOW USER MESSAGE */
+      /* USER MESSAGE */
 
       addMessage(
         text,
@@ -760,13 +1250,13 @@ window.scrollTo({
         "42px";
 
 
-      /* DISABLE SEND */
+      /* DISABLE */
 
       sendButton.disabled =
         true;
 
 
-      /* SHOW TYPING */
+      /* TYPING */
 
       typing.style.display =
         "flex";
@@ -828,7 +1318,7 @@ window.scrollTo({
 
 
         addMessage(
-          "Sorry, something went wrong. Please try again.",
+          "⚠️ Sorry, something went wrong. Please try again.",
           "assistant"
         );
 
@@ -896,6 +1386,22 @@ window.scrollTo({
             this.scrollHeight,
             150
           ) + "px";
+
+      }
+    );
+
+
+    /* ===============================
+       INITIAL FOCUS
+    =============================== */
+
+    window.addEventListener(
+      "load",
+      () => {
+
+        setTimeout(() => {
+          messageInput.focus();
+        }, 500);
 
       }
     );
