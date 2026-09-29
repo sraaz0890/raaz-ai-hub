@@ -12,13 +12,17 @@
 <style>
 
 :root{
-  --bg:#07070b;
-  --card:#12121b;
+  --bg:#06060a;
+  --card:rgba(18,18,28,.78);
+  --card2:#0d0c13;
   --border:rgba(255,255,255,.09);
   --purple:#a866ff;
-  --light:#c49aff;
+  --purple2:#7540dc;
+  --light:#caa5ff;
   --text:#fff;
-  --muted:#9999a5;
+  --muted:#9999a7;
+  --success:#73e6a5;
+  --danger:#ff9b9b;
 }
 
 *{
@@ -27,14 +31,54 @@
   padding:0;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   font-family:Inter,Arial,sans-serif;
   background:
-    radial-gradient(circle at 50% -10%,rgba(132,65,255,.22),transparent 35%),
-    var(--bg);
+    radial-gradient(circle at 15% 0%,rgba(132,65,255,.18),transparent 30%),
+    radial-gradient(circle at 85% 20%,rgba(80,40,180,.12),transparent 28%),
+    linear-gradient(180deg,#06060a,#08070d 55%,#050509);
   color:var(--text);
   min-height:100vh;
+  overflow-x:hidden;
 }
+
+/* =========================
+   BACKGROUND
+========================= */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.16;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:45px 45px;
+  mask-image:linear-gradient(to bottom,black,transparent 80%);
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  width:380px;
+  height:380px;
+  border-radius:50%;
+  background:rgba(142,72,255,.12);
+  filter:blur(100px);
+  top:25%;
+  left:-180px;
+  pointer-events:none;
+}
+
+/* =========================
+   HEADER
+========================= */
 
 header{
   height:70px;
@@ -42,118 +86,279 @@ header{
   align-items:center;
   justify-content:space-between;
   padding:0 6%;
-  background:rgba(7,7,11,.82);
-  backdrop-filter:blur(18px);
+  background:rgba(6,6,10,.72);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
   border-bottom:1px solid rgba(255,255,255,.07);
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:20;
 }
 
 .logo{
   font-size:20px;
-  font-weight:800;
-  letter-spacing:1.5px;
+  font-weight:900;
+  letter-spacing:1.6px;
 }
 
 .logo span{
   color:var(--light);
 }
 
+.header-right{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.online{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#aaa8b4;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.6px;
+}
+
+.online-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#65e49a;
+  box-shadow:0 0 12px rgba(101,228,154,.8);
+  animation:pulse 1.8s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{
+    transform:scale(1);
+    opacity:1;
+  }
+  50%{
+    transform:scale(.7);
+    opacity:.55;
+  }
+}
+
 .back{
   color:var(--light);
   text-decoration:none;
   font-size:13px;
+  font-weight:700;
+  transition:.2s;
 }
 
+.back:hover{
+  color:#fff;
+  transform:translateX(-2px);
+}
+
+/* =========================
+   MAIN
+========================= */
+
 .wrap{
-  max-width:900px;
+  width:min(920px,100%);
   margin:auto;
-  padding:55px 20px 80px;
+  padding:58px 20px 90px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  text-align:center;
+  animation:fadeUp .7s ease both;
+}
+
+@keyframes fadeUp{
+  from{
+    opacity:0;
+    transform:translateY(15px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
 .badge{
-  display:inline-block;
-  padding:8px 13px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
   border:1px solid rgba(155,92,255,.3);
   border-radius:30px;
   color:#c8a7ff;
   background:rgba(155,92,255,.08);
   font-size:11px;
-  font-weight:700;
+  font-weight:800;
   letter-spacing:.8px;
+  box-shadow:0 0 25px rgba(130,65,255,.08);
 }
 
-h1{
-  font-size:clamp(34px,7vw,58px);
-  margin:18px 0 12px;
-  letter-spacing:-2px;
+.hero h1{
+  font-size:clamp(35px,7vw,62px);
+  margin:20px 0 13px;
+  letter-spacing:-2.7px;
+  line-height:1.04;
 }
 
-h1 span{
-  background:linear-gradient(90deg,#fff,#bd91ff,#9250ff);
+.hero h1 span{
+  background:linear-gradient(
+    90deg,
+    #fff 0%,
+    #d0a9ff 40%,
+    #8f4cff 80%,
+    #d0a9ff 100%
+  );
+  background-size:200% auto;
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
+  animation:gradientMove 4s linear infinite;
+}
+
+@keyframes gradientMove{
+  to{
+    background-position:200% center;
+  }
 }
 
 .lead{
   color:var(--muted);
-  line-height:1.7;
+  line-height:1.75;
   max-width:700px;
+  margin:auto;
+  font-size:14px;
 }
+
+/* =========================
+   MAIN CARD
+========================= */
 
 .upload-card{
-  margin-top:32px;
-  background:rgba(18,18,27,.8);
-  border:1px solid var(--border);
-  border-radius:22px;
+  position:relative;
+  margin-top:35px;
   padding:25px;
+  border-radius:25px;
+  background:var(--card);
+  border:1px solid var(--border);
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.38),
+    inset 0 1px rgba(255,255,255,.035);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  animation:fadeUp .8s .08s ease both;
 }
 
+/* =========================
+   UPLOAD ZONE
+========================= */
+
 .drop-zone{
-  border:2px dashed #3b2a50;
-  border-radius:18px;
-  padding:40px 20px;
+  position:relative;
+  border:2px dashed #39284d;
+  border-radius:20px;
+  padding:48px 20px;
   text-align:center;
   cursor:pointer;
-  transition:.2s;
+  transition:
+    border-color .25s,
+    background .25s,
+    transform .25s,
+    box-shadow .25s;
+  overflow:hidden;
+}
+
+.drop-zone::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(168,102,255,.12),
+      transparent 50%
+    );
+  opacity:0;
+  transition:.25s;
 }
 
 .drop-zone:hover{
   border-color:var(--purple);
-  background:rgba(168,102,255,.05);
+  background:rgba(168,102,255,.045);
+  transform:translateY(-2px);
+  box-shadow:0 15px 40px rgba(100,45,180,.12);
+}
+
+.drop-zone:hover::before{
+  opacity:1;
 }
 
 .icon{
-  font-size:45px;
-  margin-bottom:12px;
+  position:relative;
+  font-size:48px;
+  margin-bottom:13px;
+  filter:drop-shadow(0 0 18px rgba(168,102,255,.25));
 }
 
 .drop-zone h2{
+  position:relative;
   font-size:20px;
   margin-bottom:8px;
 }
 
 .drop-zone p{
+  position:relative;
   color:var(--muted);
   font-size:13px;
-  line-height:1.6;
+  line-height:1.7;
+}
+
+.upload-hint{
+  position:relative;
+  display:inline-block;
+  margin-top:12px;
+  color:#8e8b98;
+  font-size:11px;
 }
 
 input[type=file]{
   display:none;
 }
 
+/* =========================
+   FILE NAME
+========================= */
+
 .file-name{
-  margin-top:15px;
-  padding:12px;
-  background:#0d0b13;
+  margin-top:14px;
+  padding:13px 14px;
+  background:#0c0a11;
   border:1px solid #292033;
-  border-radius:12px;
+  border-radius:13px;
   color:#c8a7ff;
   font-size:13px;
   display:none;
   word-break:break-word;
+  animation:fadeUp .25s ease both;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.field-label{
+  display:block;
+  margin-top:19px;
+  margin-bottom:7px;
+  color:#aaa6b3;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.5px;
+  text-transform:uppercase;
 }
 
 select,
@@ -161,64 +366,129 @@ textarea,
 button{
   width:100%;
   border:1px solid #30243d;
-  background:#15101f;
+  background:#120e19;
   color:#fff;
-  border-radius:12px;
+  border-radius:13px;
   padding:13px;
-  margin-top:12px;
   font:inherit;
   outline:none;
+  transition:
+    border-color .2s,
+    box-shadow .2s,
+    transform .2s,
+    background .2s;
+}
+
+select,
+textarea{
+  margin-top:0;
 }
 
 textarea{
   resize:vertical;
+  min-height:90px;
+  line-height:1.6;
+}
+
+select{
+  cursor:pointer;
 }
 
 select:focus,
 textarea:focus{
   border-color:#8d54e8;
+  box-shadow:0 0 0 3px rgba(141,84,232,.10);
+  background:#15101e;
 }
 
+textarea::placeholder{
+  color:#6e6a76;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
 button{
-  background:linear-gradient(135deg,#a866ff,#7540dc);
+  position:relative;
+  margin-top:13px;
+  background:linear-gradient(
+    135deg,
+    #a866ff,
+    #7540dc
+  );
   border:0;
-  font-weight:700;
+  font-weight:800;
   cursor:pointer;
-  transition:.2s;
+  overflow:hidden;
+  box-shadow:0 12px 30px rgba(117,64,220,.18);
+}
+
+button::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-120%;
+  width:70%;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.18),
+    transparent
+  );
+  transform:skewX(-20deg);
+  transition:.55s;
+}
+
+button:hover::after{
+  left:150%;
 }
 
 button:hover{
-  transform:translateY(-1px);
+  transform:translateY(-2px);
+  box-shadow:0 15px 35px rgba(117,64,220,.28);
+}
+
+button:active{
+  transform:translateY(0);
 }
 
 button:disabled{
   opacity:.5;
   cursor:not-allowed;
   transform:none;
+  box-shadow:none;
+}
+
+button:disabled::after{
+  display:none;
 }
 
 .status{
-  margin-top:15px;
+  min-height:20px;
+  margin-top:14px;
   color:#aaa;
-  font-size:13px;
+  font-size:12px;
   text-align:center;
   line-height:1.6;
 }
 
 /* =========================
-   AI RESULT
+   RESULT
 ========================= */
 
 .result{
   margin-top:22px;
-  padding:22px;
-  border-radius:15px;
-  background:#0d0b13;
+  padding:23px;
+  border-radius:17px;
+  background:#0b0a10;
   border:1px solid #292033;
-  line-height:1.75;
+  line-height:1.8;
   word-break:break-word;
   display:none;
   color:#e8e5ed;
+  box-shadow:inset 0 1px rgba(255,255,255,.025);
 }
 
 .result h1,
@@ -249,7 +519,7 @@ button:disabled{
 
 .result strong{
   color:#caa5ff;
-  font-weight:700;
+  font-weight:800;
 }
 
 .result ul,
@@ -286,7 +556,7 @@ button:disabled{
 }
 
 .result pre{
-  background:#08070c;
+  background:#07060b;
   border:1px solid #292033;
   border-radius:12px;
   padding:15px;
@@ -337,7 +607,8 @@ button:disabled{
 }
 
 .result.error{
-  color:#ff9b9b;
+  color:var(--danger);
+  border-color:rgba(255,100,100,.2);
 }
 
 /* =========================
@@ -347,37 +618,43 @@ button:disabled{
 .followup{
   display:none;
   margin-top:24px;
-  padding:20px;
-  border-radius:18px;
+  padding:21px;
+  border-radius:19px;
   background:
     linear-gradient(
       135deg,
-      rgba(117,64,220,.12),
-      rgba(18,18,27,.8)
+      rgba(117,64,220,.13),
+      rgba(18,18,27,.82)
     );
   border:1px solid rgba(155,92,255,.2);
+  box-shadow:0 15px 45px rgba(0,0,0,.18);
 }
 
 .followup-title{
   font-size:18px;
-  font-weight:700;
+  font-weight:800;
 }
 
 .followup-subtitle{
   margin-top:6px;
   color:#8f8f9b;
   font-size:13px;
-  line-height:1.6;
+  line-height:1.65;
 }
 
 .ask-btn{
-  background:linear-gradient(135deg,#8f55e8,#6437bf);
+  background:linear-gradient(
+    135deg,
+    #8f55e8,
+    #6437bf
+  );
 }
 
 .ask-status{
-  margin-top:12px;
+  min-height:18px;
+  margin-top:11px;
   color:#aaa;
-  font-size:13px;
+  font-size:12px;
   text-align:center;
 }
 
@@ -387,34 +664,36 @@ button:disabled{
 
 .chat-history{
   display:none;
-  margin-top:24px;
+  margin-top:25px;
 }
 
 .chat-history-header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:10px;
-  margin-bottom:14px;
+  gap:12px;
+  margin-bottom:15px;
 }
 
 .chat-history-title{
-  font-size:18px;
-  font-weight:700;
+  font-size:19px;
+  font-weight:800;
 }
 
 .clear-btn{
   width:auto;
   margin:0;
   padding:8px 12px;
-  background:#17111f;
+  background:#15101e;
   border:1px solid #342744;
   color:#c9a9f7;
   font-size:12px;
+  box-shadow:none;
 }
 
 .clear-btn:hover{
   background:#21162d;
+  box-shadow:none;
 }
 
 .chat-empty{
@@ -427,27 +706,29 @@ button:disabled{
 }
 
 .chat-item{
-  margin-bottom:18px;
+  margin-bottom:20px;
+  animation:fadeUp .3s ease both;
 }
 
 .chat-user{
-  background:linear-gradient(
-    135deg,
-    rgba(168,102,255,.18),
-    rgba(117,64,220,.08)
-  );
+  background:
+    linear-gradient(
+      135deg,
+      rgba(168,102,255,.18),
+      rgba(117,64,220,.07)
+    );
   border:1px solid rgba(168,102,255,.2);
-  border-radius:16px 16px 4px 16px;
-  padding:14px 16px;
+  border-radius:17px 17px 5px 17px;
+  padding:15px 16px;
   margin-left:10%;
 }
 
 .chat-user-label,
 .chat-ai-label{
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:.6px;
-  margin-bottom:7px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.7px;
+  margin-bottom:8px;
 }
 
 .chat-user-label{
@@ -460,7 +741,7 @@ button:disabled{
 
 .chat-user-text{
   color:#eeeaf4;
-  line-height:1.6;
+  line-height:1.65;
   font-size:14px;
   white-space:pre-wrap;
   word-break:break-word;
@@ -470,9 +751,10 @@ button:disabled{
   margin-top:10px;
   background:#0d0b13;
   border:1px solid #292033;
-  border-radius:4px 16px 16px 16px;
+  border-radius:5px 17px 17px 17px;
   padding:18px;
   margin-right:5%;
+  box-shadow:inset 0 1px rgba(255,255,255,.02);
 }
 
 .chat-ai .result{
@@ -481,6 +763,19 @@ button:disabled{
   padding:0;
   border:0;
   background:transparent;
+  box-shadow:none;
+}
+
+/* =========================
+   FOOTER NOTE
+========================= */
+
+.security-note{
+  margin-top:22px;
+  text-align:center;
+  color:#6f6c77;
+  font-size:11px;
+  line-height:1.6;
 }
 
 /* =========================
@@ -498,21 +793,52 @@ button:disabled{
     font-size:17px;
   }
 
+  .online{
+    display:none;
+  }
+
+  .back{
+    font-size:12px;
+  }
+
   .wrap{
-    padding:40px 15px 70px;
+    padding:40px 14px 70px;
+  }
+
+  .hero h1{
+    letter-spacing:-1.8px;
+  }
+
+  .lead{
+    font-size:13px;
   }
 
   .upload-card{
-    padding:18px;
+    margin-top:27px;
+    padding:16px;
+    border-radius:21px;
   }
 
   .drop-zone{
-    padding:32px 15px;
+    padding:34px 14px;
+    border-radius:17px;
+  }
+
+  .icon{
+    font-size:42px;
+  }
+
+  .drop-zone h2{
+    font-size:18px;
   }
 
   .result{
     padding:17px;
     font-size:14px;
+  }
+
+  .result h1{
+    font-size:22px;
   }
 
   .result h2{
@@ -528,7 +854,7 @@ button:disabled{
   }
 
   .chat-user{
-    margin-left:3%;
+    margin-left:2%;
   }
 
   .chat-ai{
@@ -537,6 +863,26 @@ button:disabled{
 
   .chat-history-header{
     align-items:flex-start;
+  }
+
+  .clear-btn{
+    font-size:11px;
+  }
+
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation:none !important;
+    transition:none !important;
+    scroll-behavior:auto !important;
   }
 
 }
@@ -552,27 +898,41 @@ button:disabled{
     RAAZ <span>AI HUB</span>
   </div>
 
-  <a class="back" href="/">
-    ← Home
-  </a>
+  <div class="header-right">
+
+    <div class="online">
+      <span class="online-dot"></span>
+      AI ONLINE
+    </div>
+
+    <a class="back" href="/">
+      ← Home
+    </a>
+
+  </div>
 
 </header>
 
 
 <main class="wrap">
 
-  <span class="badge">
-    📚 PDF & PHOTO TUTOR
-  </span>
+  <section class="hero">
 
-  <h1>
-    Learn From Your <span>Books</span>
-  </h1>
+    <span class="badge">
+      📚 PDF & PHOTO TUTOR
+    </span>
 
-  <p class="lead">
-    Upload a PDF or a photo of your study material and let RAAZ AI
-    summarise, explain and turn it into useful study material.
-  </p>
+    <h1>
+      Learn From Your <span>Books</span>
+    </h1>
+
+    <p class="lead">
+      Upload a PDF or photo of your study material and let
+      RAAZ AI summarise, explain and turn it into useful
+      study material.
+    </p>
+
+  </section>
 
 
   <div class="upload-card">
@@ -586,15 +946,21 @@ button:disabled{
       onclick="document.getElementById('fileInput').click()"
     >
 
-      <div class="icon">📄</div>
+      <div class="icon">
+        📄
+      </div>
 
       <h2>
         Upload PDF or Photo
       </h2>
 
       <p>
-        Tap here to choose PDF, JPG, JPEG, PNG or WEBP.
+        Tap here to choose your study material.
       </p>
+
+      <span class="upload-hint">
+        PDF • JPG • JPEG • PNG • WEBP • Max 20 MB
+      </span>
 
       <input
         id="fileInput"
@@ -606,12 +972,19 @@ button:disabled{
     </div>
 
 
-    <div id="fileName" class="file-name"></div>
+    <div
+      id="fileName"
+      class="file-name"
+    ></div>
 
 
     <!-- =========================
          ACTION
     ========================= -->
+
+    <label class="field-label">
+      What should RAAZ AI do?
+    </label>
 
     <select id="action">
 
@@ -642,6 +1015,10 @@ button:disabled{
     </select>
 
 
+    <label class="field-label">
+      Extra instruction
+    </label>
+
     <textarea
       id="instruction"
       rows="4"
@@ -658,21 +1035,30 @@ button:disabled{
     </button>
 
 
-    <div id="status" class="status"></div>
+    <div
+      id="status"
+      class="status"
+    ></div>
 
 
     <!-- =========================
          MAIN RESULT
     ========================= -->
 
-    <div id="result" class="result"></div>
+    <div
+      id="result"
+      class="result"
+    ></div>
 
 
     <!-- =========================
          FOLLOW UP
     ========================= -->
 
-    <div id="followup" class="followup">
+    <div
+      id="followup"
+      class="followup"
+    >
 
       <div class="followup-title">
         💬 Ask About This Material
@@ -709,7 +1095,10 @@ button:disabled{
          CHAT HISTORY
     ========================= -->
 
-    <div id="chatHistory" class="chat-history">
+    <div
+      id="chatHistory"
+      class="chat-history"
+    >
 
       <div class="chat-history-header">
 
@@ -731,6 +1120,11 @@ button:disabled{
 
     </div>
 
+
+    <div class="security-note">
+      🔒 Your document is used for the current AI analysis.
+    </div>
+
   </div>
 
 </main>
@@ -739,11 +1133,6 @@ button:disabled{
 <script>
 
 let selectedFile = null;
-
-/*
-  Stores the current document conversation
-  in browser memory.
-*/
 
 let chatHistory = [];
 
@@ -778,6 +1167,12 @@ function fileSelected(){
   const chatHistoryBox =
     document.getElementById("chatHistory");
 
+  const questionBox =
+    document.getElementById("question");
+
+  const askStatus =
+    document.getElementById("askStatus");
+
 
   result.style.display = "none";
 
@@ -788,6 +1183,10 @@ function fileSelected(){
   chatHistoryBox.style.display = "none";
 
   status.textContent = "";
+
+  askStatus.textContent = "";
+
+  questionBox.value = "";
 
   clearChat();
 
@@ -866,17 +1265,21 @@ function formatSize(bytes){
 
   if(bytes < 1024 * 1024){
 
-    return (bytes / 1024).toFixed(1) + " KB";
+    return (
+      bytes / 1024
+    ).toFixed(1) + " KB";
 
   }
 
-  return (bytes / (1024 * 1024)).toFixed(2) + " MB";
+  return (
+    bytes / (1024 * 1024)
+  ).toFixed(2) + " MB";
 
 }
 
 
 /* =========================
-   MARKDOWN RENDER
+   MARKDOWN
 ========================= */
 
 function renderMarkdown(text, element){
@@ -889,15 +1292,17 @@ function renderMarkdown(text, element){
     element.textContent = text;
 
     return;
-
   }
 
 
   const html =
-    marked.parse(text,{
-      breaks:true,
-      gfm:true
-    });
+    marked.parse(
+      text,
+      {
+        breaks:true,
+        gfm:true
+      }
+    );
 
 
   element.innerHTML =
@@ -907,7 +1312,7 @@ function renderMarkdown(text, element){
 
 
 /* =========================
-   ANALYZE FILE
+   ANALYZE
 ========================= */
 
 async function analyzeFile(){
@@ -921,7 +1326,10 @@ async function analyzeFile(){
     document.getElementById("action").value;
 
   const instruction =
-    document.getElementById("instruction").value.trim();
+    document
+      .getElementById("instruction")
+      .value
+      .trim();
 
   const status =
     document.getElementById("status");
@@ -1042,10 +1450,6 @@ async function analyzeFile(){
       ".";
 
 
-    /*
-      Start a fresh chat for this document.
-    */
-
     chatHistory = [];
 
 
@@ -1154,18 +1558,14 @@ async function askQuestion(){
     );
 
 
-    /*
-      Include previous conversation context
-      so the AI can understand follow-up questions.
-    */
-
     const previousConversation =
       chatHistory
-        .map(item =>
-          "Student: " +
-          item.question +
-          "\nRAAZ AI: " +
-          item.answer
+        .map(
+          item =>
+            "Student: " +
+            item.question +
+            "\nRAAZ AI: " +
+            item.answer
         )
         .join("\n\n");
 
@@ -1247,10 +1647,6 @@ Use headings, bullet points and examples when useful.
       "RAAZ AI did not return an answer.";
 
 
-    /*
-      Save conversation.
-    */
-
     chatHistory.push({
       question:question,
       answer:reply
@@ -1275,10 +1671,10 @@ Use headings, bullet points and examples when useful.
 
     setTimeout(() => {
 
-      const chatHistoryBox =
+      const historyBox =
         document.getElementById("chatHistory");
 
-      chatHistoryBox.scrollIntoView({
+      historyBox.scrollIntoView({
         behavior:"smooth",
         block:"start"
       });
@@ -1311,7 +1707,7 @@ Use headings, bullet points and examples when useful.
 
 
 /* =========================
-   RENDER CHAT HISTORY
+   CHAT HISTORY
 ========================= */
 
 function renderChatHistory(){
@@ -1341,7 +1737,7 @@ function renderChatHistory(){
 
 
   chatHistory.forEach(
-    (item,index) => {
+    item => {
 
       const chatItem =
         document.createElement("div");
@@ -1350,7 +1746,7 @@ function renderChatHistory(){
         "chat-item";
 
 
-      /* USER MESSAGE */
+      /* USER */
 
       const user =
         document.createElement("div");
@@ -1388,7 +1784,7 @@ function renderChatHistory(){
       );
 
 
-      /* AI MESSAGE */
+      /* AI */
 
       const ai =
         document.createElement("div");
