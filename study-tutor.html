@@ -23,7 +23,14 @@ window.MathJax = {
     ]
   },
   options: {
-    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    skipHtmlTags: [
+      'script',
+      'noscript',
+      'style',
+      'textarea',
+      'pre',
+      'code'
+    ]
   }
 };
 </script>
@@ -34,15 +41,20 @@ window.MathJax = {
 </script>
 
 <style>
+
 :root{
-  --bg:#07070b;
-  --card:#12121b;
-  --card2:#0d0b13;
+  --bg:#06060a;
+  --bg2:#0a0910;
+  --card:rgba(17,16,25,.72);
+  --card2:#0e0c15;
   --border:rgba(255,255,255,.09);
-  --light:#c49aff;
+  --border2:rgba(151,91,255,.28);
   --purple:#8b4dff;
-  --text:#fff;
-  --muted:#9999a5;
+  --purple2:#b66cff;
+  --light:#d2b4ff;
+  --text:#ffffff;
+  --muted:#9694a2;
+  --muted2:#777582;
 }
 
 *{
@@ -51,37 +63,151 @@ window.MathJax = {
   padding:0;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
-  font-family:Inter,Arial,sans-serif;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
   background:
     radial-gradient(
       circle at 50% -10%,
-      rgba(132,65,255,.2),
-      transparent 35%
+      rgba(137,67,255,.22),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 0% 55%,
+      rgba(105,45,190,.09),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 100% 75%,
+      rgba(156,75,255,.07),
+      transparent 30%
     ),
     var(--bg);
+
   color:var(--text);
   min-height:100vh;
+  overflow-x:hidden;
 }
+
+/* Background grid */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
+
+  background-size:45px 45px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 85%
+    );
+
+  pointer-events:none;
+  z-index:-2;
+}
+
+/* Ambient glow */
+
+body::after{
+  content:"";
+  position:fixed;
+
+  width:420px;
+  height:420px;
+
+  top:120px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  background:rgba(128,61,255,.10);
+
+  filter:blur(100px);
+
+  border-radius:50%;
+
+  pointer-events:none;
+  z-index:-1;
+}
+
+/* Header */
 
 header{
   height:70px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   padding:0 6%;
-  background:rgba(7,7,11,.8);
-  backdrop-filter:blur(18px);
+
+  background:rgba(6,6,10,.72);
+
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+
   border-bottom:1px solid rgba(255,255,255,.07);
+
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:100;
 }
 
 .logo{
-  font-size:20px;
-  font-weight:800;
+  display:flex;
+  align-items:center;
+  gap:9px;
+
+  font-size:19px;
+  font-weight:900;
+
   letter-spacing:1.5px;
+}
+
+.logo-icon{
+  width:32px;
+  height:32px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #a96aff,
+      #6532d8
+    );
+
+  box-shadow:
+    0 0 25px rgba(139,77,255,.35);
+
+  font-size:15px;
 }
 
 .logo span{
@@ -89,154 +215,561 @@ header{
 }
 
 .back{
-  color:#c49aff;
+  display:flex;
+  align-items:center;
+  gap:7px;
+
+  color:#c8a5ff;
+
   text-decoration:none;
+
   font-size:13px;
+  font-weight:700;
+
+  padding:9px 13px;
+
+  border:1px solid rgba(155,92,255,.18);
+  border-radius:10px;
+
+  background:rgba(139,77,255,.05);
+
+  transition:.25s;
 }
 
+.back:hover{
+  color:#fff;
+
+  background:rgba(139,77,255,.12);
+
+  border-color:rgba(155,92,255,.38);
+
+  transform:translateY(-1px);
+}
+
+/* Main */
+
 .wrap{
-  max-width:1000px;
+  width:min(1050px,92%);
+
   margin:auto;
-  padding:55px 20px 80px;
+
+  padding:
+    65px 0
+    90px;
+}
+
+/* Hero */
+
+.hero{
+  text-align:center;
+  max-width:800px;
+  margin:0 auto;
 }
 
 .badge{
-  display:inline-block;
-  padding:8px 13px;
-  border:1px solid rgba(155,92,255,.3);
-  border-radius:30px;
-  color:#c8a7ff;
-  background:rgba(155,92,255,.08);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+
+  padding:8px 14px;
+
+  border:1px solid rgba(155,92,255,.30);
+
+  border-radius:999px;
+
+  color:#d0b2ff;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(155,92,255,.11),
+      rgba(139,77,255,.04)
+    );
+
   font-size:11px;
-  font-weight:700;
-  letter-spacing:.8px;
+  font-weight:800;
+
+  letter-spacing:1px;
+
+  box-shadow:
+    0 0 30px rgba(139,77,255,.06);
+}
+
+.badge-dot{
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:#a66aff;
+
+  box-shadow:
+    0 0 10px rgba(166,106,255,.9);
+
+  animation:pulse 1.8s infinite;
+}
+
+@keyframes pulse{
+
+  0%,100%{
+    opacity:1;
+    transform:scale(1);
+  }
+
+  50%{
+    opacity:.45;
+    transform:scale(.75);
+  }
+
 }
 
 h1{
-  font-size:clamp(34px,7vw,58px);
-  margin:18px 0 12px;
-  letter-spacing:-2px;
+  font-size:
+    clamp(38px,7vw,64px);
+
+  line-height:1.02;
+
+  margin:
+    22px 0
+    16px;
+
+  letter-spacing:-3px;
 }
 
 h1 span{
-  background:linear-gradient(90deg,#fff,#bd91ff,#9250ff);
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff 0%,
+      #d0a7ff 45%,
+      #8d4eff 100%
+    );
+
   -webkit-background-clip:text;
+  background-clip:text;
+
   -webkit-text-fill-color:transparent;
+
+  background-size:200% auto;
+
+  animation:gradientMove 5s linear infinite;
+}
+
+@keyframes gradientMove{
+
+  to{
+    background-position:200% center;
+  }
+
 }
 
 .lead{
   color:var(--muted);
-  line-height:1.7;
-  max-width:700px;
+
+  line-height:1.75;
+
+  max-width:680px;
+
+  margin:auto;
+
+  font-size:15px;
 }
 
+/* Tutor card */
+
 .card{
-  background:rgba(18,18,27,.75);
+  position:relative;
+
+  margin-top:38px;
+
+  padding:28px;
+
+  border-radius:24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(24,21,34,.82),
+      rgba(10,9,14,.82)
+    );
+
   border:1px solid var(--border);
-  border-radius:20px;
-  padding:24px;
-  margin-top:30px;
+
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.035);
+
+  overflow:hidden;
 }
+
+.card::before{
+  content:"";
+
+  position:absolute;
+
+  width:280px;
+  height:280px;
+
+  top:-180px;
+  right:-120px;
+
+  background:rgba(139,77,255,.12);
+
+  filter:blur(70px);
+
+  border-radius:50%;
+
+  pointer-events:none;
+}
+
+.card-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:15px;
+
+  margin-bottom:25px;
+}
+
+.card-title{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.card-icon{
+  width:42px;
+  height:42px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(166,106,255,.20),
+      rgba(109,55,207,.12)
+    );
+
+  border:1px solid rgba(166,106,255,.20);
+
+  font-size:20px;
+}
+
+.card-title h2{
+  font-size:17px;
+}
+
+.card-title p{
+  color:var(--muted2);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.online{
+  display:flex;
+  align-items:center;
+  gap:7px;
+
+  color:#bfa3df;
+
+  font-size:11px;
+  font-weight:700;
+
+  padding:7px 10px;
+
+  border-radius:999px;
+
+  background:rgba(139,77,255,.06);
+
+  border:1px solid rgba(139,77,255,.14);
+}
+
+.online-dot{
+  width:6px;
+  height:6px;
+
+  border-radius:50%;
+
+  background:#a66aff;
+
+  box-shadow:
+    0 0 9px rgba(166,106,255,.8);
+}
+
+/* Form */
 
 label{
   display:block;
-  font-size:14px;
-  font-weight:700;
+
+  font-size:13px;
+  font-weight:800;
+
+  color:#e9e6ef;
+
   margin-top:5px;
 }
 
 select,
-textarea,
-button{
+textarea{
   width:100%;
-  border:1px solid #30243d;
-  background:#15101f;
+
+  border:1px solid #30253d;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(24,17,34,.96),
+      rgba(15,12,22,.96)
+    );
+
   color:#fff;
-  border-radius:12px;
-  padding:13px;
+
+  border-radius:14px;
+
+  padding:14px;
+
   margin-top:10px;
+
   font:inherit;
+
   outline:none;
+
+  transition:
+    border-color .25s,
+    box-shadow .25s,
+    background .25s;
+}
+
+select{
+  cursor:pointer;
+  appearance:auto;
+}
+
+select:hover,
+textarea:hover{
+  border-color:#453457;
 }
 
 select:focus,
 textarea:focus{
   border-color:#8b4dff;
+
+  box-shadow:
+    0 0 0 3px rgba(139,77,255,.10),
+    0 0 25px rgba(139,77,255,.06);
 }
 
 textarea{
   resize:vertical;
-  min-height:130px;
+
+  min-height:145px;
+
+  line-height:1.6;
 }
+
+textarea::placeholder{
+  color:#65616d;
+}
+
+/* Buttons */
 
 .buttons{
   display:grid;
+
   grid-template-columns:1fr 150px;
+
   gap:10px;
+
+  margin-top:15px;
 }
 
 button{
-  background:linear-gradient(135deg,#a866ff,#7540dc);
+  width:100%;
+
   border:0;
-  font-weight:700;
+
+  color:#fff;
+
+  border-radius:13px;
+
+  padding:14px;
+
+  font:inherit;
+
+  font-weight:800;
+
   cursor:pointer;
-  transition:.2s;
+
+  position:relative;
+
+  overflow:hidden;
+
+  transition:
+    transform .2s,
+    box-shadow .2s,
+    opacity .2s;
 }
 
-button:hover{
-  transform:translateY(-1px);
-  opacity:.95;
+button::after{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:-120%;
+
+  width:70%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.20),
+      transparent
+    );
+
+  transform:skewX(-20deg);
+
+  transition:.6s;
+}
+
+button:hover::after{
+  left:140%;
+}
+
+#teachBtn{
+  background:
+    linear-gradient(
+      135deg,
+      #a867ff,
+      #7540dc
+    );
+
+  box-shadow:
+    0 10px 30px rgba(118,64,220,.20);
+}
+
+#teachBtn:hover{
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 14px 35px rgba(118,64,220,.30);
+}
+
+.clear-btn{
+  background:#17131e;
+
+  border:1px solid #332840;
+
+  color:#c9bfd5;
+}
+
+.clear-btn:hover{
+  transform:translateY(-2px);
+
+  background:#1e1828;
+
+  border-color:#4a375b;
+
+  color:#fff;
 }
 
 button:disabled{
   opacity:.6;
   cursor:not-allowed;
-  transform:none;
+  transform:none !important;
 }
 
-.clear-btn{
-  background:#191421;
-  border:1px solid #30243d;
-}
+/* Status */
 
 .status{
   display:none;
+
   margin-top:18px;
-  padding:13px;
-  border-radius:12px;
-  background:#100d17;
-  border:1px solid #292033;
-  color:#bca8d3;
+
+  padding:13px 15px;
+
+  border-radius:13px;
+
+  background:
+    rgba(139,77,255,.055);
+
+  border:1px solid rgba(139,77,255,.14);
+
+  color:#c6b5d8;
+
   font-size:13px;
+
+  animation:statusPulse 1.5s infinite alternate;
 }
+
+@keyframes statusPulse{
+
+  from{
+    opacity:.65;
+  }
+
+  to{
+    opacity:1;
+  }
+
+}
+
+/* Result */
 
 .result{
   display:none;
-  margin-top:18px;
-  padding:20px;
-  border-radius:15px;
-  background:#0d0b13;
+
+  margin-top:20px;
+
+  padding:22px;
+
+  border-radius:17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #100d16,
+      #0b0a0f
+    );
+
   border:1px solid #292033;
-  line-height:1.7;
-  color:#eee;
+
+  line-height:1.75;
+
+  color:#eeeeF2;
+
   overflow-wrap:anywhere;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.025);
 }
 
-/* Markdown */
+/* Result heading */
 
 .result h1,
 .result h2,
 .result h3{
-  margin:18px 0 8px;
+  margin:21px 0 9px;
+
   letter-spacing:normal;
+
+  color:#fff;
 }
 
 .result h1{
-  font-size:25px;
+  font-size:26px;
 }
 
 .result h2{
   font-size:21px;
+
+  color:#d7b8ff;
 }
 
 .result h3{
@@ -249,36 +782,89 @@ button:disabled{
 
 .result ul,
 .result ol{
-  margin:10px 0 10px 22px;
+  margin:
+    10px 0
+    10px 23px;
 }
 
 .result li{
-  margin:5px 0;
+  margin:6px 0;
 }
 
 .result strong{
-  color:#d0adff;
+  color:#d4b1ff;
+}
+
+.result a{
+  color:#b88aff;
+}
+
+.result hr{
+  border:0;
+
+  border-top:1px solid #292033;
+
+  margin:20px 0;
 }
 
 .result code{
   background:#191321;
-  padding:3px 6px;
+
+  border:1px solid #292033;
+
+  padding:3px 7px;
+
   border-radius:6px;
+
   font-size:90%;
 }
 
 .result pre{
-  background:#09080d;
+  background:#08070b;
+
   border:1px solid #27202f;
+
   padding:15px;
-  border-radius:10px;
+
+  border-radius:11px;
+
   overflow-x:auto;
-  margin:12px 0;
+
+  margin:13px 0;
 }
 
 .result pre code{
   background:none;
+  border:0;
   padding:0;
+}
+
+/* Tables */
+
+.result table{
+  width:100%;
+
+  border-collapse:collapse;
+
+  margin:15px 0;
+
+  overflow:hidden;
+
+  border:1px solid #292033;
+}
+
+.result th,
+.result td{
+  border:1px solid #292033;
+
+  padding:9px 11px;
+
+  text-align:left;
+}
+
+.result th{
+  background:#17121f;
+  color:#d4b1ff;
 }
 
 /* Maths */
@@ -289,43 +875,92 @@ button:disabled{
 
 .result mjx-container[display="true"]{
   margin:18px 0 !important;
+
   overflow-x:auto;
   overflow-y:hidden;
+
   padding:5px 0;
 }
 
-.empty{
-  color:#999;
-  text-align:center;
-  padding:20px;
-}
+/* Features */
 
 .features{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+
+  grid-template-columns:
+    repeat(3,1fr);
+
   gap:12px;
+
   margin-top:18px;
 }
 
 .feature{
-  padding:15px;
-  border-radius:13px;
-  background:#0e0c13;
+  position:relative;
+
+  padding:17px;
+
+  border-radius:15px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17,14,23,.95),
+      rgba(12,10,16,.95)
+    );
+
   border:1px solid #27202f;
+
+  transition:
+    transform .25s,
+    border-color .25s,
+    background .25s;
+}
+
+.feature:hover{
+  transform:translateY(-4px);
+
+  border-color:#4a3560;
+
+  background:#15111d;
+}
+
+.feature-icon{
+  font-size:20px;
+  margin-bottom:10px;
 }
 
 .feature b{
   display:block;
-  margin-bottom:5px;
+
+  margin-bottom:6px;
+
+  font-size:13px;
 }
 
 .feature span{
   color:#888792;
+
   font-size:12px;
-  line-height:1.5;
+
+  line-height:1.55;
 }
 
-@media(max-width:650px){
+/* Tip */
+
+.tip{
+  margin-top:14px;
+
+  text-align:center;
+
+  color:#66636e;
+
+  font-size:11px;
+}
+
+/* Mobile */
+
+@media(max-width:700px){
 
   header{
     height:62px;
@@ -333,15 +968,47 @@ button:disabled{
   }
 
   .logo{
-    font-size:17px;
+    font-size:16px;
+  }
+
+  .logo-icon{
+    width:29px;
+    height:29px;
+    border-radius:9px;
+  }
+
+  .back{
+    font-size:12px;
+    padding:8px 10px;
   }
 
   .wrap{
-    padding:40px 15px 70px;
+    width:92%;
+    padding:
+      45px 0
+      65px;
+  }
+
+  h1{
+    letter-spacing:-2px;
+  }
+
+  .lead{
+    font-size:14px;
   }
 
   .card{
     padding:18px;
+
+    border-radius:20px;
+  }
+
+  .card-top{
+    align-items:flex-start;
+  }
+
+  .online{
+    font-size:10px;
   }
 
   .buttons{
@@ -351,35 +1018,152 @@ button:disabled{
   .features{
     grid-template-columns:1fr;
   }
+
+  .result{
+    padding:17px;
+  }
+
+  .result table{
+    display:block;
+    overflow-x:auto;
+  }
+
 }
+
+/* Small phones */
+
+@media(max-width:400px){
+
+  .wrap{
+    width:94%;
+  }
+
+  .card{
+    padding:15px;
+  }
+
+  .card-title h2{
+    font-size:15px;
+  }
+
+  .card-title p{
+    font-size:11px;
+  }
+
+  .online{
+    display:none;
+  }
+
+}
+
+/* Accessibility */
+
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible{
+  outline:2px solid #a96aff;
+  outline-offset:3px;
+}
+
+/* Reduced motion */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    scroll-behavior:auto !important;
+    transition-duration:.01ms !important;
+  }
+
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo">RAAZ <span>AI HUB</span></div>
-  <a class="back" href="/">← Home</a>
+
+  <div class="logo">
+
+    <div class="logo-icon">
+      ✦
+    </div>
+
+    <div>
+      RAAZ <span>AI HUB</span>
+    </div>
+
+  </div>
+
+  <a class="back" href="/">
+    ← Home
+  </a>
+
 </header>
+
 
 <main class="wrap">
 
-  <span class="badge">🎓 AI STUDY TUTOR</span>
+  <section class="hero">
 
-  <h1>
-    Learn <span>Step by Step</span>
-  </h1>
+    <span class="badge">
+      <span class="badge-dot"></span>
+      🎓 AI STUDY TUTOR
+    </span>
 
-  <p class="lead">
-    Choose a subject, enter your topic or question, and RAAZ AI will teach
-    you like a personal tutor.
-  </p>
+    <h1>
+      Learn <span>Step by Step</span>
+    </h1>
 
-  <div class="card">
+    <p class="lead">
+      Choose a subject, enter your topic or question, and
+      RAAZ AI will teach you like a personal tutor.
+    </p>
 
-    <label>📚 Select Subject</label>
+  </section>
+
+
+  <section class="card">
+
+    <div class="card-top">
+
+      <div class="card-title">
+
+        <div class="card-icon">
+          🧠
+        </div>
+
+        <div>
+
+          <h2>Personal AI Tutor</h2>
+
+          <p>
+            Ask anything. Learn clearly.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div class="online">
+        <span class="online-dot"></span>
+        AI ONLINE
+      </div>
+
+    </div>
+
+
+    <label>
+      📚 Select Subject
+    </label>
 
     <select id="subject">
+
       <option>Mathematics</option>
       <option>Physics</option>
       <option>Chemistry</option>
@@ -395,7 +1179,9 @@ button:disabled{
       <option>ITI</option>
       <option>General Knowledge</option>
       <option>Other</option>
+
     </select>
+
 
     <label style="margin-top:20px">
       🧠 What do you want to learn?
@@ -406,60 +1192,123 @@ button:disabled{
       placeholder="Example: Solve 2x + 5 = 10 step by step..."
     ></textarea>
 
+
     <div class="buttons">
 
-      <button id="teachBtn" onclick="teach()">
+      <button
+        id="teachBtn"
+        onclick="teach()"
+      >
         🎓 Teach Me →
       </button>
 
-      <button class="clear-btn" onclick="clearTutor()">
+      <button
+        class="clear-btn"
+        onclick="clearTutor()"
+      >
         🗑️ Clear
       </button>
 
     </div>
 
-    <div id="status" class="status">
+
+    <div
+      id="status"
+      class="status"
+    >
       🤖 RAAZ AI is preparing your lesson...
     </div>
 
-    <div id="result" class="result"></div>
+
+    <div
+      id="result"
+      class="result"
+    ></div>
+
 
     <div class="features">
 
       <div class="feature">
-        <b>🧠 Simple Explanation</b>
+
+        <div class="feature-icon">
+          🧠
+        </div>
+
+        <b>
+          Simple Explanation
+        </b>
+
         <span>
-          Difficult concepts explained in easy student-friendly language.
+          Difficult concepts explained in easy
+          student-friendly language.
         </span>
+
       </div>
 
-      <div class="feature">
-        <b>📝 Step-by-Step</b>
-        <span>
-          Problems and topics broken into understandable steps.
-        </span>
-      </div>
 
       <div class="feature">
-        <b>💡 Examples</b>
+
+        <div class="feature-icon">
+          📝
+        </div>
+
+        <b>
+          Step-by-Step
+        </b>
+
         <span>
-          Practical examples to help you understand the concept better.
+          Problems and topics broken into
+          understandable steps.
         </span>
+
+      </div>
+
+
+      <div class="feature">
+
+        <div class="feature-icon">
+          💡
+        </div>
+
+        <b>
+          Examples
+        </b>
+
+        <span>
+          Practical examples to help you
+          understand the concept better.
+        </span>
+
       </div>
 
     </div>
 
-  </div>
+
+    <div class="tip">
+      💡 Tip: Press Ctrl + Enter to teach quickly.
+    </div>
+
+  </section>
 
 </main>
 
+
 <script>
 
-const subject = document.getElementById("subject");
-const question = document.getElementById("question");
-const result = document.getElementById("result");
-const statusBox = document.getElementById("status");
-const teachBtn = document.getElementById("teachBtn");
+const subject =
+  document.getElementById("subject");
+
+const question =
+  document.getElementById("question");
+
+const result =
+  document.getElementById("result");
+
+const statusBox =
+  document.getElementById("status");
+
+const teachBtn =
+  document.getElementById("teachBtn");
 
 
 async function renderMath(){
@@ -489,29 +1338,46 @@ async function renderMath(){
 
 async function teach(){
 
-  const q = question.value.trim();
-  const s = subject.value;
+  const q =
+    question.value.trim();
+
+  const s =
+    subject.value;
+
 
   if(!q){
 
     result.style.display = "block";
 
     result.innerHTML = `
-      <div class="empty">
+      <div style="
+        text-align:center;
+        color:#aaa;
+        padding:20px;
+      ">
         🧠 Please enter a topic or question first.
       </div>
     `;
+
+    question.focus();
 
     return;
   }
 
 
   teachBtn.disabled = true;
-  teachBtn.textContent = "⏳ Teaching...";
 
-  result.style.display = "none";
+  teachBtn.textContent =
+    "⏳ Teaching...";
 
-  statusBox.style.display = "block";
+
+  result.style.display =
+    "none";
+
+
+  statusBox.style.display =
+    "block";
+
 
   statusBox.textContent =
     "🤖 RAAZ AI is preparing your lesson...";
@@ -599,65 +1465,74 @@ ${q}
 
   try{
 
-    const response = await fetch("/api/chat",{
+    const response =
+      await fetch(
+        "/api/chat",
+        {
+          method:"POST",
 
-      method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
 
-      headers:{
-        "Content-Type":"application/json"
-      },
+          body:JSON.stringify({
 
-      body:JSON.stringify({
+            subject:s,
 
-        subject:s,
+            message:tutorPrompt
 
-        message:tutorPrompt
+          })
 
-      })
-
-    });
+        }
+      );
 
 
-    const data = await response.json();
+    const data =
+      await response.json();
 
 
     if(!response.ok){
 
       throw new Error(
-        data.error || "AI response failed."
+        data.error ||
+        "AI response failed."
       );
 
     }
 
 
     const reply =
-      data.reply || "No response received.";
+      data.reply ||
+      "No response received.";
 
 
-    statusBox.style.display = "none";
+    statusBox.style.display =
+      "none";
 
-    result.style.display = "block";
+
+    result.style.display =
+      "block";
 
 
     if(window.marked){
 
-      result.innerHTML = marked.parse(reply);
+      result.innerHTML =
+        marked.parse(reply);
 
     }else{
 
-      result.textContent = reply;
+      result.textContent =
+        reply;
 
     }
 
 
-    /*
-      Wait a tiny moment so the browser has inserted
-      the Markdown HTML before MathJax scans it.
-    */
-
-    await new Promise(resolve =>
-      setTimeout(resolve, 50)
+    await new Promise(
+      resolve =>
+        setTimeout(resolve,50)
     );
+
 
     await renderMath();
 
@@ -672,22 +1547,51 @@ ${q}
 
     console.error(error);
 
-    statusBox.style.display = "none";
 
-    result.style.display = "block";
+    statusBox.style.display =
+      "none";
+
+
+    result.style.display =
+      "block";
+
 
     result.innerHTML = `
-      <div class="empty">
-        ❌ Something went wrong.<br><br>
-        Please try again in a moment.
+      <div style="
+        text-align:center;
+        color:#aaa;
+        padding:20px;
+      ">
+
+        <div style="
+          font-size:30px;
+          margin-bottom:10px;
+        ">
+          ⚠️
+        </div>
+
+        <b style="color:#fff;">
+          Something went wrong
+        </b>
+
+        <div style="
+          margin-top:7px;
+          color:#888;
+          font-size:13px;
+        ">
+          Please try again in a moment.
+        </div>
+
       </div>
     `;
 
   }finally{
 
-    teachBtn.disabled = false;
+    teachBtn.disabled =
+      false;
 
-    teachBtn.textContent = "🎓 Teach Me →";
+    teachBtn.textContent =
+      "🎓 Teach Me →";
 
   }
 
@@ -696,31 +1600,41 @@ ${q}
 
 function clearTutor(){
 
-  question.value = "";
+  question.value =
+    "";
 
-  result.innerHTML = "";
+  result.innerHTML =
+    "";
 
-  result.style.display = "none";
+  result.style.display =
+    "none";
 
-  statusBox.style.display = "none";
+  statusBox.style.display =
+    "none";
 
   question.focus();
 
 }
 
 
-question.addEventListener("keydown",function(event){
+question.addEventListener(
+  "keydown",
+  function(event){
 
-  if(
-    event.key === "Enter" &&
-    (event.ctrlKey || event.metaKey)
-  ){
+    if(
+      event.key === "Enter" &&
+      (event.ctrlKey ||
+       event.metaKey)
+    ){
 
-    teach();
+      event.preventDefault();
+
+      teach();
+
+    }
 
   }
-
-});
+);
 
 </script>
 
