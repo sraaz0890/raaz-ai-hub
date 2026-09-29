@@ -8,12 +8,14 @@
 
 <style>
 :root{
-  --bg:#07070b;
-  --card:#12121b;
-  --border:rgba(255,255,255,.09);
-  --light:#c49aff;
+  --bg:#08040f;
+  --card:#15101f;
+  --card2:#110b19;
+  --border:rgba(255,255,255,.08);
+  --purple:#8b5cf6;
+  --light:#c084fc;
   --text:#fff;
-  --muted:#9999a5;
+  --muted:#9d93a7;
 }
 
 *{
@@ -22,183 +24,583 @@
   padding:0;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
-  font-family:Inter,Arial,sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
   background:
-    radial-gradient(circle at 50% -10%,rgba(132,65,255,.2),transparent 35%),
+    radial-gradient(circle at 15% 0%,rgba(124,58,237,.16),transparent 28%),
+    radial-gradient(circle at 85% 15%,rgba(168,85,247,.10),transparent 25%),
     var(--bg);
   color:var(--text);
   min-height:100vh;
+  overflow-x:hidden;
 }
 
+/* BACKGROUND GRID */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+
+  background:
+    linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+
+  background-size:45px 45px;
+
+  mask-image:linear-gradient(to bottom,black,transparent 85%);
+}
+
+/* HEADER */
+
 header{
-  height:70px;
+  height:68px;
+
+  display:flex;
+  align-items:center;
+
+  padding:0 24px;
+
+  background:rgba(9,5,16,.82);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  border-bottom:1px solid rgba(255,255,255,.07);
+
+  position:sticky;
+  top:0;
+  z-index:50;
+
+  box-shadow:0 8px 30px rgba(0,0,0,.18);
+}
+
+.header-inner{
+  width:100%;
+  max-width:1100px;
+  margin:auto;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 6%;
-  background:rgba(7,7,11,.8);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid rgba(255,255,255,.07);
-  position:sticky;
-  top:0;
-  z-index:10;
 }
 
 .logo{
+  display:flex;
+  align-items:center;
+  gap:9px;
+
   font-size:20px;
   font-weight:800;
-  letter-spacing:1.5px;
+  letter-spacing:.5px;
+}
+
+.logo-icon{
+  width:34px;
+  height:34px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:11px;
+
+  background:linear-gradient(135deg,#7c3aed,#c084fc);
+
+  box-shadow:0 0 22px rgba(139,92,246,.35);
+
+  font-size:17px;
 }
 
 .logo span{
-  color:var(--light);
+  background:linear-gradient(90deg,#a78bfa,#e879f9);
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
 
 .back{
-  color:#c49aff;
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  color:#c4b5fd;
+
   text-decoration:none;
+
   font-size:13px;
+  font-weight:600;
+
+  padding:9px 12px;
+
+  border:1px solid rgba(139,92,246,.18);
+  border-radius:10px;
+
+  background:rgba(139,92,246,.06);
+
+  transition:.2s ease;
 }
 
+.back:hover{
+  border-color:rgba(139,92,246,.45);
+  background:rgba(139,92,246,.12);
+  transform:translateY(-1px);
+}
+
+/* MAIN */
+
 .wrap{
+  position:relative;
+  z-index:2;
+
   max-width:1100px;
+
   margin:auto;
-  padding:55px 20px 80px;
+
+  padding:55px 20px 85px;
+}
+
+/* HERO */
+
+.hero{
+  animation:heroIn .7s ease both;
+}
+
+@keyframes heroIn{
+  from{
+    opacity:0;
+    transform:translateY(18px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
 .badge{
-  display:inline-block;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+
   padding:8px 13px;
-  border:1px solid rgba(155,92,255,.3);
+
+  border:1px solid rgba(155,92,255,.28);
+
   border-radius:30px;
+
   color:#c8a7ff;
-  background:rgba(155,92,255,.08);
+
+  background:rgba(155,92,255,.07);
+
   font-size:11px;
   font-weight:700;
   letter-spacing:.8px;
 }
 
 h1{
-  font-size:clamp(34px,7vw,58px);
+  font-size:clamp(35px,7vw,58px);
+
   margin:18px 0 12px;
+
   letter-spacing:-2px;
+
+  line-height:1.05;
 }
 
 h1 span{
-  background:linear-gradient(90deg,#fff,#bd91ff,#9250ff);
+  background:
+    linear-gradient(
+      90deg,
+      #fff,
+      #c084fc,
+      #8b5cf6,
+      #fff
+    );
+
+  background-size:200% auto;
+
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
+
+  animation:titleShine 5s linear infinite;
+}
+
+@keyframes titleShine{
+  to{
+    background-position:200% center;
+  }
 }
 
 .lead{
   color:var(--muted);
+
   line-height:1.7;
+
   max-width:700px;
+
+  font-size:15px;
 }
+
+/* TOOL GRID */
 
 .grid{
   display:grid;
+
   grid-template-columns:repeat(2,1fr);
-  gap:16px;
-  margin-top:32px;
+
+  gap:17px;
+
+  margin-top:34px;
 }
 
+/* CARD */
+
 .card{
-  background:rgba(18,18,27,.75);
+  position:relative;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(21,16,31,.94),
+      rgba(14,9,21,.94)
+    );
+
   border:1px solid var(--border);
+
   border-radius:20px;
-  padding:24px;
+
+  padding:23px;
+
+  overflow:hidden;
+
+  box-shadow:
+    0 15px 40px rgba(0,0,0,.14);
+
+  transition:
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.card::before{
+  content:"";
+
+  position:absolute;
+
+  top:-100px;
+  right:-100px;
+
+  width:200px;
+  height:200px;
+
+  border-radius:50%;
+
+  background:rgba(139,92,246,.07);
+
+  filter:blur(35px);
+
+  pointer-events:none;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+
+  border-color:rgba(139,92,246,.30);
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.25),
+    0 0 25px rgba(124,58,237,.05);
 }
 
 .card h2{
+  position:relative;
+  z-index:1;
+
   font-size:20px;
+
   margin-bottom:8px;
 }
 
 .card p{
-  color:#92929f;
+  position:relative;
+  z-index:1;
+
+  color:#918898;
+
   font-size:13px;
+
   line-height:1.6;
+
+  margin-bottom:3px;
 }
+
+/* INPUTS */
 
 input,
 textarea,
 select,
 button{
   width:100%;
+
   border:1px solid #30243d;
-  background:#15101f;
+
+  background:#110b19;
+
   color:#fff;
+
   border-radius:12px;
+
   padding:13px;
+
   margin-top:10px;
+
   font:inherit;
+
   outline:none;
+
+  transition:.2s ease;
 }
 
-textarea{
-  resize:vertical;
+input::placeholder,
+textarea::placeholder{
+  color:#716678;
 }
 
 input:focus,
 textarea:focus,
 select:focus{
-  border-color:#8d54e8;
+  border-color:#8b5cf6;
+
+  box-shadow:
+    0 0 0 3px rgba(139,92,246,.09);
 }
 
-button{
-  background:linear-gradient(135deg,#a866ff,#7540dc);
-  border:0;
-  font-weight:700;
+textarea{
+  resize:vertical;
+  min-height:90px;
+}
+
+select{
   cursor:pointer;
-  transition:.2s;
+}
+
+select option{
+  background:#15101f;
+  color:#fff;
+}
+
+/* BUTTON */
+
+button{
+  position:relative;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #a855f7
+    );
+
+  border:0;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  overflow:hidden;
+
+  box-shadow:
+    0 7px 20px rgba(109,40,217,.18);
+}
+
+button::after{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:-80%;
+
+  width:50%;
+  height:100%;
+
+  background:rgba(255,255,255,.18);
+
+  transform:skewX(-20deg);
+
+  transition:.5s;
+}
+
+button:hover::after{
+  left:130%;
 }
 
 button:hover{
-  transform:translateY(-1px);
-  opacity:.95;
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 10px 28px rgba(109,40,217,.30);
 }
 
-.result{
-  margin-top:15px;
-  padding:15px;
-  border-radius:13px;
-  background:#0d0b13;
-  border:1px solid #292033;
-  line-height:1.6;
-  white-space:pre-wrap;
-  word-break:break-word;
+button:active{
+  transform:scale(.98);
 }
+
+/* RESULT */
+
+.result{
+  position:relative;
+
+  margin-top:15px;
+
+  padding:15px;
+
+  border-radius:13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #0e0a14,
+      #0b0810
+    );
+
+  border:1px solid #292033;
+
+  line-height:1.6;
+
+  white-space:pre-wrap;
+
+  word-break:break-word;
+
+  color:#e8e1ed;
+
+  font-size:14px;
+
+  min-height:20px;
+}
+
+.result:not(:empty){
+  animation:resultIn .25s ease both;
+}
+
+@keyframes resultIn{
+  from{
+    opacity:0;
+    transform:translateY(4px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* SMALL BUTTON */
 
 .small-btn{
   margin-top:8px;
+
   padding:10px;
+
   font-size:13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #21152e,
+      #291a38
+    );
+
+  border:1px solid #3a2949;
 }
+
+.small-btn:hover{
+  background:
+    linear-gradient(
+      135deg,
+      #291a38,
+      #352044
+    );
+}
+
+/* DANGER */
 
 .danger{
   background:#26131b;
   border:1px solid #542638;
 }
 
-@media(max-width:650px){
+/* MOBILE */
+
+@media(max-width:700px){
+
   header{
-    height:62px;
-    padding:0 16px;
+    height:60px;
+    padding:0 14px;
   }
 
   .logo{
     font-size:17px;
   }
 
-  .grid{
-    grid-template-columns:1fr;
+  .logo-icon{
+    width:31px;
+    height:31px;
+    border-radius:10px;
+    font-size:15px;
+  }
+
+  .back{
+    font-size:12px;
+    padding:8px 10px;
   }
 
   .wrap{
-    padding:40px 15px 70px;
+    padding:40px 14px 70px;
   }
+
+  h1{
+    font-size:38px;
+  }
+
+  .lead{
+    font-size:14px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+    gap:14px;
+    margin-top:28px;
+  }
+
+  .card{
+    padding:19px;
+    border-radius:18px;
+  }
+
+  .card h2{
+    font-size:19px;
+  }
+
+}
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+
 }
 </style>
 </head>
@@ -206,181 +608,398 @@ button:hover{
 <body>
 
 <header>
-  <div class="logo">RAAZ <span>AI HUB</span></div>
-  <a class="back" href="/">← Home</a>
+
+  <div class="header-inner">
+
+    <div class="logo">
+      <div class="logo-icon">🛠️</div>
+      RAAZ <span>AI HUB</span>
+    </div>
+
+    <a class="back" href="/">
+      ← Home
+    </a>
+
+  </div>
+
 </header>
+
 
 <main class="wrap">
 
-<span class="badge">⚡ USEFUL TOOLS</span>
+<section class="hero">
 
-<h1>Everyday <span>Tools</span></h1>
+  <span class="badge">
+    ⚡ USEFUL TOOLS
+  </span>
 
-<p class="lead">
-Simple and useful utilities that work directly in your browser.
-No login. No complicated setup.
-</p>
+  <h1>
+    Everyday <span>Tools</span>
+  </h1>
+
+  <p class="lead">
+    Simple and useful utilities that work directly in your browser.
+    No login. No complicated setup.
+  </p>
+
+</section>
+
 
 <div class="grid">
 
+
 <!-- CALCULATOR -->
+
 <div class="card">
+
 <h2>🧮 Calculator</h2>
-<p>Perform basic mathematical calculations.</p>
 
-<input id="calc" placeholder="Example: 25*4+10">
+<p>
+Perform basic mathematical calculations.
+</p>
 
-<button onclick="calculate()">Calculate</button>
+<input
+  id="calc"
+  placeholder="Example: 25*4+10"
+  inputmode="decimal"
+>
 
-<div id="calcOut" class="result" style="display:none"></div>
+<button onclick="calculate()">
+  Calculate
+</button>
+
+<div
+  id="calcOut"
+  class="result"
+  style="display:none"
+></div>
+
 </div>
 
 
 <!-- PERCENTAGE -->
+
 <div class="card">
+
 <h2>📊 Percentage Calculator</h2>
-<p>Find what percentage one number is of another.</p>
 
-<input id="part" type="number" placeholder="Value">
+<p>
+Find what percentage one number is of another.
+</p>
 
-<input id="total" type="number" placeholder="Total">
+<input
+  id="part"
+  type="number"
+  placeholder="Value"
+>
 
-<button onclick="percent()">Calculate %</button>
+<input
+  id="total"
+  type="number"
+  placeholder="Total"
+>
 
-<div id="perOut" class="result" style="display:none"></div>
+<button onclick="percent()">
+  Calculate %
+</button>
+
+<div
+  id="perOut"
+  class="result"
+  style="display:none"
+></div>
+
 </div>
 
 
 <!-- WORD COUNTER -->
-<div class="card">
-<h2>🔢 Word & Character Counter</h2>
-<p>Count words, characters and lines instantly.</p>
 
-<textarea id="words" rows="5"
-placeholder="Type or paste your text"></textarea>
+<div class="card">
+
+<h2>🔢 Word & Character Counter</h2>
+
+<p>
+Count words, characters and lines instantly.
+</p>
+
+<textarea
+  id="words"
+  rows="5"
+  placeholder="Type or paste your text"
+></textarea>
 
 <div id="wordOut" class="result">
 Words: 0
 Characters: 0
 Lines: 0
 </div>
+
 </div>
 
 
 <!-- UNIT CONVERTER -->
-<div class="card">
-<h2>📏 Unit Converter</h2>
-<p>Convert common units quickly.</p>
 
-<input id="unitValue" type="number" placeholder="Enter value">
+<div class="card">
+
+<h2>📏 Unit Converter</h2>
+
+<p>
+Convert common units quickly.
+</p>
+
+<input
+  id="unitValue"
+  type="number"
+  placeholder="Enter value"
+>
 
 <select id="unitType">
-<option value="km-m">Kilometres → Metres</option>
-<option value="m-km">Metres → Kilometres</option>
-<option value="miles-km">Miles → Kilometres</option>
-<option value="km-miles">Kilometres → Miles</option>
-<option value="feet-m">Feet → Metres</option>
-<option value="m-feet">Metres → Feet</option>
-<option value="inch-cm">Inches → Centimetres</option>
-<option value="cm-inch">Centimetres → Inches</option>
-<option value="kg-g">Kilograms → Grams</option>
-<option value="g-kg">Grams → Kilograms</option>
+
+<option value="km-m">
+Kilometres → Metres
+</option>
+
+<option value="m-km">
+Metres → Kilometres
+</option>
+
+<option value="miles-km">
+Miles → Kilometres
+</option>
+
+<option value="km-miles">
+Kilometres → Miles
+</option>
+
+<option value="feet-m">
+Feet → Metres
+</option>
+
+<option value="m-feet">
+Metres → Feet
+</option>
+
+<option value="inch-cm">
+Inches → Centimetres
+</option>
+
+<option value="cm-inch">
+Centimetres → Inches
+</option>
+
+<option value="kg-g">
+Kilograms → Grams
+</option>
+
+<option value="g-kg">
+Grams → Kilograms
+</option>
+
 </select>
 
-<button onclick="convertUnit()">Convert</button>
+<button onclick="convertUnit()">
+  Convert
+</button>
 
-<div id="unitOut" class="result" style="display:none"></div>
+<div
+  id="unitOut"
+  class="result"
+  style="display:none"
+></div>
+
 </div>
 
 
 <!-- PASSWORD -->
-<div class="card">
-<h2>🔐 Password Generator</h2>
-<p>Generate a strong random password.</p>
 
-<input id="passLength" type="number" min="4" max="50"
-value="16" placeholder="Password length">
+<div class="card">
+
+<h2>🔐 Password Generator</h2>
+
+<p>
+Generate a strong random password.
+</p>
+
+<input
+  id="passLength"
+  type="number"
+  min="4"
+  max="50"
+  value="16"
+  placeholder="Password length"
+>
 
 <button onclick="generatePassword()">
-Generate Password
+  Generate Password
 </button>
 
-<div id="passOut" class="result" style="display:none"></div>
+<div
+  id="passOut"
+  class="result"
+  style="display:none"
+></div>
 
-<button class="small-btn" onclick="copyPassword()">
-📋 Copy Password
+<button
+  class="small-btn"
+  onclick="copyPassword()"
+>
+  📋 Copy Password
 </button>
+
 </div>
 
 
 <!-- CASE CONVERTER -->
-<div class="card">
-<h2>🔤 Case Converter</h2>
-<p>Change text into different letter cases.</p>
 
-<textarea id="caseText" rows="4"
-placeholder="Enter your text"></textarea>
+<div class="card">
+
+<h2>🔤 Case Converter</h2>
+
+<p>
+Change text into different letter cases.
+</p>
+
+<textarea
+  id="caseText"
+  rows="4"
+  placeholder="Enter your text"
+></textarea>
 
 <select id="caseType">
-<option value="upper">UPPERCASE</option>
-<option value="lower">lowercase</option>
-<option value="title">Title Case</option>
-<option value="sentence">Sentence case</option>
+
+<option value="upper">
+UPPERCASE
+</option>
+
+<option value="lower">
+lowercase
+</option>
+
+<option value="title">
+Title Case
+</option>
+
+<option value="sentence">
+Sentence case
+</option>
+
 </select>
 
-<button onclick="convertCase()">Convert Text</button>
+<button onclick="convertCase()">
+  Convert Text
+</button>
 
-<div id="caseOut" class="result" style="display:none"></div>
+<div
+  id="caseOut"
+  class="result"
+  style="display:none"
+></div>
+
 </div>
 
 
 <!-- TEXT CLEANER -->
+
 <div class="card">
+
 <h2>🧹 Text Cleaner</h2>
-<p>Remove extra spaces and empty lines.</p>
 
-<textarea id="cleanText" rows="5"
-placeholder="Paste messy text here"></textarea>
+<p>
+Remove extra spaces and empty lines.
+</p>
 
-<button onclick="cleanText()">Clean Text</button>
+<textarea
+  id="cleanText"
+  rows="5"
+  placeholder="Paste messy text here"
+></textarea>
 
-<div id="cleanOut" class="result" style="display:none"></div>
-
-<button class="small-btn" onclick="copyCleanText()">
-📋 Copy Clean Text
+<button onclick="cleanText()">
+  Clean Text
 </button>
+
+<div
+  id="cleanOut"
+  class="result"
+  style="display:none"
+></div>
+
+<button
+  class="small-btn"
+  onclick="copyCleanText()"
+>
+  📋 Copy Clean Text
+</button>
+
 </div>
 
 
 <!-- JSON FORMATTER -->
+
 <div class="card">
+
 <h2>📋 JSON Formatter</h2>
-<p>Format and validate JSON data.</p>
 
-<textarea id="jsonText" rows="6"
-placeholder='Example: {"name":"Raaz","age":20}'></textarea>
+<p>
+Format and validate JSON data.
+</p>
 
-<button onclick="formatJSON()">Format JSON</button>
+<textarea
+  id="jsonText"
+  rows="6"
+  placeholder='Example: {"name":"Raaz","age":20}'
+></textarea>
 
-<div id="jsonOut" class="result" style="display:none"></div>
+<button onclick="formatJSON()">
+  Format JSON
+</button>
+
+<div
+  id="jsonOut"
+  class="result"
+  style="display:none"
+></div>
+
 </div>
 
 
 <!-- RANDOM NUMBER -->
+
 <div class="card">
+
 <h2>🎲 Random Number</h2>
-<p>Generate a random number between two values.</p>
 
-<input id="randomMin" type="number" placeholder="Minimum">
+<p>
+Generate a random number between two values.
+</p>
 
-<input id="randomMax" type="number" placeholder="Maximum">
+<input
+  id="randomMin"
+  type="number"
+  placeholder="Minimum"
+>
 
-<button onclick="randomNumber()">Generate</button>
+<input
+  id="randomMax"
+  type="number"
+  placeholder="Maximum"
+>
 
-<div id="randomOut" class="result" style="display:none"></div>
+<button onclick="randomNumber()">
+  Generate
+</button>
+
+<div
+  id="randomOut"
+  class="result"
+  style="display:none"
+></div>
+
 </div>
 
+
 </div>
+
 </main>
 
 
@@ -392,39 +1011,55 @@ placeholder='Example: {"name":"Raaz","age":20}'></textarea>
 
 function calculate(){
 
-const input=document.getElementById("calc");
-const output=document.getElementById("calcOut");
+  const input =
+    document.getElementById("calc");
 
-const value=input.value.trim();
+  const output =
+    document.getElementById("calcOut");
 
-output.style.display="block";
+  const value =
+    input.value.trim();
 
-if(!value){
-output.textContent="Enter a calculation.";
-return;
-}
+  output.style.display="block";
 
-if(!/^[0-9+\-*/().% ]+$/.test(value)){
-output.textContent="Invalid calculation.";
-return;
-}
+  if(!value){
 
-try{
+    output.textContent =
+      "Enter a calculation.";
 
-const result=Function("return ("+value+")")();
+    return;
+  }
 
-if(!Number.isFinite(result)){
-output.textContent="Invalid calculation.";
-return;
-}
+  if(!/^[0-9+\-*/().% ]+$/.test(value)){
 
-output.textContent="Result: "+result;
+    output.textContent =
+      "Invalid calculation.";
 
-}catch(e){
+    return;
+  }
 
-output.textContent="Invalid calculation.";
+  try{
 
-}
+    const result =
+      Function("return ("+value+")")();
+
+    if(!Number.isFinite(result)){
+
+      output.textContent =
+        "Invalid calculation.";
+
+      return;
+    }
+
+    output.textContent =
+      "Result: "+result;
+
+  }catch(e){
+
+    output.textContent =
+      "Invalid calculation.";
+
+  }
 
 }
 
@@ -435,26 +1070,38 @@ output.textContent="Invalid calculation.";
 
 function percent(){
 
-const part=Number(document.getElementById("part").value);
+  const part =
+    Number(
+      document.getElementById("part").value
+    );
 
-const total=Number(document.getElementById("total").value);
+  const total =
+    Number(
+      document.getElementById("total").value
+    );
 
-const output=document.getElementById("perOut");
+  const output =
+    document.getElementById("perOut");
 
-output.style.display="block";
+  output.style.display="block";
 
-if(!Number.isFinite(part) ||
-!Number.isFinite(total) ||
-total===0){
+  if(
+    !Number.isFinite(part) ||
+    !Number.isFinite(total) ||
+    total===0
+  ){
 
-output.textContent="Enter valid values.";
-return;
+    output.textContent =
+      "Enter valid values.";
 
-}
+    return;
+  }
 
-const result=(part/total)*100;
+  const result =
+    (part/total)*100;
 
-output.textContent="Result: "+result.toFixed(2)+"%";
+  output.textContent =
+    "Result: "+result.toFixed(2)+"%";
 
 }
 
@@ -463,27 +1110,37 @@ output.textContent="Result: "+result.toFixed(2)+"%";
    WORD COUNTER
 ========================= */
 
-document.getElementById("words")
-.addEventListener("input",function(){
+document
+.getElementById("words")
+.addEventListener(
+  "input",
+  function(){
 
-const text=this.value;
+    const text =
+      this.value;
 
-const words=text.trim()
-?text.trim().split(/\s+/).length
-:0;
+    const words =
+      text.trim()
+      ? text.trim().split(/\s+/).length
+      : 0;
 
-const characters=text.length;
+    const characters =
+      text.length;
 
-const lines=text
-?text.split(/\r?\n/).length
-:0;
+    const lines =
+      text
+      ? text.split(/\r?\n/).length
+      : 0;
 
-document.getElementById("wordOut").textContent=
-"Words: "+words+
-"\nCharacters: "+characters+
-"\nLines: "+lines;
+    document
+      .getElementById("wordOut")
+      .textContent =
+        "Words: "+words+
+        "\nCharacters: "+characters+
+        "\nLines: "+lines;
 
-});
+  }
+);
 
 
 /* =========================
@@ -492,84 +1149,90 @@ document.getElementById("wordOut").textContent=
 
 function convertUnit(){
 
-const value=Number(
-document.getElementById("unitValue").value
-);
+  const value =
+    Number(
+      document.getElementById("unitValue").value
+    );
 
-const type=document.getElementById("unitType").value;
+  const type =
+    document.getElementById("unitType").value;
 
-const output=document.getElementById("unitOut");
+  const output =
+    document.getElementById("unitOut");
 
-output.style.display="block";
+  output.style.display="block";
 
-if(!Number.isFinite(value)){
+  if(!Number.isFinite(value)){
 
-output.textContent="Enter a valid number.";
+    output.textContent =
+      "Enter a valid number.";
 
-return;
+    return;
+  }
 
-}
+  let result;
+  let unit;
 
-let result;
-let unit;
+  switch(type){
 
-switch(type){
+    case "km-m":
+      result=value*1000;
+      unit="metres";
+      break;
 
-case "km-m":
-result=value*1000;
-unit="metres";
-break;
+    case "m-km":
+      result=value/1000;
+      unit="kilometres";
+      break;
 
-case "m-km":
-result=value/1000;
-unit="kilometres";
-break;
+    case "miles-km":
+      result=value*1.609344;
+      unit="kilometres";
+      break;
 
-case "miles-km":
-result=value*1.609344;
-unit="kilometres";
-break;
+    case "km-miles":
+      result=value/1.609344;
+      unit="miles";
+      break;
 
-case "km-miles":
-result=value/1.609344;
-unit="miles";
-break;
+    case "feet-m":
+      result=value*0.3048;
+      unit="metres";
+      break;
 
-case "feet-m":
-result=value*0.3048;
-unit="metres";
-break;
+    case "m-feet":
+      result=value*3.28084;
+      unit="feet";
+      break;
 
-case "m-feet":
-result=value*3.28084;
-unit="feet";
-break;
+    case "inch-cm":
+      result=value*2.54;
+      unit="centimetres";
+      break;
 
-case "inch-cm":
-result=value*2.54;
-unit="centimetres";
-break;
+    case "cm-inch":
+      result=value/2.54;
+      unit="inches";
+      break;
 
-case "cm-inch":
-result=value/2.54;
-unit="inches";
-break;
+    case "kg-g":
+      result=value*1000;
+      unit="grams";
+      break;
 
-case "kg-g":
-result=value*1000;
-unit="grams";
-break;
+    case "g-kg":
+      result=value/1000;
+      unit="kilograms";
+      break;
 
-case "g-kg":
-result=value/1000;
-unit="kilograms";
-break;
+  }
 
-}
-
-output.textContent=
-"Result: "+result.toFixed(6).replace(/\.?0+$/,"")
-+" "+unit;
+  output.textContent =
+    "Result: "+
+    result
+      .toFixed(6)
+      .replace(/\.?0+$/,"")
+    +" "+unit;
 
 }
 
@@ -582,41 +1245,51 @@ let generatedPassword="";
 
 function generatePassword(){
 
-let length=parseInt(
-document.getElementById("passLength").value
-);
+  let length =
+    parseInt(
+      document.getElementById("passLength").value
+    );
 
-const output=document.getElementById("passOut");
+  const output =
+    document.getElementById("passOut");
 
-output.style.display="block";
+  output.style.display="block";
 
-if(!Number.isFinite(length)){
-length=16;
-}
+  if(!Number.isFinite(length)){
+    length=16;
+  }
 
-length=Math.min(Math.max(length,4),50);
+  length =
+    Math.min(
+      Math.max(length,4),
+      50
+    );
 
-const chars=
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
-"abcdefghijklmnopqrstuvwxyz"+
-"0123456789"+
-"!@#$%^&*";
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"+
+    "abcdefghijklmnopqrstuvwxyz"+
+    "0123456789"+
+    "!@#$%^&*";
 
-let password="";
+  let password="";
 
-const array=new Uint32Array(length);
+  const array =
+    new Uint32Array(length);
 
-crypto.getRandomValues(array);
+  crypto.getRandomValues(array);
 
-for(let i=0;i<length;i++){
+  for(let i=0;i<length;i++){
 
-password+=chars[array[i]%chars.length];
+    password +=
+      chars[array[i] % chars.length];
 
-}
+  }
 
-generatedPassword=password;
+  generatedPassword =
+    password;
 
-output.textContent=password;
+  output.textContent =
+    password;
 
 }
 
@@ -625,13 +1298,15 @@ output.textContent=password;
 
 function copyPassword(){
 
-if(!generatedPassword){
+  if(!generatedPassword){
 
-generatePassword();
+    generatePassword();
 
-}
+  }
 
-navigator.clipboard.writeText(generatedPassword);
+  navigator.clipboard.writeText(
+    generatedPassword
+  );
 
 }
 
@@ -642,46 +1317,59 @@ navigator.clipboard.writeText(generatedPassword);
 
 function convertCase(){
 
-const text=document.getElementById("caseText").value;
+  const text =
+    document.getElementById("caseText").value;
 
-const type=document.getElementById("caseType").value;
+  const type =
+    document.getElementById("caseType").value;
 
-const output=document.getElementById("caseOut");
+  const output =
+    document.getElementById("caseOut");
 
-output.style.display="block";
+  output.style.display="block";
 
-let result="";
+  let result="";
 
-if(type==="upper"){
+  if(type==="upper"){
 
-result=text.toUpperCase();
+    result =
+      text.toUpperCase();
 
-}
+  }
 
-else if(type==="lower"){
+  else if(type==="lower"){
 
-result=text.toLowerCase();
+    result =
+      text.toLowerCase();
 
-}
+  }
 
-else if(type==="title"){
+  else if(type==="title"){
 
-result=text.toLowerCase()
-.replace(/\b\w/g,
-char=>char.toUpperCase());
+    result =
+      text
+      .toLowerCase()
+      .replace(
+        /\b\w/g,
+        char=>char.toUpperCase()
+      );
 
-}
+  }
 
-else if(type==="sentence"){
+  else if(type==="sentence"){
 
-result=text
-.toLowerCase()
-.replace(/(^\s*\w|[.!?]\s+\w)/g,
-char=>char.toUpperCase());
+    result =
+      text
+      .toLowerCase()
+      .replace(
+        /(^\s*\w|[.!?]\s+\w)/g,
+        char=>char.toUpperCase()
+      );
 
-}
+  }
 
-output.textContent=result || "Enter some text.";
+  output.textContent =
+    result || "Enter some text.";
 
 }
 
@@ -694,21 +1382,25 @@ let cleanedText="";
 
 function cleanText(){
 
-const text=document.getElementById("cleanText").value;
+  const text =
+    document.getElementById("cleanText").value;
 
-const output=document.getElementById("cleanOut");
+  const output =
+    document.getElementById("cleanOut");
 
-output.style.display="block";
+  output.style.display="block";
 
-cleanedText=text
-.split(/\r?\n/)
-.map(line=>line.trim())
-.filter(line=>line.length>0)
-.join("\n")
-.replace(/[ \t]+/g," ");
+  cleanedText =
+    text
+    .split(/\r?\n/)
+    .map(line=>line.trim())
+    .filter(line=>line.length>0)
+    .join("\n")
+    .replace(/[ \t]+/g," ");
 
-output.textContent=
-cleanedText || "Nothing to clean.";
+  output.textContent =
+    cleanedText ||
+    "Nothing to clean.";
 
 }
 
@@ -717,17 +1409,19 @@ cleanedText || "Nothing to clean.";
 
 function copyCleanText(){
 
-if(!cleanedText){
+  if(!cleanedText){
 
-cleanText();
+    cleanText();
 
-}
+  }
 
-if(cleanedText){
+  if(cleanedText){
 
-navigator.clipboard.writeText(cleanedText);
+    navigator.clipboard.writeText(
+      cleanedText
+    );
 
-}
+  }
 
 }
 
@@ -738,36 +1432,46 @@ navigator.clipboard.writeText(cleanedText);
 
 function formatJSON(){
 
-const text=document.getElementById("jsonText").value.trim();
+  const text =
+    document
+      .getElementById("jsonText")
+      .value
+      .trim();
 
-const output=document.getElementById("jsonOut");
+  const output =
+    document.getElementById("jsonOut");
 
-output.style.display="block";
+  output.style.display="block";
 
-if(!text){
+  if(!text){
 
-output.textContent="Enter JSON data.";
+    output.textContent =
+      "Enter JSON data.";
 
-return;
+    return;
+  }
 
-}
+  try{
 
-try{
+    const data =
+      JSON.parse(text);
 
-const data=JSON.parse(text);
+    output.textContent =
+      JSON.stringify(
+        data,
+        null,
+        2
+      );
 
-output.textContent=
-JSON.stringify(data,null,2);
+  }
 
-}
+  catch(error){
 
-catch(error){
+    output.textContent =
+      "Invalid JSON.\n\n"+
+      error.message;
 
-output.textContent=
-"Invalid JSON.\n\n"+
-error.message;
-
-}
+  }
 
 }
 
@@ -778,38 +1482,41 @@ error.message;
 
 function randomNumber(){
 
-const min=Number(
-document.getElementById("randomMin").value
-);
+  const min =
+    Number(
+      document.getElementById("randomMin").value
+    );
 
-const max=Number(
-document.getElementById("randomMax").value
-);
+  const max =
+    Number(
+      document.getElementById("randomMax").value
+    );
 
-const output=document.getElementById("randomOut");
+  const output =
+    document.getElementById("randomOut");
 
-output.style.display="block";
+  output.style.display="block";
 
-if(
-!Number.isFinite(min) ||
-!Number.isFinite(max) ||
-min>max
-){
+  if(
+    !Number.isFinite(min) ||
+    !Number.isFinite(max) ||
+    min>max
+  ){
 
-output.textContent=
-"Enter valid minimum and maximum values.";
+    output.textContent =
+      "Enter valid minimum and maximum values.";
 
-return;
+    return;
+  }
 
-}
+  const result =
+    Math.floor(
+      Math.random()*
+      (max-min+1)
+    )+min;
 
-const result=
-Math.floor(
-Math.random()*(max-min+1)
-)+min;
-
-output.textContent=
-"Random Number: "+result;
+  output.textContent =
+    "Random Number: "+result;
 
 }
 
