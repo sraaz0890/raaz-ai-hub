@@ -9,14 +9,18 @@
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <style>
+
 :root{
-  --bg:#07070b;
-  --card:#12121b;
+  --bg:#06060a;
+  --card:rgba(17,16,25,.74);
   --card2:#0d0b13;
   --border:rgba(255,255,255,.09);
-  --light:#c49aff;
+  --purple:#8b4dff;
+  --purple2:#b66cff;
+  --light:#d2b4ff;
   --text:#fff;
-  --muted:#9999a5;
+  --muted:#9694a2;
+  --muted2:#777582;
 }
 
 *{
@@ -25,33 +29,154 @@
   padding:0;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
-  font-family:Inter,Arial,sans-serif;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
   background:
-    radial-gradient(circle at 50% -10%,rgba(132,65,255,.2),transparent 35%),
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(137,67,255,.22),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 0% 55%,
+      rgba(105,45,190,.09),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 100% 75%,
+      rgba(156,75,255,.07),
+      transparent 30%
+    ),
     var(--bg);
+
   color:var(--text);
   min-height:100vh;
+  overflow-x:hidden;
 }
+
+/* Background grid */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px
+    );
+
+  background-size:45px 45px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 88%
+    );
+
+  pointer-events:none;
+  z-index:-2;
+}
+
+/* Ambient glow */
+
+body::after{
+  content:"";
+
+  position:fixed;
+
+  width:430px;
+  height:430px;
+
+  top:110px;
+  left:50%;
+
+  transform:translateX(-50%);
+
+  background:rgba(128,61,255,.09);
+
+  filter:blur(100px);
+
+  border-radius:50%;
+
+  pointer-events:none;
+
+  z-index:-1;
+}
+
+/* Header */
 
 header{
   height:70px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
+
   padding:0 6%;
-  background:rgba(7,7,11,.8);
-  backdrop-filter:blur(18px);
+
+  background:rgba(6,6,10,.72);
+
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+
   border-bottom:1px solid rgba(255,255,255,.07);
+
   position:sticky;
   top:0;
-  z-index:10;
+
+  z-index:100;
 }
 
 .logo{
-  font-size:20px;
-  font-weight:800;
+  display:flex;
+  align-items:center;
+  gap:9px;
+
+  font-size:19px;
+  font-weight:900;
+
   letter-spacing:1.5px;
+}
+
+.logo-icon{
+  width:32px;
+  height:32px;
+
+  display:grid;
+  place-items:center;
+
+  border-radius:10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #a96aff,
+      #6532d8
+    );
+
+  box-shadow:
+    0 0 25px rgba(139,77,255,.35);
+
+  font-size:15px;
 }
 
 .logo span{
@@ -59,149 +184,489 @@ header{
 }
 
 .back{
-  color:#c49aff;
+  display:flex;
+  align-items:center;
+  gap:7px;
+
+  color:#c8a5ff;
+
   text-decoration:none;
+
   font-size:13px;
+  font-weight:700;
+
+  padding:9px 13px;
+
+  border:1px solid rgba(155,92,255,.18);
+
+  border-radius:10px;
+
+  background:rgba(139,77,255,.05);
+
+  transition:.25s;
 }
 
+.back:hover{
+  color:#fff;
+
+  background:rgba(139,77,255,.12);
+
+  border-color:rgba(155,92,255,.38);
+
+  transform:translateY(-1px);
+}
+
+/* Main */
+
 .wrap{
-  max-width:1050px;
+  width:min(1080px,92%);
+
   margin:auto;
-  padding:50px 20px 80px;
+
+  padding:
+    60px 0
+    90px;
+}
+
+/* Hero */
+
+.hero{
+  text-align:center;
+
+  max-width:820px;
+
+  margin:auto;
 }
 
 .badge{
-  display:inline-block;
-  padding:8px 13px;
-  border:1px solid rgba(155,92,255,.3);
-  border-radius:30px;
-  color:#c8a7ff;
-  background:rgba(155,92,255,.08);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+
+  padding:8px 14px;
+
+  border:1px solid rgba(155,92,255,.30);
+
+  border-radius:999px;
+
+  color:#d0b2ff;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(155,92,255,.11),
+      rgba(139,77,255,.04)
+    );
+
   font-size:11px;
-  font-weight:700;
-  letter-spacing:.8px;
+  font-weight:800;
+
+  letter-spacing:1px;
+}
+
+.badge-dot{
+  width:7px;
+  height:7px;
+
+  border-radius:50%;
+
+  background:#a66aff;
+
+  box-shadow:
+    0 0 10px rgba(166,106,255,.9);
+
+  animation:pulse 1.8s infinite;
+}
+
+@keyframes pulse{
+
+  0%,100%{
+    opacity:1;
+    transform:scale(1);
+  }
+
+  50%{
+    opacity:.45;
+    transform:scale(.75);
+  }
+
 }
 
 h1{
-  font-size:clamp(34px,7vw,58px);
-  margin:18px 0 12px;
-  letter-spacing:-2px;
+  font-size:
+    clamp(38px,7vw,62px);
+
+  line-height:1.02;
+
+  margin:
+    22px 0
+    16px;
+
+  letter-spacing:-3px;
 }
 
 h1 span{
-  background:linear-gradient(90deg,#fff,#bd91ff,#9250ff);
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff,
+      #d0a7ff,
+      #8d4eff
+    );
+
   -webkit-background-clip:text;
+  background-clip:text;
+
   -webkit-text-fill-color:transparent;
+
+  background-size:200% auto;
+
+  animation:gradientMove 5s linear infinite;
+}
+
+@keyframes gradientMove{
+
+  to{
+    background-position:200% center;
+  }
+
 }
 
 .lead{
   color:var(--muted);
-  line-height:1.7;
+
+  line-height:1.75;
+
   max-width:720px;
+
+  margin:auto;
+
+  font-size:15px;
 }
+
+/* Section title */
 
 .section-title{
-  margin-top:40px;
-  margin-bottom:15px;
-  font-size:22px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  margin-top:48px;
+  margin-bottom:16px;
+
+  font-size:21px;
+
+  letter-spacing:-.4px;
 }
 
-.grid{
+.section-title::after{
+  content:"";
+
+  height:1px;
+
+  flex:1;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(139,77,255,.25),
+      transparent
+    );
+}
+
+/* Grid */
+
+.grid,
+.calculator-grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+
+  grid-template-columns:
+    repeat(2,1fr);
+
   gap:16px;
 }
 
+/* Card */
+
 .card{
-  background:rgba(18,18,27,.78);
-  border:1px solid var(--border);
-  border-radius:20px;
+  position:relative;
+
   padding:22px;
+
+  border-radius:20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(24,21,34,.80),
+      rgba(10,9,14,.80)
+    );
+
+  border:1px solid var(--border);
+
+  box-shadow:
+    0 22px 65px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(255,255,255,.035);
+
+  overflow:hidden;
+
+  transition:
+    transform .25s,
+    border-color .25s,
+    box-shadow .25s;
+}
+
+.card::before{
+  content:"";
+
+  position:absolute;
+
+  width:220px;
+  height:220px;
+
+  top:-140px;
+  right:-100px;
+
+  background:rgba(139,77,255,.11);
+
+  filter:blur(65px);
+
+  border-radius:50%;
+
+  pointer-events:none;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+
+  border-color:rgba(139,77,255,.25);
+
+  box-shadow:
+    0 28px 75px rgba(0,0,0,.35),
+    0 0 35px rgba(139,77,255,.035);
 }
 
 .card h2{
-  font-size:19px;
+  position:relative;
+
+  font-size:18px;
+
   margin-bottom:7px;
 }
 
 .card p{
+  position:relative;
+
   color:#92929f;
+
   font-size:13px;
+
   line-height:1.6;
+
   margin-bottom:8px;
 }
 
+/* Form */
+
 label{
   display:block;
+
   font-size:13px;
+
   font-weight:700;
+
   margin-top:13px;
 }
 
 input,
 select,
-textarea,
-button{
+textarea{
   width:100%;
+
   border:1px solid #30243d;
-  background:#15101f;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(24,17,34,.96),
+      rgba(15,12,22,.96)
+    );
+
   color:#fff;
-  border-radius:12px;
+
+  border-radius:13px;
+
   padding:12px;
+
   margin-top:9px;
+
   font:inherit;
+
   outline:none;
+
+  transition:
+    border-color .25s,
+    box-shadow .25s,
+    background .25s;
+}
+
+input:hover,
+select:hover,
+textarea:hover{
+  border-color:#453457;
 }
 
 input:focus,
 select:focus,
 textarea:focus{
   border-color:#8b4dff;
+
+  box-shadow:
+    0 0 0 3px rgba(139,77,255,.10),
+    0 0 25px rgba(139,77,255,.05);
+}
+
+input::placeholder,
+textarea::placeholder{
+  color:#65616d;
 }
 
 textarea{
   resize:vertical;
+
   min-height:105px;
+
+  line-height:1.6;
 }
 
+/* Buttons */
+
 button{
-  background:linear-gradient(135deg,#a866ff,#7540dc);
+  width:100%;
+
   border:0;
-  font-weight:700;
+
+  background:
+    linear-gradient(
+      135deg,
+      #a866ff,
+      #7540dc
+    );
+
+  color:#fff;
+
+  border-radius:13px;
+
+  padding:13px;
+
+  margin-top:10px;
+
+  font:inherit;
+
+  font-weight:800;
+
   cursor:pointer;
-  transition:.2s;
+
+  position:relative;
+
+  overflow:hidden;
+
+  transition:
+    transform .2s,
+    opacity .2s,
+    box-shadow .2s;
+}
+
+button::after{
+  content:"";
+
+  position:absolute;
+
+  top:0;
+  left:-120%;
+
+  width:70%;
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.20),
+      transparent
+    );
+
+  transform:skewX(-20deg);
+
+  transition:.6s;
+}
+
+button:hover::after{
+  left:140%;
 }
 
 button:hover{
-  opacity:.95;
-  transform:translateY(-1px);
+  opacity:.97;
+
+  transform:translateY(-2px);
+
+  box-shadow:
+    0 10px 28px rgba(118,64,220,.20);
 }
 
 button:disabled{
   opacity:.6;
+
   cursor:not-allowed;
+
   transform:none;
+
+  box-shadow:none;
 }
+
+/* Result */
 
 .result{
   display:none;
+
   margin-top:14px;
-  padding:15px;
-  border-radius:13px;
-  background:#0d0b13;
+
+  padding:16px;
+
+  border-radius:14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #100d16,
+      #0b0a0f
+    );
+
   border:1px solid #292033;
-  line-height:1.65;
+
+  line-height:1.7;
+
   overflow-wrap:anywhere;
+
+  color:#eeeeF2;
 }
 
 .result h1,
 .result h2,
 .result h3{
-  margin:12px 0 7px;
+  margin:13px 0 7px;
+
+  letter-spacing:normal;
+}
+
+.result h1{
+  font-size:23px;
 }
 
 .result h2{
   font-size:19px;
+
+  color:#d7b8ff;
 }
 
 .result h3{
@@ -214,7 +679,9 @@ button:disabled{
 
 .result ul,
 .result ol{
-  margin:8px 0 8px 20px;
+  margin:
+    8px 0
+    8px 20px;
 }
 
 .result li{
@@ -225,39 +692,98 @@ button:disabled{
   color:#d0adff;
 }
 
-.calculator-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:16px;
+.result code{
+  background:#191321;
+
+  border:1px solid #292033;
+
+  padding:3px 6px;
+
+  border-radius:6px;
+
+  font-size:90%;
 }
+
+.result pre{
+  background:#08070b;
+
+  border:1px solid #27202f;
+
+  padding:13px;
+
+  border-radius:10px;
+
+  overflow-x:auto;
+
+  margin:12px 0;
+}
+
+.result pre code{
+  background:none;
+
+  border:0;
+
+  padding:0;
+}
+
+/* Calculator result */
 
 .calc-result{
   margin-top:12px;
-  padding:13px;
-  border-radius:12px;
-  background:#0d0b13;
+
+  padding:14px;
+
+  border-radius:13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #100d16,
+      #0b0a0f
+    );
+
   border:1px solid #292033;
+
   color:#d8c5ef;
+
   display:none;
+
   line-height:1.6;
 }
 
 .calc-value{
-  font-size:22px;
-  font-weight:800;
+  font-size:23px;
+
+  font-weight:900;
+
   color:#fff;
+
+  margin-top:2px;
 }
 
 .small-note{
   color:#777582;
+
   font-size:11px;
-  margin-top:7px;
+
+  margin-top:8px;
+
+  line-height:1.5;
 }
 
-.clear-btn{
-  background:#191421;
-  border:1px solid #30243d;
+/* Footer note */
+
+.bottom-note{
+  text-align:center;
+
+  color:#64616c;
+
+  font-size:11px;
+
+  margin-top:45px;
 }
+
+/* Mobile */
 
 @media(max-width:700px){
 
@@ -267,11 +793,34 @@ button:disabled{
   }
 
   .logo{
-    font-size:17px;
+    font-size:16px;
+  }
+
+  .logo-icon{
+    width:29px;
+    height:29px;
+    border-radius:9px;
+  }
+
+  .back{
+    font-size:12px;
+    padding:8px 10px;
   }
 
   .wrap{
-    padding:40px 15px 70px;
+    width:92%;
+
+    padding:
+      45px 0
+      70px;
+  }
+
+  h1{
+    letter-spacing:-2px;
+  }
+
+  .lead{
+    font-size:14px;
   }
 
   .grid,
@@ -281,35 +830,116 @@ button:disabled{
 
   .card{
     padding:18px;
+
+    border-radius:18px;
   }
+
+  .section-title{
+    font-size:19px;
+
+    margin-top:38px;
+  }
+
 }
+
+/* Small phones */
+
+@media(max-width:400px){
+
+  .wrap{
+    width:94%;
+  }
+
+  .card{
+    padding:15px;
+  }
+
+}
+
+/* Accessibility */
+
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+input:focus-visible,
+a:focus-visible{
+  outline:2px solid #a96aff;
+
+  outline-offset:3px;
+}
+
+/* Reduced motion */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    scroll-behavior:auto !important;
+    transition-duration:.01ms !important;
+  }
+
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo">RAAZ <span>AI HUB</span></div>
-  <a class="back" href="/">← Home</a>
+
+  <div class="logo">
+
+    <div class="logo-icon">
+      ✦
+    </div>
+
+    <div>
+      RAAZ <span>AI HUB</span>
+    </div>
+
+  </div>
+
+  <a class="back" href="/">
+    ← Home
+  </a>
+
 </header>
+
 
 <main class="wrap">
 
-<span class="badge">📚 STUDY TOOLS</span>
 
-<h1>Study <span>Smarter</span></h1>
+<section class="hero">
 
-<p class="lead">
-  Use RAAZ AI for summaries, quizzes, flashcards and explanations,
-  plus useful calculators for everyday study.
-</p>
+  <span class="badge">
+    <span class="badge-dot"></span>
+    📚 STUDY TOOLS
+  </span>
+
+  <h1>
+    Study <span>Smarter</span>
+  </h1>
+
+  <p class="lead">
+    Use RAAZ AI for summaries, quizzes, flashcards and explanations,
+    plus useful calculators for everyday study.
+  </p>
+
+</section>
 
 
 <!-- ================= AI TOOLS ================= -->
 
-<h2 class="section-title">🤖 AI Learning Tools</h2>
+<h2 class="section-title">
+  🤖 AI Learning Tools
+</h2>
+
 
 <div class="grid">
+
 
   <!-- SUMMARY -->
 
@@ -326,11 +956,17 @@ button:disabled{
       placeholder="Example: Explain the Indian Constitution"
     ></textarea>
 
-    <button id="sumbtn" onclick="ai('sum','summary')">
+    <button
+      id="sumbtn"
+      onclick="ai('sum','summary')"
+    >
       Create Summary
     </button>
 
-    <div id="sumout" class="result"></div>
+    <div
+      id="sumout"
+      class="result"
+    ></div>
 
   </div>
 
@@ -350,11 +986,17 @@ button:disabled{
       placeholder="Example: Indian Constitution"
     ></textarea>
 
-    <button id="quizbtn" onclick="ai('quiz','quiz')">
+    <button
+      id="quizbtn"
+      onclick="ai('quiz','quiz')"
+    >
       Generate Quiz
     </button>
 
-    <div id="quizout" class="result"></div>
+    <div
+      id="quizout"
+      class="result"
+    ></div>
 
   </div>
 
@@ -374,11 +1016,17 @@ button:disabled{
       placeholder="Example: Cell organelles"
     ></textarea>
 
-    <button id="flashbtn" onclick="ai('flash','flashcards')">
+    <button
+      id="flashbtn"
+      onclick="ai('flash','flashcards')"
+    >
       Create Flashcards
     </button>
 
-    <div id="flashout" class="result"></div>
+    <div
+      id="flashout"
+      class="result"
+    ></div>
 
   </div>
 
@@ -398,20 +1046,30 @@ button:disabled{
       placeholder="Example: What is photosynthesis?"
     ></textarea>
 
-    <button id="explainbtn" onclick="ai('explain','explanation')">
+    <button
+      id="explainbtn"
+      onclick="ai('explain','explanation')"
+    >
       Explain
     </button>
 
-    <div id="explainout" class="result"></div>
+    <div
+      id="explainout"
+      class="result"
+    ></div>
 
   </div>
+
 
 </div>
 
 
 <!-- ================= CALCULATORS ================= -->
 
-<h2 class="section-title">🧮 Study Calculators</h2>
+<h2 class="section-title">
+  🧮 Study Calculators
+</h2>
+
 
 <div class="calculator-grid">
 
@@ -435,7 +1093,10 @@ button:disabled{
       Calculate
     </button>
 
-    <div id="calcResult" class="calc-result"></div>
+    <div
+      id="calcResult"
+      class="calc-result"
+    ></div>
 
   </div>
 
@@ -466,7 +1127,10 @@ button:disabled{
       Calculate Percentage
     </button>
 
-    <div id="percentResult" class="calc-result"></div>
+    <div
+      id="percentResult"
+      class="calc-result"
+    ></div>
 
   </div>
 
@@ -517,7 +1181,10 @@ button:disabled{
       Calculate Area
     </button>
 
-    <div id="areaResult" class="calc-result"></div>
+    <div
+      id="areaResult"
+      class="calc-result"
+    ></div>
 
     <div class="small-note">
       For square and circle, only the first value is needed.
@@ -568,7 +1235,10 @@ button:disabled{
       Calculate
     </button>
 
-    <div id="ohmResult" class="calc-result"></div>
+    <div
+      id="ohmResult"
+      class="calc-result"
+    ></div>
 
     <div class="small-note">
       V = I × R
@@ -596,11 +1266,21 @@ button:disabled{
       Calculate Average
     </button>
 
-    <div id="averageResult" class="calc-result"></div>
+    <div
+      id="averageResult"
+      class="calc-result"
+    ></div>
 
   </div>
 
+
 </div>
+
+
+<div class="bottom-note">
+  ✨ Learn faster. Practice smarter. Powered by RAAZ AI HUB.
+</div>
+
 
 </main>
 
@@ -613,11 +1293,18 @@ button:disabled{
 
 async function ai(id,type){
 
-  const input = document.getElementById(id);
-  const out = document.getElementById(id + "out");
-  const btn = document.getElementById(id + "btn");
+  const input =
+    document.getElementById(id);
 
-  const q = input.value.trim();
+  const out =
+    document.getElementById(id + "out");
+
+  const btn =
+    document.getElementById(id + "btn");
+
+  const q =
+    input.value.trim();
+
 
   if(!q){
 
@@ -632,9 +1319,12 @@ async function ai(id,type){
 
   btn.disabled = true;
 
-  btn.textContent = "⏳ RAAZ AI is working...";
+  btn.textContent =
+    "⏳ RAAZ AI is working...";
 
-  out.style.display = "block";
+
+  out.style.display =
+    "block";
 
   out.textContent =
     "🤖 RAAZ AI is preparing your result...";
@@ -673,48 +1363,59 @@ Topic: ${q}`
 
   try{
 
-    const response = await fetch("/api/chat",{
+    const response =
+      await fetch(
+        "/api/chat",
+        {
+          method:"POST",
 
-      method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
 
-      headers:{
-        "Content-Type":"application/json"
-      },
+          body:JSON.stringify({
 
-      body:JSON.stringify({
+            subject:
+              "All Courses / General",
 
-        subject:"All Courses / General",
+            message:
+              prompts[type]
 
-        message:prompts[type]
+          })
 
-      })
+        }
+      );
 
-    });
 
-
-    const data = await response.json();
+    const data =
+      await response.json();
 
 
     if(!response.ok){
 
       throw new Error(
-        data.error || "AI response failed."
+        data.error ||
+        "AI response failed."
       );
 
     }
 
 
     const reply =
-      data.reply || "No response received.";
+      data.reply ||
+      "No response received.";
 
 
     if(window.marked){
 
-      out.innerHTML = marked.parse(reply);
+      out.innerHTML =
+        marked.parse(reply);
 
     }else{
 
-      out.textContent = reply;
+      out.textContent =
+        reply;
 
     }
 
@@ -728,19 +1429,25 @@ Topic: ${q}`
 
   }finally{
 
-    btn.disabled = false;
+    btn.disabled =
+      false;
+
 
     if(type === "summary")
-      btn.textContent = "Create Summary";
+      btn.textContent =
+        "Create Summary";
 
     if(type === "quiz")
-      btn.textContent = "Generate Quiz";
+      btn.textContent =
+        "Generate Quiz";
 
     if(type === "flashcards")
-      btn.textContent = "Create Flashcards";
+      btn.textContent =
+        "Create Flashcards";
 
     if(type === "explanation")
-      btn.textContent = "Explain";
+      btn.textContent =
+        "Explain";
 
   }
 
@@ -754,15 +1461,21 @@ Topic: ${q}`
 function basicCalc(){
 
   const input =
-    document.getElementById("expression").value.trim();
+    document
+      .getElementById("expression")
+      .value
+      .trim();
 
   const result =
-    document.getElementById("calcResult");
+    document.getElementById(
+      "calcResult"
+    );
 
 
   if(!input){
 
-    result.style.display = "block";
+    result.style.display =
+      "block";
 
     result.innerHTML =
       "🧮 Enter a calculation.";
@@ -773,53 +1486,57 @@ function basicCalc(){
 
   try{
 
-    /*
-      Convert common mathematical symbols
-      into JavaScript operators.
-    */
-
-    let expression = input
-      .replace(/×/g,"*")
-      .replace(/÷/g,"/")
-      .replace(/−/g,"-");
+    let expression =
+      input
+        .replace(/×/g,"*")
+        .replace(/÷/g,"/")
+        .replace(/−/g,"-");
 
 
-    /*
-      Allow only numbers, operators,
-      decimal points and parentheses.
-    */
+    if(
+      !/^[0-9+\-*/().%\s]+$/
+        .test(expression)
+    ){
 
-    if(!/^[0-9+\-*/().%\s]+$/.test(expression)){
-
-      throw new Error("Invalid characters");
+      throw new Error(
+        "Invalid characters"
+      );
 
     }
 
 
     const answer =
-      Function('"use strict";return (' +
-      expression +
-      ')')();
+      Function(
+        '"use strict";return (' +
+        expression +
+        ')'
+      )();
 
 
     if(!Number.isFinite(answer)){
 
-      throw new Error("Invalid result");
+      throw new Error(
+        "Invalid result"
+      );
 
     }
 
 
-    result.style.display = "block";
+    result.style.display =
+      "block";
 
     result.innerHTML = `
       Result:
-      <div class="calc-value">${answer}</div>
+      <div class="calc-value">
+        ${answer}
+      </div>
     `;
 
 
   }catch(error){
 
-    result.style.display = "block";
+    result.style.display =
+      "block";
 
     result.innerHTML =
       "❌ Invalid calculation.";
@@ -836,20 +1553,33 @@ function basicCalc(){
 function percentageCalc(){
 
   const value =
-    Number(document.getElementById("percentValue").value);
+    Number(
+      document
+        .getElementById("percentValue")
+        .value
+    );
 
   const total =
-    Number(document.getElementById("percentTotal").value);
+    Number(
+      document
+        .getElementById("percentTotal")
+        .value
+    );
 
   const result =
-    document.getElementById("percentResult");
+    document.getElementById(
+      "percentResult"
+    );
 
 
-  if(!Number.isFinite(value) ||
-     !Number.isFinite(total) ||
-     total === 0){
+  if(
+    !Number.isFinite(value) ||
+    !Number.isFinite(total) ||
+    total === 0
+  ){
 
-    result.style.display = "block";
+    result.style.display =
+      "block";
 
     result.innerHTML =
       "📊 Please enter valid numbers.";
@@ -862,7 +1592,8 @@ function percentageCalc(){
     (value / total) * 100;
 
 
-  result.style.display = "block";
+  result.style.display =
+    "block";
 
   result.innerHTML = `
     Percentage:
@@ -881,21 +1612,37 @@ function percentageCalc(){
 function areaCalc(){
 
   const shape =
-    document.getElementById("shape").value;
+    document.getElementById(
+      "shape"
+    ).value;
 
   const a =
-    Number(document.getElementById("sideA").value);
+    Number(
+      document.getElementById(
+        "sideA"
+      ).value
+    );
 
   const b =
-    Number(document.getElementById("sideB").value);
+    Number(
+      document.getElementById(
+        "sideB"
+      ).value
+    );
 
   const result =
-    document.getElementById("areaResult");
+    document.getElementById(
+      "areaResult"
+    );
 
 
-  if(!Number.isFinite(a) || a <= 0){
+  if(
+    !Number.isFinite(a) ||
+    a <= 0
+  ){
 
-    result.style.display = "block";
+    result.style.display =
+      "block";
 
     result.innerHTML =
       "📐 Please enter a valid value.";
@@ -909,55 +1656,66 @@ function areaCalc(){
 
   if(shape === "rectangle"){
 
-    if(!Number.isFinite(b) || b <= 0){
+    if(
+      !Number.isFinite(b) ||
+      b <= 0
+    ){
 
-      result.style.display = "block";
+      result.style.display =
+        "block";
 
       result.innerHTML =
         "Enter both length and width.";
 
       return;
-
     }
 
-    area = a * b;
+    area =
+      a * b;
 
   }
 
 
   if(shape === "square"){
 
-    area = a * a;
+    area =
+      a * a;
 
   }
 
 
   if(shape === "triangle"){
 
-    if(!Number.isFinite(b) || b <= 0){
+    if(
+      !Number.isFinite(b) ||
+      b <= 0
+    ){
 
-      result.style.display = "block";
+      result.style.display =
+        "block";
 
       result.innerHTML =
         "Enter both base and height.";
 
       return;
-
     }
 
-    area = (a * b) / 2;
+    area =
+      (a * b) / 2;
 
   }
 
 
   if(shape === "circle"){
 
-    area = Math.PI * a * a;
+    area =
+      Math.PI * a * a;
 
   }
 
 
-  result.style.display = "block";
+  result.style.display =
+    "block";
 
   result.innerHTML = `
     Area:
@@ -976,24 +1734,39 @@ function areaCalc(){
 function ohmCalc(){
 
   const type =
-    document.getElementById("ohmType").value;
+    document.getElementById(
+      "ohmType"
+    ).value;
 
   const a =
-    Number(document.getElementById("ohmA").value);
+    Number(
+      document.getElementById(
+        "ohmA"
+      ).value
+    );
 
   const b =
-    Number(document.getElementById("ohmB").value);
+    Number(
+      document.getElementById(
+        "ohmB"
+      ).value
+    );
 
   const result =
-    document.getElementById("ohmResult");
+    document.getElementById(
+      "ohmResult"
+    );
 
 
-  if(!Number.isFinite(a) ||
-     !Number.isFinite(b) ||
-     a <= 0 ||
-     b <= 0){
+  if(
+    !Number.isFinite(a) ||
+    !Number.isFinite(b) ||
+    a <= 0 ||
+    b <= 0
+  ){
 
-    result.style.display = "block";
+    result.style.display =
+      "block";
 
     result.innerHTML =
       "⚡ Please enter valid positive values.";
@@ -1008,44 +1781,39 @@ function ohmCalc(){
 
   if(type === "voltage"){
 
-    /*
-      V = I × R
-    */
+    answer =
+      a * b;
 
-    answer = a * b;
-
-    unit = "V";
+    unit =
+      "V";
 
   }
 
 
   if(type === "current"){
 
-    /*
-      I = V / R
-    */
+    answer =
+      a / b;
 
-    answer = a / b;
-
-    unit = "A";
+    unit =
+      "A";
 
   }
 
 
   if(type === "resistance"){
 
-    /*
-      R = V / I
-    */
+    answer =
+      a / b;
 
-    answer = a / b;
-
-    unit = "Ω";
+    unit =
+      "Ω";
 
   }
 
 
-  result.style.display = "block";
+  result.style.display =
+    "block";
 
   result.innerHTML = `
     Result:
@@ -1064,15 +1832,23 @@ function ohmCalc(){
 function averageCalc(){
 
   const input =
-    document.getElementById("averageInput").value.trim();
+    document
+      .getElementById(
+        "averageInput"
+      )
+      .value
+      .trim();
 
   const result =
-    document.getElementById("averageResult");
+    document.getElementById(
+      "averageResult"
+    );
 
 
   if(!input){
 
-    result.style.display = "block";
+    result.style.display =
+      "block";
 
     result.innerHTML =
       "📈 Enter numbers separated by commas.";
@@ -1084,15 +1860,20 @@ function averageCalc(){
   const numbers =
     input
       .split(",")
-      .map(x => Number(x.trim()));
+      .map(
+        x => Number(x.trim())
+      );
 
 
   if(
     numbers.length === 0 ||
-    numbers.some(x => !Number.isFinite(x))
+    numbers.some(
+      x => !Number.isFinite(x)
+    )
   ){
 
-    result.style.display = "block";
+    result.style.display =
+      "block";
 
     result.innerHTML =
       "❌ Please enter valid numbers.";
@@ -1103,7 +1884,8 @@ function averageCalc(){
 
   const total =
     numbers.reduce(
-      (sum,num) => sum + num,
+      (sum,num) =>
+        sum + num,
       0
     );
 
@@ -1112,7 +1894,8 @@ function averageCalc(){
     total / numbers.length;
 
 
-  result.style.display = "block";
+  result.style.display =
+    "block";
 
   result.innerHTML = `
     Average:
