@@ -3,40 +3,663 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>About — RAAZ AI HUB</title>
+
 <style>
-:root{--bg:#07070b;--card:#12121b;--border:rgba(255,255,255,.09);--light:#c49aff;--text:#fff}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at 50% -10%,rgba(132,65,255,.2),transparent 35%),var(--bg);color:var(--text);min-height:100vh}
-header{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 6%;background:rgba(7,7,11,.8);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;z-index:10}
-.logo{font-size:20px;font-weight:800;letter-spacing:1.5px}.logo span{color:var(--light)}
-.back{color:#c49aff;text-decoration:none;font-size:13px}
-.wrap{max-width:1000px;margin:auto;padding:55px 20px 80px}
-.badge{display:inline-block;padding:8px 13px;border:1px solid rgba(155,92,255,.3);border-radius:30px;color:#c8a7ff;background:rgba(155,92,255,.08);font-size:11px;font-weight:700;letter-spacing:.8px}
-h1{font-size:clamp(34px,7vw,58px);margin:18px 0 12px;letter-spacing:-2px}
-h1 span{background:linear-gradient(90deg,#fff,#bd91ff,#9250ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.lead{color:#9999a5;line-height:1.7;max-width:700px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px}
-.card{background:rgba(18,18,27,.75);border:1px solid var(--border);border-radius:20px;padding:24px}
-.card h2{font-size:20px;margin-bottom:8px}.card p{color:#92929f;font-size:13px;line-height:1.6}
-select,input,textarea,button{width:100%;border:1px solid #30243d;background:#15101f;color:#fff;border-radius:12px;padding:13px;margin-top:10px;font:inherit;outline:none}
-button{background:linear-gradient(135deg,#a866ff,#7540dc);border:0;font-weight:700;cursor:pointer}
-.result{margin-top:15px;padding:15px;border-radius:13px;background:#0d0b13;border:1px solid #292033;line-height:1.6;white-space:pre-wrap}
-@media(max-width:650px){header{height:62px;padding:0 16px}.logo{font-size:17px}.grid{grid-template-columns:1fr}.wrap{padding:40px 15px 70px}}
+:root{
+  --bg:#06060a;
+  --card:rgba(18,18,28,.72);
+  --border:rgba(255,255,255,.09);
+  --purple:#9b5cff;
+  --purple2:#6f35d9;
+  --light:#c9a4ff;
+  --text:#fff;
+  --muted:#9898a7;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(123,55,255,.16),transparent 28%),
+    radial-gradient(circle at 85% 30%,rgba(92,40,220,.12),transparent 30%),
+    radial-gradient(circle at 50% 100%,rgba(130,65,255,.10),transparent 35%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* Background Glow */
+
+body::before,
+body::after{
+  content:"";
+  position:fixed;
+  width:280px;
+  height:280px;
+  border-radius:50%;
+  filter:blur(90px);
+  opacity:.18;
+  pointer-events:none;
+  z-index:-1;
+  animation:floatGlow 8s ease-in-out infinite alternate;
+}
+
+body::before{
+  background:#873dff;
+  top:10%;
+  left:-100px;
+}
+
+body::after{
+  background:#5420d8;
+  right:-100px;
+  bottom:10%;
+  animation-delay:2s;
+}
+
+@keyframes floatGlow{
+  from{
+    transform:translateY(-20px);
+  }
+  to{
+    transform:translateY(30px);
+  }
+}
+
+/* Grid */
+
+.grid-bg{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-2;
+  opacity:.18;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:45px 45px;
+  mask-image:linear-gradient(to bottom,black,transparent 85%);
+}
+
+/* Header */
+
+header{
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 6%;
+  background:rgba(6,6,10,.72);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.logo{
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:1.5px;
+}
+
+.logo span{
+  background:linear-gradient(90deg,#d1adff,#8d4dff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.back{
+  color:#c9a4ff;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:700;
+  padding:10px 15px;
+  border:1px solid rgba(155,92,255,.22);
+  border-radius:12px;
+  background:rgba(155,92,255,.06);
+  transition:.25s ease;
+}
+
+.back:hover{
+  color:#fff;
+  background:rgba(155,92,255,.14);
+  border-color:rgba(155,92,255,.5);
+  transform:translateY(-2px);
+}
+
+/* Main */
+
+.wrap{
+  max-width:1050px;
+  margin:auto;
+  padding:70px 20px 90px;
+}
+
+/* Hero */
+
+.hero{
+  text-align:center;
+  max-width:800px;
+  margin:0 auto;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:9px 15px;
+  border:1px solid rgba(155,92,255,.3);
+  border-radius:30px;
+  color:#cfb2ff;
+  background:rgba(155,92,255,.08);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.9px;
+  box-shadow:0 0 30px rgba(130,65,255,.08);
+}
+
+.badge-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#a96cff;
+  box-shadow:0 0 12px #a96cff;
+  animation:pulse 1.8s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.45;transform:scale(.75)}
+}
+
+h1{
+  font-size:clamp(38px,7vw,68px);
+  line-height:1.05;
+  margin:22px 0 16px;
+  letter-spacing:-2.8px;
+  font-weight:900;
+}
+
+h1 span{
+  background:linear-gradient(
+    90deg,
+    #fff,
+    #c9a4ff,
+    #8b48ff,
+    #fff
+  );
+  background-size:250% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:gradientMove 5s linear infinite;
+}
+
+@keyframes gradientMove{
+  to{
+    background-position:250% center;
+  }
+}
+
+.lead{
+  color:#a2a2b0;
+  line-height:1.8;
+  max-width:720px;
+  margin:auto;
+  font-size:15px;
+}
+
+/* Cards */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+  margin-top:50px;
+}
+
+.card{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(
+    145deg,
+    rgba(25,22,38,.82),
+    rgba(13,13,21,.72)
+  );
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:28px;
+  min-height:170px;
+  transition:
+    transform .3s ease,
+    border-color .3s ease,
+    box-shadow .3s ease;
+}
+
+.card::before{
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  background:rgba(145,75,255,.12);
+  filter:blur(55px);
+  top:-70px;
+  right:-50px;
+  transition:.3s ease;
+}
+
+.card::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-120%;
+  width:70%;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.045),
+    transparent
+  );
+  transform:skewX(-20deg);
+  transition:.65s ease;
+}
+
+.card:hover{
+  transform:translateY(-7px);
+  border-color:rgba(160,100,255,.35);
+  box-shadow:
+    0 20px 55px rgba(0,0,0,.35),
+    0 0 35px rgba(125,60,255,.08);
+}
+
+.card:hover::after{
+  left:140%;
+}
+
+.card:hover::before{
+  opacity:1.5;
+}
+
+.icon{
+  width:48px;
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:14px;
+  background:rgba(155,92,255,.1);
+  border:1px solid rgba(155,92,255,.18);
+  font-size:22px;
+  margin-bottom:18px;
+}
+
+.card h2{
+  font-size:19px;
+  margin-bottom:9px;
+  position:relative;
+  z-index:1;
+}
+
+.card p{
+  color:#9696a4;
+  font-size:13px;
+  line-height:1.7;
+  position:relative;
+  z-index:1;
+}
+
+/* Mission */
+
+.mission{
+  margin-top:22px;
+  padding:30px;
+  border-radius:22px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(111,53,217,.14),
+      rgba(18,18,28,.72)
+    );
+  border:1px solid rgba(155,92,255,.18);
+  text-align:center;
+}
+
+.mission h2{
+  font-size:21px;
+  margin-bottom:10px;
+}
+
+.mission p{
+  max-width:720px;
+  margin:auto;
+  color:#9999a7;
+  font-size:13px;
+  line-height:1.8;
+}
+
+/* CTA */
+
+.cta{
+  margin-top:24px;
+  text-align:center;
+  padding:34px 25px;
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(15,15,23,.7);
+}
+
+.cta h2{
+  font-size:24px;
+  margin-bottom:9px;
+}
+
+.cta p{
+  color:#90909d;
+  font-size:13px;
+  margin-bottom:20px;
+}
+
+.cta-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:170px;
+  padding:13px 20px;
+  border-radius:13px;
+  background:linear-gradient(135deg,#a866ff,#7138d8);
+  color:#fff;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:800;
+  position:relative;
+  overflow:hidden;
+  transition:.25s ease;
+  box-shadow:0 10px 30px rgba(117,64,220,.22);
+}
+
+.cta-btn::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:70%;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.25),
+    transparent
+  );
+  transform:skewX(-20deg);
+  transition:.6s ease;
+}
+
+.cta-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 15px 35px rgba(117,64,220,.32);
+}
+
+.cta-btn:hover::after{
+  left:140%;
+}
+
+/* Footer */
+
+footer{
+  text-align:center;
+  padding:0 20px 35px;
+  color:#62626e;
+  font-size:11px;
+}
+
+/* Scroll reveal */
+
+.reveal{
+  opacity:0;
+  transform:translateY(25px);
+  transition:
+    opacity .7s ease,
+    transform .7s ease;
+}
+
+.reveal.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* Focus */
+
+a:focus-visible{
+  outline:2px solid #a866ff;
+  outline-offset:4px;
+}
+
+/* Mobile */
+
+@media(max-width:650px){
+
+  header{
+    height:62px;
+    padding:0 16px;
+  }
+
+  .logo{
+    font-size:17px;
+  }
+
+  .back{
+    font-size:12px;
+    padding:8px 11px;
+  }
+
+  .wrap{
+    padding:48px 15px 65px;
+  }
+
+  h1{
+    font-size:42px;
+    letter-spacing:-2px;
+  }
+
+  .lead{
+    font-size:14px;
+    line-height:1.7;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+    gap:14px;
+    margin-top:35px;
+  }
+
+  .card{
+    padding:23px;
+    min-height:auto;
+  }
+
+  .mission,
+  .cta{
+    padding:26px 20px;
+  }
+}
+
+/* Reduced Motion */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation:none!important;
+    transition:none!important;
+    scroll-behavior:auto!important;
+  }
+
+  .reveal{
+    opacity:1;
+    transform:none;
+  }
+}
 </style>
 </head>
+
 <body>
-<header><div class="logo">RAAZ <span>AI HUB</span></div><a class="back" href="/">← Home</a></header>
+
+<div class="grid-bg"></div>
+
+<header>
+  <div class="logo">
+    RAAZ <span>AI HUB</span>
+  </div>
+
+  <a class="back" href="/">
+    ← Home
+  </a>
+</header>
+
 <main class="wrap">
-<span class="badge">✦ ABOUT RAAZ AI HUB</span>
-<h1>Learn <span>Anything</span></h1>
-<p class="lead">RAAZ AI HUB is an AI-powered learning platform designed to make education, technology and everyday learning tools easier to access from one simple place.</p>
-<div class="grid">
-<div class="card"><h2>🤖 AI Learning</h2><p>Ask questions, understand difficult concepts, solve problems and learn step by step with AI.</p></div>
-<div class="card"><h2>📚 All Courses</h2><p>From mathematics and science to programming, ITI, languages and other subjects.</p></div>
-<div class="card"><h2>📱 Built for Learners</h2><p>The platform is designed to work smoothly on phones as well as desktops.</p></div>
-<div class="card"><h2>🚀 Growing Platform</h2><p>RAAZ AI HUB can continue to add more AI features, study tools and useful utilities over time.</p></div>
-</div></main>
-<script></script>
+
+  <section class="hero reveal">
+
+    <div class="badge">
+      <span class="badge-dot"></span>
+      ✦ ABOUT RAAZ AI HUB
+    </div>
+
+    <h1>
+      Learn <span>Anything</span>
+    </h1>
+
+    <p class="lead">
+      RAAZ AI HUB is an AI-powered learning platform designed to make
+      education, technology and everyday learning tools easier to access
+      from one simple place.
+    </p>
+
+  </section>
+
+
+  <section class="grid">
+
+    <div class="card reveal">
+      <div class="icon">🤖</div>
+
+      <h2>AI Learning</h2>
+
+      <p>
+        Ask questions, understand difficult concepts, solve problems
+        and learn step by step with AI.
+      </p>
+    </div>
+
+
+    <div class="card reveal">
+      <div class="icon">📚</div>
+
+      <h2>All Courses</h2>
+
+      <p>
+        From mathematics and science to programming, ITI, languages
+        and other subjects.
+      </p>
+    </div>
+
+
+    <div class="card reveal">
+      <div class="icon">📱</div>
+
+      <h2>Built for Learners</h2>
+
+      <p>
+        The platform is designed to work smoothly on phones as well
+        as desktops.
+      </p>
+    </div>
+
+
+    <div class="card reveal">
+      <div class="icon">🚀</div>
+
+      <h2>Growing Platform</h2>
+
+      <p>
+        RAAZ AI HUB can continue to add more AI features, study tools
+        and useful utilities over time.
+      </p>
+    </div>
+
+  </section>
+
+
+  <section class="mission reveal">
+
+    <h2>🎯 Our Goal</h2>
+
+    <p>
+      Make learning simpler, smarter and more accessible by bringing
+      AI tutoring, study tools, document learning and useful utilities
+      together in one platform.
+    </p>
+
+  </section>
+
+
+  <section class="cta reveal">
+
+    <h2>Ready to Learn?</h2>
+
+    <p>
+      Start exploring RAAZ AI HUB and learn at your own pace.
+    </p>
+
+    <a class="cta-btn" href="/chat.html">
+      Start Learning →
+    </a>
+
+  </section>
+
+</main>
+
+<footer>
+  © 2026 RAAZ AI HUB • Learn. Explore. Build.
+</footer>
+
+
+<script>
+const observer = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target);
+      }
+    });
+  },
+  {
+    threshold:0.12
+  }
+);
+
+document.querySelectorAll(".reveal").forEach(el => {
+  observer.observe(el);
+});
+</script>
+
 </body>
 </html>
