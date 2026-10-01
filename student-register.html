@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Student Registration | RAAZ AI HUB</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, #20204a, transparent 40%),
+        radial-gradient(circle at bottom right, #102f35, transparent 40%),
+        #070914;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 470px;
+    }
+
+    .card {
+      background: rgba(18, 21, 38, 0.92);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 25px 80px rgba(0,0,0,0.45);
+      backdrop-filter: blur(18px);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo-icon {
+      width: 58px;
+      height: 58px;
+      margin: auto;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #6d5dfc, #00d4ff);
+      font-size: 25px;
+      font-weight: bold;
+      box-shadow: 0 10px 35px rgba(0,212,255,0.2);
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #a9afc3;
+      margin-top: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .field {
+      margin-top: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #d9dcef;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 14px 15px;
+      border-radius: 13px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: #0d1020;
+      color: white;
+      outline: none;
+      font-size: 15px;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #6d5dfc;
+      box-shadow: 0 0 0 3px rgba(109,93,252,0.12);
+    }
+
+    select option {
+      background: #0d1020;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 15px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #6d5dfc, #00bde8);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .success {
+      display: block;
+      background: rgba(40, 200, 120, 0.12);
+      border: 1px solid rgba(40, 200, 120, 0.3);
+      color: #7ff0b1;
+    }
+
+    .error {
+      display: block;
+      background: rgba(255, 70, 90, 0.12);
+      border: 1px solid rgba(255, 70, 90, 0.3);
+      color: #ff9da8;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 22px;
+      color: #a9afc3;
+      font-size: 14px;
+    }
+
+    .login-link a {
+      color: #73dfff;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .security {
+      text-align: center;
+      margin-top: 20px;
+      color: #747b91;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 15px;
+      }
+
+      .card {
+        padding: 24px 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="card">
+
+      <div class="logo">
+        <div class="logo-icon">R</div>
+        <h1>Create Student Account</h1>
+        <p class="subtitle">
+          Join RAAZ AI HUB and start your learning journey.
+        </p>
+      </div>
+
+      <form id="registerForm">
+
+        <div class="field">
+          <label for="fullName">Full Name</label>
+          <input
+            type="text"
+            id="fullName"
+            placeholder="Enter your full name"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="studentId">Student ID</label>
+          <input
+            type="text"
+            id="studentId"
+            placeholder="Example: RAAZ001"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="course">Course</label>
+
+          <select id="course">
+            <option value="All Courses">All Courses</option>
+            <option value="School">School</option>
+            <option value="College">College</option>
+            <option value="Diploma">Diploma</option>
+            <option value="ITI">ITI</option>
+            <option value="Vocational">Vocational</option>
+            <option value="Programming">Programming</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Exam Preparation">Exam Preparation</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Create a password"
+            minlength="6"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Enter password again"
+            minlength="6"
+            required
+          >
+        </div>
+
+        <button type="submit" id="registerBtn">
+          Create Student Account
+        </button>
+
+        <div id="message" class="message"></div>
+
+      </form>
+
+      <div class="login-link">
+        Already have an account?
+        <a href="/student-login.html">Login</a>
+      </div>
+
+      <div class="security">
+        🔐 Your password is securely handled by Supabase Authentication.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    const SUPABASE_URL =
+      "https://ppojdekeqmmnaahbjrke.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_vt0WFBVG3p7Oz9K_XX3Q-g_SWRBFMuR";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    const form =
+      document.getElementById("registerForm");
+
+    const button =
+      document.getElementById("registerBtn");
+
+    const message =
+      document.getElementById("message");
+
+
+    function showMessage(text, type) {
+
+      message.textContent = text;
+
+      message.className =
+        "message " + type;
+
+    }
+
+
+    form.addEventListener("submit", async (event) => {
+
+      event.preventDefault();
+
+      const fullName =
+        document.getElementById("fullName")
+          .value
+          .trim();
+
+      const studentId =
+        document.getElementById("studentId")
+          .value
+          .trim();
+
+      const email =
+        document.getElementById("email")
+          .value
+          .trim();
+
+      const course =
+        document.getElementById("course")
+          .value;
+
+      const password =
+        document.getElementById("password")
+          .value;
+
+      const confirmPassword =
+        document.getElementById("confirmPassword")
+          .value;
+
+
+      if (password !== confirmPassword) {
+
+        showMessage(
+          "Passwords do not match.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      if (password.length < 6) {
+
+        showMessage(
+          "Password must contain at least 6 characters.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "Creating Account...";
+
+
+      try {
+
+        const { data, error } =
+          await supabaseClient.auth.signUp({
+
+            email: email,
+
+            password: password,
+
+            options: {
+
+              data: {
+                student_id: studentId,
+                full_name: fullName,
+                course: course
+              }
+
+            }
+
+          });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        showMessage(
+          "Account created successfully! " +
+          "If email confirmation is enabled, please verify your email before logging in.",
+          "success"
+        );
+
+
+        form.reset();
+
+
+        setTimeout(() => {
+
+          window.location.href =
+            "/student-login.html";
+
+        }, 3000);
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+          error.message ||
+          "Registration failed. Please try again.",
+          "error"
+        );
+
+      } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+          "Create Student Account";
+
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
