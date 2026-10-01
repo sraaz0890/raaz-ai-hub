@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Student Login | RAAZ AI HUB</title>
+
+  <meta
+    name="description"
+    content="Student Login for RAAZ AI HUB"
+  >
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #06070b;
+      --card: rgba(16, 18, 27, 0.88);
+      --card-border: rgba(255,255,255,0.09);
+      --text: #ffffff;
+      --muted: #9ca3af;
+      --primary: #7c3aed;
+      --primary2: #2563eb;
+      --input: rgba(255,255,255,0.055);
+    }
+
+    body {
+      min-height: 100vh;
+      font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at 15% 20%,
+          rgba(124,58,237,0.20),
+          transparent 32%
+        ),
+        radial-gradient(
+          circle at 85% 80%,
+          rgba(37,99,235,0.18),
+          transparent 32%
+        ),
+        var(--bg);
+
+      color: var(--text);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 24px;
+
+      overflow-x: hidden;
+    }
+
+    /* Background glow */
+
+    .glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+
+      border-radius: 50%;
+
+      filter: blur(90px);
+
+      opacity: 0.20;
+
+      pointer-events: none;
+    }
+
+    .glow.one {
+      background: #7c3aed;
+      top: -120px;
+      left: -100px;
+    }
+
+    .glow.two {
+      background: #2563eb;
+      right: -120px;
+      bottom: -120px;
+    }
+
+    /* Main */
+
+    .login-wrapper {
+      width: 100%;
+      max-width: 1050px;
+
+      min-height: 650px;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      background: rgba(10, 12, 18, 0.72);
+
+      border: 1px solid var(--card-border);
+
+      border-radius: 28px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 30px 100px rgba(0,0,0,0.55),
+        inset 0 1px rgba(255,255,255,0.04);
+
+      backdrop-filter: blur(25px);
+    }
+
+    /* Left */
+
+    .brand-section {
+      position: relative;
+
+      padding: 55px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(124,58,237,0.14),
+          rgba(37,99,235,0.05),
+          transparent
+        );
+
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .logo {
+      width: 54px;
+      height: 54px;
+
+      border-radius: 17px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 22px;
+      font-weight: 900;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary2)
+        );
+
+      box-shadow:
+        0 12px 35px rgba(124,58,237,0.35);
+    }
+
+    .brand-title {
+      margin-top: 25px;
+
+      font-size: clamp(36px, 5vw, 58px);
+
+      line-height: 0.98;
+
+      letter-spacing: -2.5px;
+
+      font-weight: 900;
+    }
+
+    .brand-title span {
+      background:
+        linear-gradient(
+          90deg,
+          #a78bfa,
+          #60a5fa
+        );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+
+      color: transparent;
+    }
+
+    .brand-description {
+      margin-top: 22px;
+
+      max-width: 430px;
+
+      color: var(--muted);
+
+      font-size: 16px;
+
+      line-height: 1.7;
+    }
+
+    .features {
+      margin-top: 35px;
+
+      display: grid;
+      gap: 15px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      color: #d7d9e0;
+
+      font-size: 14px;
+    }
+
+    .feature-icon {
+      width: 30px;
+      height: 30px;
+
+      border-radius: 10px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: rgba(124,58,237,0.13);
+
+      border: 1px solid rgba(124,58,237,0.20);
+
+      color: #b9a0ff;
+
+      font-size: 14px;
+    }
+
+    .copyright {
+      color: #646b78;
+
+      font-size: 12px;
+    }
+
+    /* Login */
+
+    .login-section {
+      padding: 55px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 410px;
+    }
+
+    .mobile-logo {
+      display: none;
+    }
+
+    .login-heading {
+      font-size: 34px;
+
+      font-weight: 800;
+
+      letter-spacing: -1px;
+    }
+
+    .login-subtitle {
+      margin-top: 9px;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.6;
+    }
+
+    .form {
+      margin-top: 30px;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    .field label {
+      display: block;
+
+      margin-bottom: 9px;
+
+      font-size: 13px;
+
+      color: #d8dae1;
+
+      font-weight: 600;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+
+      left: 15px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      color: #747b89;
+
+      font-size: 16px;
+
+      pointer-events: none;
+    }
+
+    input {
+      width: 100%;
+
+      height: 52px;
+
+      border-radius: 14px;
+
+      border: 1px solid rgba(255,255,255,0.08);
+
+      outline: none;
+
+      background: var(--input);
+
+      color: white;
+
+      padding: 0 45px;
+
+      font-size: 14px;
+
+      transition: 0.25s ease;
+    }
+
+    input::placeholder {
+      color: #666d79;
+    }
+
+    input:focus {
+      border-color: rgba(124,58,237,0.75);
+
+      background: rgba(255,255,255,0.075);
+
+      box-shadow:
+        0 0 0 4px rgba(124,58,237,0.10);
+    }
+
+    .password-toggle {
+      position: absolute;
+
+      right: 13px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      border: none;
+
+      background: transparent;
+
+      color: #777f8d;
+
+      cursor: pointer;
+
+      font-size: 14px;
+
+      padding: 7px;
+    }
+
+    .password-toggle:hover {
+      color: white;
+    }
+
+    .form-row {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 10px;
+
+      margin: 5px 0 24px;
+    }
+
+    .remember {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      color: #9ca3af;
+
+      font-size: 12px;
+
+      cursor: pointer;
+    }
+
+    .remember input {
+      width: 15px;
+      height: 15px;
+
+      padding: 0;
+
+      accent-color: var(--primary);
+    }
+
+    .forgot {
+      color: #a78bfa;
+
+      text-decoration: none;
+
+      font-size: 12px;
+
+      font-weight: 600;
+    }
+
+    .forgot:hover {
+      text-decoration: underline;
+    }
+
+    .login-btn {
+      width: 100%;
+
+      height: 53px;
+
+      border: none;
+
+      border-radius: 15px;
+
+      color: white;
+
+      font-size: 14px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      background:
+        linear-gradient(
+          100deg,
+          #7c3aed,
+          #2563eb
+        );
+
+      box-shadow:
+        0 14px 35px rgba(76,29,149,0.28);
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 18px 42px rgba(76,29,149,0.40);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    .login-btn.loading {
+      opacity: 0.7;
+
+      cursor: wait;
+    }
+
+    .message {
+      display: none;
+
+      margin-top: 16px;
+
+      padding: 12px 14px;
+
+      border-radius: 12px;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+
+      text-align: center;
+    }
+
+    .message.error {
+      display: block;
+
+      color: #fecaca;
+
+      background: rgba(127,29,29,0.20);
+
+      border: 1px solid rgba(248,113,113,0.18);
+    }
+
+    .message.success {
+      display: block;
+
+      color: #bbf7d0;
+
+      background: rgba(20,83,45,0.20);
+
+      border: 1px solid rgba(74,222,128,0.18);
+    }
+
+    .divider {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      margin: 27px 0;
+
+      color: #626977;
+
+      font-size: 11px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+
+      height: 1px;
+
+      flex: 1;
+
+      background: rgba(255,255,255,0.08);
+    }
+
+    .create-account {
+      text-align: center;
+
+      color: #858c98;
+
+      font-size: 13px;
+    }
+
+    .create-account a {
+      color: #a78bfa;
+
+      text-decoration: none;
+
+      font-weight: 700;
+    }
+
+    .create-account a:hover {
+      text-decoration: underline;
+    }
+
+    .security-note {
+      margin-top: 28px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 7px;
+
+      color: #5f6673;
+
+      font-size: 11px;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 850px) {
+
+      body {
+        padding: 15px;
+      }
+
+      .login-wrapper {
+        max-width: 520px;
+
+        min-height: auto;
+
+        display: block;
+
+        border-radius: 22px;
+      }
+
+      .brand-section {
+        display: none;
+      }
+
+      .login-section {
+        padding: 35px 24px 30px;
+      }
+
+      .mobile-logo {
+        display: flex;
+
+        width: 50px;
+        height: 50px;
+
+        margin: 0 auto 22px;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 15px;
+
+        font-weight: 900;
+
+        background:
+          linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary2)
+          );
+
+        box-shadow:
+          0 12px 30px rgba(124,58,237,0.30);
+      }
+
+      .login-heading {
+        text-align: center;
+
+        font-size: 30px;
+      }
+
+      .login-subtitle {
+        text-align: center;
+      }
+
+      .form {
+        margin-top: 27px;
+      }
+    }
+
+    @media (max-width: 420px) {
+
+      .login-section {
+        padding: 30px 18px 25px;
+      }
+
+      .login-heading {
+        font-size: 27px;
+      }
+
+      .form-row {
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="glow one"></div>
+  <div class="glow two"></div>
+
+  <main class="login-wrapper">
+
+    <!-- LEFT BRAND AREA -->
+
+    <section class="brand-section">
+
+      <div>
+
+        <div class="logo">
+          R
+        </div>
+
+        <h1 class="brand-title">
+          Learn<br>
+          <span>Smarter.</span>
+        </h1>
+
+        <p class="brand-description">
+          Welcome to RAAZ AI HUB — your all-courses
+          learning platform powered by AI.
+        </p>
+
+        <div class="features">
+
+          <div class="feature">
+            <div class="feature-icon">✦</div>
+            <span>AI-powered learning assistance</span>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">▣</div>
+            <span>Study documents with AI</span>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">✓</div>
+            <span>Track your learning progress</span>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">⌁</div>
+            <span>Courses across multiple subjects</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="copyright">
+        © 2026 RAAZ AI HUB
+      </div>
+
+    </section>
+
+
+    <!-- LOGIN AREA -->
+
+    <section class="login-section">
+
+      <div class="login-box">
+
+        <div class="mobile-logo">
+          R
+        </div>
+
+        <h2 class="login-heading">
+          Welcome back
+        </h2>
+
+        <p class="login-subtitle">
+          Sign in to continue your learning journey.
+        </p>
+
+
+        <form class="form" id="loginForm">
+
+          <!-- Student ID -->
+
+          <div class="field">
+
+            <label for="studentId">
+              Student ID or Email
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">◉</span>
+
+              <input
+                type="text"
+                id="studentId"
+                name="studentId"
+                placeholder="Enter your Student ID or email"
+                autocomplete="username"
+                required
+              >
+
+            </div>
+
+          </div>
+
+
+          <!-- Password -->
+
+          <div class="field">
+
+            <label for="password">
+              Password
+            </label>
+
+            <div class="input-wrapper">
+
+              <span class="input-icon">●</span>
+
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+              >
+
+              <button
+                type="button"
+                class="password-toggle"
+                id="togglePassword"
+                aria-label="Show password"
+              >
+                Show
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- Options -->
+
+          <div class="form-row">
+
+            <label class="remember">
+
+              <input
+                type="checkbox"
+                id="remember"
+              >
+
+              <span>Remember me</span>
+
+            </label>
+
+            <a
+              href="#"
+              class="forgot"
+              id="forgotPassword"
+            >
+              Forgot password?
+            </a>
+
+          </div>
+
+
+          <!-- Login -->
+
+          <button
+            type="submit"
+            class="login-btn"
+            id="loginBtn"
+          >
+            Sign In
+          </button>
+
+          <div
+            class="message"
+            id="message"
+          ></div>
+
+        </form>
+
+
+        <div class="divider">
+          OR
+        </div>
+
+
+        <div class="create-account">
+
+          New student?
+
+          <a
+            href="#"
+            id="createAccount"
+          >
+            Create an account
+          </a>
+
+        </div>
+
+
+        <div class="security-note">
+          🔒 Your learning space is protected
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const studentId =
+      document.getElementById("studentId");
+
+    const password =
+      document.getElementById("password");
+
+    const loginBtn =
+      document.getElementById("loginBtn");
+
+    const message =
+      document.getElementById("message");
+
+    const togglePassword =
+      document.getElementById("togglePassword");
+
+
+    /* =========================
+       PASSWORD SHOW / HIDE
+    ========================= */
+
+    togglePassword.addEventListener(
+      "click",
+      () => {
+
+        if (password.type === "password") {
+
+          password.type = "text";
+
+          togglePassword.textContent = "Hide";
+
+          togglePassword.setAttribute(
+            "aria-label",
+            "Hide password"
+          );
+
+        } else {
+
+          password.type = "password";
+
+          togglePassword.textContent = "Show";
+
+          togglePassword.setAttribute(
+            "aria-label",
+            "Show password"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       MESSAGE
+    ========================= */
+
+    function showMessage(text, type) {
+
+      message.textContent = text;
+
+      message.className =
+        "message " + type;
+
+    }
+
+
+    /* =========================
+       DEMO LOGIN
+    ========================= */
+
+    loginForm.addEventListener(
+      "submit",
+      (event) => {
+
+        event.preventDefault();
+
+        const id =
+          studentId.value.trim();
+
+        const pass =
+          password.value.trim();
+
+
+        if (!id || !pass) {
+
+          showMessage(
+            "Please enter your Student ID and password.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        loginBtn.classList.add("loading");
+
+        loginBtn.textContent =
+          "Signing in...";
+
+
+        /*
+          DEMO LOGIN
+
+          Real authentication will be
+          connected later with the database.
+        */
+
+        setTimeout(() => {
+
+          /*
+            For now, any non-empty
+            credentials are accepted.
+          */
+
+          localStorage.setItem(
+            "raaz_student_logged_in",
+            "true"
+          );
+
+          localStorage.setItem(
+            "raaz_student_id",
+            id
+          );
+
+
+          if (
+            document.getElementById("remember").checked
+          ) {
+
+            localStorage.setItem(
+              "raaz_student_remember",
+              "true"
+            );
+
+          }
+
+
+          showMessage(
+            "Login successful. Opening your dashboard...",
+            "success"
+          );
+
+
+          loginBtn.textContent =
+            "Success ✓";
+
+
+          setTimeout(() => {
+
+            window.location.href =
+              "/student-dashboard.html";
+
+          }, 700);
+
+        }, 700);
+
+      }
+    );
+
+
+    /* =========================
+       FORGOT PASSWORD
+    ========================= */
+
+    document
+      .getElementById("forgotPassword")
+      .addEventListener(
+        "click",
+        (event) => {
+
+          event.preventDefault();
+
+          showMessage(
+            "Password recovery will be available after the student account system is connected.",
+            "error"
+          );
+
+        }
+      );
+
+
+    /* =========================
+       CREATE ACCOUNT
+    ========================= */
+
+    document
+      .getElementById("createAccount")
+      .addEventListener(
+        "click",
+        (event) => {
+
+          event.preventDefault();
+
+          showMessage(
+            "Student registration will be added with the database and account system.",
+            "error"
+          );
+
+        }
+      );
+
+
+    /* =========================
+       REMEMBERED STUDENT
+    ========================= */
+
+    const savedStudent =
+      localStorage.getItem(
+        "raaz_student_id"
+      );
+
+    if (savedStudent) {
+
+      studentId.value =
+        savedStudent;
+
+    }
+
+  </script>
+
+</body>
+</html>
