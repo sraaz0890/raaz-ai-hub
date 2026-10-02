@@ -1,1350 +1,336 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>RAAZ AI HUB — AI Learning Platform</title>
-  <meta name="description" content="RAAZ AI HUB — Learn, create, ask and explore with AI.">
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #07070b;
-      --card: rgba(18, 18, 27, 0.72);
-      --card-border: rgba(255,255,255,0.09);
-      --purple: #9b5cff;
-      --purple-light: #c49aff;
-      --text: #ffffff;
-      --muted: #92929f;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Inter, Arial, sans-serif;
-      background:
-        radial-gradient(circle at 50% -10%, rgba(132,65,255,.22), transparent 35%),
-        radial-gradient(circle at 100% 40%, rgba(86,42,180,.12), transparent 30%),
-        radial-gradient(circle at 0% 80%, rgba(110,55,220,.08), transparent 28%),
-        var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* ================= BACKGROUND ================= */
-
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      filter: blur(100px);
-      pointer-events: none;
-      z-index: -2;
-      opacity: .18;
-    }
-
-    body::before {
-      background: #8a45ff;
-      top: 15%;
-      left: -180px;
-      animation: floatGlow 9s ease-in-out infinite alternate;
-    }
-
-    body::after {
-      background: #5b25c7;
-      bottom: 10%;
-      right: -180px;
-      animation: floatGlow2 11s ease-in-out infinite alternate;
-    }
-
-    @keyframes floatGlow {
-      from { transform: translateY(-30px); }
-      to { transform: translateY(80px); }
-    }
-
-    @keyframes floatGlow2 {
-      from { transform: translateY(50px); }
-      to { transform: translateY(-60px); }
-    }
-
-    /* ================= HEADER ================= */
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-
-      height: 70px;
-      padding: 0 6%;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      background: rgba(7,7,11,.70);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-
-      border-bottom: 1px solid rgba(255,255,255,.07);
-    }
-
-    .logo {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      user-select: none;
-    }
-
-    .logo span {
-      color: var(--purple-light);
-    }
-
-    .header-badge {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-
-      padding: 8px 13px;
-
-      border: 1px solid rgba(155,92,255,.25);
-      border-radius: 30px;
-
-      color: #c7a6ff;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: .5px;
-
-      background: rgba(155,92,255,.07);
-      box-shadow: 0 0 20px rgba(155,92,255,.05);
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      background: #8effb0;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #8effb0;
-      animation: pulse 1.8s infinite;
-    }
-
-    @keyframes pulse {
-      0%,100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: .45;
-        transform: scale(.75);
-      }
-    }
-
-    /* ================= HERO ================= */
-
-    .hero {
-      position: relative;
-      max-width: 900px;
-      margin: auto;
-
-      padding: 90px 22px 65px;
-      text-align: center;
-
-      animation: heroIn .8s ease both;
-    }
-
-    @keyframes heroIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-
-      width: 320px;
-      height: 320px;
-
-      background: rgba(140,70,255,.14);
-      filter: blur(100px);
-      border-radius: 50%;
-
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-
-      z-index: -1;
-      animation: heroGlow 5s ease-in-out infinite alternate;
-    }
-
-    @keyframes heroGlow {
-      from {
-        opacity: .55;
-        transform: translateX(-50%) scale(.9);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateX(-50%) scale(1.12);
-      }
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-
-      padding: 9px 16px;
-
-      border: 1px solid rgba(155,92,255,.35);
-      border-radius: 30px;
-
-      color: #c8a7ff;
-      background: rgba(155,92,255,.08);
-
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: .8px;
-
-      box-shadow: 0 0 25px rgba(155,92,255,.08);
-    }
-
-    .hero h1 {
-      margin-top: 24px;
-
-      font-size: clamp(42px,8vw,76px);
-      line-height: 1.02;
-      letter-spacing: -3px;
-      font-weight: 850;
-    }
-
-    .gradient-text {
-      background: linear-gradient(
-        90deg,
-        #ffffff,
-        #bd91ff,
-        #9250ff,
-        #ffffff
-      );
-
-      background-size: 250% auto;
-
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-
-      animation: gradientMove 5s linear infinite;
-    }
-
-    @keyframes gradientMove {
-      to {
-        background-position: 250% center;
-      }
-    }
-
-    .hero p {
-      max-width: 620px;
-      margin: 24px auto 0;
-
-      color: #9999a5;
-      font-size: 16px;
-      line-height: 1.7;
-    }
-
-    /* ================= CTA ================= */
-
-    .hero-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-
-      margin-top: 32px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      position: relative;
-
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      padding: 13px 22px;
-
-      border-radius: 12px;
-
-      font-size: 14px;
-      font-weight: 700;
-      text-decoration: none;
-
-      transition: .25s ease;
-      cursor: pointer;
-
-      overflow: hidden;
-    }
-
-    .btn::after {
-      content: "";
-      position: absolute;
-
-      width: 80px;
-      height: 100%;
-
-      top: 0;
-      left: -100px;
-
-      background: rgba(255,255,255,.18);
-      transform: skewX(-20deg);
-
-      transition: .5s ease;
-    }
-
-    .btn:hover::after {
-      left: 120%;
-    }
-
-    .btn-primary {
-      color: white;
-
-      background: linear-gradient(
-        135deg,
-        #a866ff,
-        #7540dc
-      );
-
-      box-shadow:
-        0 8px 30px rgba(130,65,230,.28);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px) scale(1.02);
-
-      box-shadow:
-        0 14px 40px rgba(130,65,230,.40);
-    }
-
-    .btn-secondary {
-      color: #d1d1d8;
-
-      background: rgba(255,255,255,.045);
-
-      border: 1px solid rgba(255,255,255,.1);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255,255,255,.08);
-      transform: translateY(-3px);
-      border-color: rgba(155,92,255,.3);
-    }
-
-    /* ================= SECTION ================= */
-
-    .section {
-      max-width: 1100px;
-      margin: auto;
-
-      padding: 25px 20px 80px;
-    }
-
-    .section-heading {
-      margin-bottom: 22px;
-    }
-
-    .section-heading small {
-      color: #a873ff;
-
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-
-      text-transform: uppercase;
-    }
-
-    .section-heading h2 {
-      margin-top: 6px;
-
-      font-size: 27px;
-      letter-spacing: -.7px;
-    }
-
-    .section-heading p {
-      margin-top: 7px;
-
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    /* ================= CARDS ================= */
-
-    .cards {
-      display: grid;
-
-      grid-template-columns: repeat(2,1fr);
-      gap: 16px;
-    }
-
-    .card {
-      position: relative;
-      overflow: hidden;
-
-      min-height: 190px;
-      padding: 25px;
-
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-
-      background: var(--card);
-
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-
-      transition:
-        transform .3s ease,
-        border-color .3s ease,
-        box-shadow .3s ease;
-
-      cursor: pointer;
-
-      text-decoration: none;
-      color: inherit;
-      display: block;
-
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    .card.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .card::before {
-      content: "";
-
-      position: absolute;
-
-      width: 160px;
-      height: 160px;
-
-      background: rgba(155,92,255,.10);
-      filter: blur(55px);
-
-      top: -70px;
-      right: -60px;
-
-      opacity: 0;
-
-      transition: .35s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-7px);
-
-      border-color: rgba(155,92,255,.42);
-
-      box-shadow:
-        0 18px 55px rgba(0,0,0,.30),
-        0 0 25px rgba(155,92,255,.05);
-    }
-
-    .card:hover::before {
-      opacity: 1;
-    }
-
-    /* ================= FEATURED AI ================= */
-
-    .card.featured {
-      grid-column: span 2;
-      min-height: 220px;
-
-      background:
-        radial-gradient(
-          circle at 90% 10%,
-          rgba(155,92,255,.14),
-          transparent 30%
-        ),
-        linear-gradient(
-          135deg,
-          rgba(117,64,220,.18),
-          rgba(18,18,27,.75)
-        );
-
-      border-color: rgba(155,92,255,.28);
-    }
-
-    .card.featured:hover {
-      border-color: rgba(174,125,255,.55);
-    }
-
-    /* ================= PDF TUTOR ================= */
-
-    .card.document-featured {
-      grid-column: span 2;
-      min-height: 205px;
-
-      background:
-        radial-gradient(
-          circle at 90% 20%,
-          rgba(168,102,255,.15),
-          transparent 30%
-        ),
-        linear-gradient(
-          135deg,
-          rgba(80,45,150,.16),
-          rgba(18,18,27,.82)
-        );
-
-      border-color: rgba(168,102,255,.24);
-    }
-
-    .card.document-featured:hover {
-      border-color: rgba(182,140,255,.52);
-    }
-
-    .document-content {
-      display: flex;
-
-      align-items: center;
-      justify-content: space-between;
-
-      gap: 30px;
-    }
-
-    .document-main {
-      max-width: 680px;
-    }
-
-    .document-visual {
-      width: 130px;
-      height: 130px;
-
-      flex-shrink: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 28px;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(168,102,255,.18),
-          rgba(90,50,160,.06)
-        );
-
-      border: 1px solid rgba(168,102,255,.18);
-
-      font-size: 55px;
-
-      box-shadow:
-        inset 0 0 30px rgba(155,92,255,.05),
-        0 15px 40px rgba(0,0,0,.18);
-
-      transition: .4s ease;
-    }
-
-    .document-featured:hover .document-visual {
-      transform: rotate(-3deg) scale(1.05);
-      box-shadow:
-        inset 0 0 35px rgba(155,92,255,.09),
-        0 18px 50px rgba(0,0,0,.25);
-    }
-
-    .document-points {
-      display: flex;
-      flex-wrap: wrap;
-
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    .document-point {
-      padding: 6px 10px;
-
-      border-radius: 8px;
-
-      background: rgba(255,255,255,.035);
-      border: 1px solid rgba(255,255,255,.06);
-
-      color: #9999a5;
-      font-size: 10px;
-
-      transition: .25s ease;
-    }
-
-    .document-point:hover {
-      color: #c6a7ff;
-      border-color: rgba(155,92,255,.25);
-      background: rgba(155,92,255,.06);
-    }
-
-    /* ================= CARD CONTENT ================= */
-
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-    }
-
-    .icon-box {
-      width: 48px;
-      height: 48px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 14px;
-
-      background: rgba(155,92,255,.12);
-      border: 1px solid rgba(155,92,255,.2);
-
-      font-size: 23px;
-
-      transition: .3s ease;
-    }
-
-    .card:hover .icon-box {
-      transform: scale(1.08) rotate(-2deg);
-      background: rgba(155,92,255,.17);
-      box-shadow: 0 0 25px rgba(155,92,255,.08);
-    }
-
-    .arrow {
-      color: #777784;
-      font-size: 19px;
-
-      transition: .25s;
-    }
-
-    .card:hover .arrow {
-      color: #b98aff;
-      transform: translate(4px,-2px);
-    }
-
-    .card h3 {
-      margin-top: 20px;
-      font-size: 20px;
-    }
-
-    .card p {
-      max-width: 520px;
-
-      margin-top: 8px;
-
-      color: #8f8f9b;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .card-link {
-      display: inline-block;
-
-      margin-top: 18px;
-
-      color: #b88aff;
-      font-size: 12px;
-      font-weight: 700;
-
-      transition: .25s ease;
-    }
-
-    .card:hover .card-link {
-      letter-spacing: .2px;
-    }
-
-    /* ================= MINI FEATURES ================= */
-
-    .mini-features {
-      display: grid;
-
-      grid-template-columns: repeat(3,1fr);
-      gap: 12px;
-
-      margin-top: 18px;
-    }
-
-    .mini {
-      padding: 19px;
-
-      border-radius: 16px;
-
-      background: rgba(255,255,255,.025);
-      border: 1px solid rgba(255,255,255,.07);
-
-      transition: .3s ease;
-    }
-
-    .mini:hover {
-      transform: translateY(-4px);
-
-      border-color: rgba(155,92,255,.22);
-
-      background: rgba(155,92,255,.035);
-    }
-
-    .mini-icon {
-      font-size: 20px;
-    }
-
-    .mini h4 {
-      margin-top: 12px;
-      font-size: 14px;
-    }
-
-    .mini p {
-      margin-top: 5px;
-
-      color: #777783;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    /* ================= CTA BOX ================= */
-
-    .bottom-cta {
-      position: relative;
-      overflow: hidden;
-
-      max-width: 900px;
-      margin: 0 auto 70px;
-
-      padding: 45px 25px;
-
-      text-align: center;
-
-      border-radius: 24px;
-
-      border: 1px solid rgba(155,92,255,.18);
-
-      background:
-        radial-gradient(
-          circle at center,
-          rgba(128,65,230,.16),
-          rgba(20,20,28,.5)
-        );
-
-      box-shadow:
-        0 20px 60px rgba(0,0,0,.15);
-    }
-
-    .bottom-cta::before {
-      content: "";
-
-      position: absolute;
-
-      width: 200px;
-      height: 200px;
-
-      border-radius: 50%;
-
-      background: rgba(155,92,255,.08);
-      filter: blur(70px);
-
-      left: 50%;
-      top: -130px;
-
-      transform: translateX(-50%);
-    }
-
-    .bottom-cta h2 {
-      position: relative;
-      font-size: 25px;
-    }
-
-    .bottom-cta p {
-      position: relative;
-
-      color: #8d8d99;
-      font-size: 13px;
-
-      margin: 9px auto 20px;
-    }
-
-    .bottom-cta .btn {
-      position: relative;
-    }
-
-    /* ================= FOOTER ================= */
-
-    footer {
-      padding: 30px 20px;
-
-      text-align: center;
-
-      border-top: 1px solid rgba(255,255,255,.06);
-
-      color: #666671;
-      font-size: 12px;
-    }
-
-    footer strong {
-      color: #a873ff;
-    }
-
-    /* ================= FOCUS ================= */
-
-    a:focus-visible {
-      outline: 2px solid #b88aff;
-      outline-offset: 4px;
-    }
-
-    /* ================= MOBILE ================= */
-
-    @media (max-width:650px) {
-
-      header {
-        height: 64px;
-        padding: 0 18px;
-      }
-
-      .logo {
-        font-size: 17px;
-      }
-
-      .header-badge {
-        padding: 7px 10px;
-        font-size: 9px;
-      }
-
-      .hero {
-        padding: 65px 20px 45px;
-      }
-
-      .hero h1 {
-        font-size: 45px;
-        letter-spacing: -2px;
-      }
-
-      .hero p {
-        font-size: 14px;
-      }
-
-      .hero-buttons {
-        margin-top: 26px;
-      }
-
-      .btn {
-        padding: 12px 18px;
-      }
-
-      .cards {
-        grid-template-columns: 1fr;
-      }
-
-      .card.featured,
-      .card.document-featured {
-        grid-column: span 1;
-      }
-
-      .card {
-        min-height: 175px;
-      }
-
-      .document-content {
-        align-items: flex-start;
-      }
-
-      .document-visual {
-        width: 80px;
-        height: 80px;
-
-        border-radius: 20px;
-        font-size: 34px;
-      }
-
-      .document-points {
-        display: none;
-      }
-
-      .mini-features {
-        grid-template-columns: 1fr;
-      }
-
-      .bottom-cta {
-        margin: 0 18px 55px;
-      }
-    }
-
-    @media (max-width:380px) {
-
-      .hero h1 {
-        font-size: 39px;
-      }
-
-      .header-badge {
-        display: none;
-      }
-
-      .document-visual {
-        display: none;
-      }
-    }
-
-    /* ================= REDUCED MOTION ================= */
-
-    @media (prefers-reduced-motion: reduce) {
-
-      *,
-      *::before,
-      *::after {
-        animation: none !important;
-        transition: none !important;
-        scroll-behavior: auto !important;
-      }
-
-      .card {
-        opacity: 1;
-        transform: none;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAAZ AI HUB — AI Learning Platform</title>
+<meta name="description" content="RAAZ AI HUB — Learn, create, ask and explore with AI.">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#07070b;--card:rgba(18,18,27,.72);--border:rgba(255,255,255,.09);
+  --purple:#9b5cff;--purple-light:#c49aff;--text:#fff;--muted:#92929f
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:Inter,Arial,sans-serif;color:var(--text);min-height:100vh;overflow-x:hidden;
+  background:radial-gradient(circle at 50% -10%,rgba(132,65,255,.22),transparent 35%),
+  radial-gradient(circle at 100% 40%,rgba(86,42,180,.12),transparent 30%),
+  radial-gradient(circle at 0 80%,rgba(110,55,220,.08),transparent 28%),var(--bg)
+}
+body:before,body:after{
+  content:"";position:fixed;width:280px;height:280px;border-radius:50%;
+  filter:blur(100px);pointer-events:none;z-index:-2;opacity:.18
+}
+body:before{background:#8a45ff;top:15%;left:-180px;animation:glow 9s ease-in-out infinite alternate}
+body:after{background:#5b25c7;bottom:10%;right:-180px;animation:glow2 11s ease-in-out infinite alternate}
+@keyframes glow{from{transform:translateY(-30px)}to{transform:translateY(80px)}}
+@keyframes glow2{from{transform:translateY(50px)}to{transform:translateY(-60px)}}
+
+header{
+  position:sticky;top:0;z-index:100;height:70px;padding:0 6%;display:flex;
+  align-items:center;justify-content:space-between;background:rgba(7,7,11,.70);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(255,255,255,.07)
+}
+.logo{font-size:20px;font-weight:800;letter-spacing:1.5px}
+.logo span{color:var(--purple-light)}
+.header-badge{
+  display:flex;align-items:center;gap:7px;padding:8px 13px;border:1px solid rgba(155,92,255,.25);
+  border-radius:30px;color:#c7a6ff;font-size:11px;font-weight:600;letter-spacing:.5px;
+  background:rgba(155,92,255,.07)
+}
+.status-dot{width:7px;height:7px;background:#8effb0;border-radius:50%;box-shadow:0 0 10px #8effb0;animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.75)}}
+
+.hero{
+  position:relative;max-width:1100px;margin:auto;padding:75px 22px 65px;
+  text-align:center;animation:heroIn .8s ease both;min-height:520px
+}
+@keyframes heroIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.hero:before{
+  content:"";position:absolute;width:320px;height:320px;background:rgba(140,70,255,.14);
+  filter:blur(100px);border-radius:50%;top:0;left:50%;transform:translateX(-50%);
+  z-index:-1;animation:heroGlow 5s ease-in-out infinite alternate
+}
+@keyframes heroGlow{from{opacity:.55;transform:translateX(-50%) scale(.9)}to{opacity:1;transform:translateX(-50%) scale(1.12)}}
+.badge{
+  display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border:1px solid rgba(155,92,255,.35);
+  border-radius:30px;color:#c8a7ff;background:rgba(155,92,255,.08);font-size:12px;font-weight:600;letter-spacing:.8px
+}
+.hero h1{margin-top:24px;font-size:clamp(42px,8vw,76px);line-height:1.02;letter-spacing:-3px;font-weight:850}
+.gradient-text{
+  background:linear-gradient(90deg,#fff,#bd91ff,#9250ff,#fff);background-size:250% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradientMove 5s linear infinite
+}
+@keyframes gradientMove{to{background-position:250% center}}
+.hero p{max-width:620px;margin:24px auto 0;color:#9999a5;font-size:16px;line-height:1.7}
+.hero-buttons{display:flex;justify-content:center;gap:12px;margin-top:32px;flex-wrap:wrap}
+.btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;padding:13px 22px;
+  border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;transition:.25s ease;cursor:pointer;overflow:hidden
+}
+.btn-primary{color:#fff;background:linear-gradient(135deg,#a866ff,#7540dc);box-shadow:0 8px 30px rgba(130,65,230,.28)}
+.btn-primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 40px rgba(130,65,230,.40)}
+.btn-secondary{color:#d1d1d8;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1)}
+.btn-secondary:hover{background:rgba(255,255,255,.08);transform:translateY(-3px);border-color:rgba(155,92,255,.3)}
+
+/* ================= RAAZ MASCOT ================= */
+.raaz-mascot{
+  position:absolute;right:8px;bottom:0;width:185px;z-index:8;cursor:pointer;
+  filter:drop-shadow(0 18px 35px rgba(111,55,220,.30));
+  animation:raazFloat 3.2s ease-in-out infinite
+}
+.raaz-mascot img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+.raaz-mascot:after{
+  content:"";position:absolute;left:24%;right:24%;bottom:0;height:22px;border-radius:50%;
+  background:rgba(155,92,255,.25);filter:blur(12px);z-index:-1;animation:shadowPulse 3.2s ease-in-out infinite
+}
+@keyframes raazFloat{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-10px) rotate(-1deg)}65%{transform:translateY(2px) rotate(1deg)}}
+@keyframes shadowPulse{0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(.75);opacity:.25}}
+.raaz-mascot.wave{animation:raazWave .8s ease-in-out 2}
+@keyframes raazWave{0%{transform:translateY(0) rotate(0)}25%{transform:translateY(-12px) rotate(-4deg)}50%{transform:translateY(-4px) rotate(4deg)}75%{transform:translateY(-10px) rotate(-3deg)}100%{transform:translateY(0) rotate(0)}}
+.raaz-bubble{
+  position:absolute;right:180px;bottom:115px;width:225px;padding:15px 17px;text-align:left;
+  border:1px solid rgba(155,92,255,.28);border-radius:17px;background:rgba(15,12,25,.92);
+  backdrop-filter:blur(18px);box-shadow:0 15px 45px rgba(0,0,0,.35);
+  opacity:0;transform:translateY(8px) scale(.96);pointer-events:none;transition:.35s ease
+}
+.raaz-bubble.show{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+.raaz-bubble strong{display:block;color:#fff;font-size:14px;margin-bottom:5px}
+.raaz-bubble span{color:#a9a5b7;font-size:12px;line-height:1.5}
+.raaz-bubble:after{
+  content:"";position:absolute;right:-7px;bottom:28px;width:13px;height:13px;
+  background:rgba(15,12,25,.92);border-top:1px solid rgba(155,92,255,.28);
+  border-right:1px solid rgba(155,92,255,.28);transform:rotate(45deg)
+}
+.raaz-label{
+  position:absolute;right:16px;bottom:4px;transform:translateY(100%);
+  color:#b98aff;font-size:10px;font-weight:800;letter-spacing:1.5px;opacity:.8
+}
+
+.section{max-width:1100px;margin:auto;padding:25px 20px 80px}
+.section-heading{margin-bottom:22px}
+.section-heading small{color:#a873ff;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.section-heading h2{margin-top:6px;font-size:27px;letter-spacing:-.7px}
+.section-heading p{margin-top:7px;color:var(--muted);font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{
+  position:relative;overflow:hidden;min-height:190px;padding:25px;border:1px solid var(--border);
+  border-radius:20px;background:var(--card);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);
+  transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease;cursor:pointer;
+  text-decoration:none;color:inherit;display:block;opacity:0;transform:translateY(20px)
+}
+.card.show{opacity:1;transform:translateY(0)}
+.card:before{
+  content:"";position:absolute;width:160px;height:160px;background:rgba(155,92,255,.10);
+  filter:blur(55px);top:-70px;right:-60px;opacity:0;transition:.35s ease
+}
+.card:hover{transform:translateY(-7px);border-color:rgba(155,92,255,.42);box-shadow:0 18px 55px rgba(0,0,0,.30),0 0 25px rgba(155,92,255,.05)}
+.card:hover:before{opacity:1}
+.card.featured{grid-column:span 2;min-height:220px;background:radial-gradient(circle at 90% 10%,rgba(155,92,255,.14),transparent 30%),linear-gradient(135deg,rgba(117,64,220,.18),rgba(18,18,27,.75));border-color:rgba(155,92,255,.28)}
+.card.document-featured{grid-column:span 2;min-height:205px;background:radial-gradient(circle at 90% 20%,rgba(168,102,255,.15),transparent 30%),linear-gradient(135deg,rgba(80,45,150,.16),rgba(18,18,27,.82));border-color:rgba(168,102,255,.24)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between}
+.icon-box{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:14px;background:rgba(155,92,255,.12);border:1px solid rgba(155,92,255,.2);font-size:23px;transition:.3s ease}
+.card:hover .icon-box{transform:scale(1.08) rotate(-2deg);background:rgba(155,92,255,.17);box-shadow:0 0 25px rgba(155,92,255,.08)}
+.arrow{color:#777784;font-size:19px;transition:.25s}
+.card:hover .arrow{color:#b98aff;transform:translate(4px,-2px)}
+.card h3{margin-top:20px;font-size:20px}
+.card p{max-width:520px;margin-top:8px;color:#8f8f9b;font-size:13px;line-height:1.6}
+.card-link{display:inline-block;margin-top:18px;color:#b88aff;font-size:12px;font-weight:700}
+.document-content{display:flex;align-items:center;justify-content:space-between;gap:30px}
+.document-main{max-width:680px}
+.document-visual{width:130px;height:130px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:28px;background:linear-gradient(145deg,rgba(168,102,255,.18),rgba(90,50,160,.06));border:1px solid rgba(168,102,255,.18);font-size:55px;box-shadow:inset 0 0 30px rgba(155,92,255,.05),0 15px 40px rgba(0,0,0,.18);transition:.4s ease}
+.document-featured:hover .document-visual{transform:rotate(-3deg) scale(1.05)}
+.document-points{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.document-point{padding:6px 10px;border-radius:8px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);color:#9999a5;font-size:10px}
+.mini-features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.mini{padding:19px;border-radius:16px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);transition:.3s ease}
+.mini:hover{transform:translateY(-4px);border-color:rgba(155,92,255,.22);background:rgba(155,92,255,.035)}
+.mini-icon{font-size:20px}.mini h4{margin-top:12px;font-size:14px}.mini p{margin-top:5px;color:#777783;font-size:12px;line-height:1.5}
+.bottom-cta{position:relative;overflow:hidden;max-width:900px;margin:0 auto 70px;padding:45px 25px;text-align:center;border-radius:24px;border:1px solid rgba(155,92,255,.18);background:radial-gradient(circle at center,rgba(128,65,230,.16),rgba(20,20,28,.5));box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.bottom-cta h2{position:relative;font-size:25px}.bottom-cta p{position:relative;color:#8d8d99;font-size:13px;margin:9px auto 20px}
+footer{padding:30px 20px;text-align:center;border-top:1px solid rgba(255,255,255,.06);color:#666671;font-size:12px}
+footer strong{color:#a873ff}
+a:focus-visible{outline:2px solid #b88aff;outline-offset:4px}
+
+@media(max-width:650px){
+  header{height:64px;padding:0 18px}.logo{font-size:17px}.header-badge{padding:7px 10px;font-size:9px}
+  .hero{padding:58px 20px 30px;min-height:650px}.hero h1{font-size:45px;letter-spacing:-2px}.hero p{font-size:14px}
+  .hero-buttons{margin-top:26px}.btn{padding:12px 18px}.cards{grid-template-columns:1fr}
+  .card.featured,.card.document-featured{grid-column:span 1}.card{min-height:175px}
+  .document-content{align-items:flex-start}.document-visual{width:80px;height:80px;border-radius:20px;font-size:34px}.document-points{display:none}
+  .mini-features{grid-template-columns:1fr}.bottom-cta{margin:0 18px 55px}
+  .raaz-mascot{width:128px;right:2px;bottom:4px}.raaz-bubble{right:105px;bottom:120px;width:205px}
+  .raaz-bubble:after{right:18px;bottom:-7px;transform:rotate(135deg)}
+}
+@media(max-width:380px){
+  .hero h1{font-size:39px}.header-badge{display:none}.document-visual{display:none}
+  .raaz-mascot{width:112px}.raaz-bubble{right:88px;width:190px;font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .card{opacity:1;transform:none}
+}
+</style>
 </head>
 
 <body>
 
-  <!-- ================= HEADER ================= -->
-
-  <header>
-
-    <div class="logo">
-      RAAZ <span>AI HUB</span>
-    </div>
-
-    <div class="header-badge">
-      <span class="status-dot"></span>
-      AI ONLINE
-    </div>
-
-  </header>
-
-
-  <!-- ================= HERO ================= -->
-
-  <section class="hero">
-
-    <div class="badge">
-      ✦ AI POWERED LEARNING
-    </div>
-
-    <h1>
-      Your AI Tutor<br>
-      <span class="gradient-text">For Every Course</span>
-    </h1>
-
-    <p>
-      Learn smarter, ask questions, create notes and explore
-      powerful AI tools — all from one simple platform.
-    </p>
-
-    <div class="hero-buttons">
-
-      <a href="/chat.html" class="btn btn-primary">
-        Start Learning →
-      </a>
-
-      <a href="#features" class="btn btn-secondary">
-        Explore Features
-      </a>
-
-    </div>
-
-  </section>
-
-
-  <!-- ================= FEATURES ================= -->
-
-  <section class="section" id="features">
-
-    <div class="section-heading">
-
-      <small>EXPLORE RAAZ AI HUB</small>
-
-      <h2>
-        Everything you need to learn
-      </h2>
-
-      <p>
-        Simple tools. Powerful AI. One learning space.
-      </p>
-
-    </div>
-
-
-    <div class="cards">
-
-
-      <!-- ================= AI CHAT ================= -->
-
-      <a href="/chat.html" class="card featured">
-
-        <div class="card-top">
-
-          <div class="icon-box">
-            🤖
-          </div>
-
-          <div class="arrow">
-            ↗
-          </div>
-
-        </div>
-
-        <h3>
-          AI Chat
-        </h3>
-
-        <p>
-          Talk with your AI assistant, ask questions,
-          understand difficult topics and get instant help
-          whenever you need it.
-        </p>
-
-        <span class="card-link">
-          Open AI Chat →
-        </span>
-
-      </a>
-
-
-      <!-- ================= PDF & PHOTO TUTOR ================= -->
-
-      <a href="/document-tutor.html" class="card document-featured">
-
-        <div class="document-content">
-
-          <div class="document-main">
-
-            <div class="card-top">
-
-              <div class="icon-box">
-                📚
-              </div>
-
-              <div class="arrow">
-                ↗
-              </div>
-
-            </div>
-
-            <h3>
-              PDF & Photo Tutor
-            </h3>
-
-            <p>
-              Upload your books, PDFs or study-page photos.
-              RAAZ AI can read the material, summarise it,
-              explain difficult topics and create revision content.
-            </p>
-
-            <div class="document-points">
-
-              <span class="document-point">
-                📄 PDF
-              </span>
-
-              <span class="document-point">
-                🖼️ Photos
-              </span>
-
-              <span class="document-point">
-                🧠 Summary
-              </span>
-
-              <span class="document-point">
-                📝 Notes
-              </span>
-
-              <span class="document-point">
-                ❓ Q&A
-              </span>
-
-            </div>
-
-            <span class="card-link">
-              Open PDF & Photo Tutor →
-            </span>
-
-          </div>
-
-          <div class="document-visual">
-            📖
-          </div>
-
-        </div>
-
-      </a>
-
-
-      <!-- ================= STUDY TUTOR ================= -->
-
-      <a href="/study-tutor.html" class="card">
-
-        <div class="card-top">
-
-          <div class="icon-box">
-            🎓
-          </div>
-
-          <div class="arrow">
-            ↗
-          </div>
-
-        </div>
-
-        <h3>
-          Study Tutor
-        </h3>
-
-        <p>
-          Learn subjects step-by-step with an AI tutor
-          designed to explain concepts clearly.
-        </p>
-
-        <span class="card-link">
-          Start Studying →
-        </span>
-
-      </a>
-
-
-      <!-- ================= STUDY TOOLS ================= -->
-
-      <a href="/study-tools.html" class="card" id="tools">
-
-        <div class="card-top">
-
-          <div class="icon-box">
-            📚
-          </div>
-
-          <div class="arrow">
-            ↗
-          </div>
-
-        </div>
-
-        <h3>
-          Study Tools
-        </h3>
-
-        <p>
-          Create summaries, notes, quizzes and flashcards
-          to make your learning easier.
-        </p>
-
-        <span class="card-link">
-          Explore Tools →
-        </span>
-
-      </a>
-
-
-      <!-- ================= USEFUL TOOLS ================= -->
-
-      <a href="/useful-tools.html" class="card">
-
-        <div class="card-top">
-
-          <div class="icon-box">
-            ⚡
-          </div>
-
-          <div class="arrow">
-            ↗
-          </div>
-
-        </div>
-
-        <h3>
-          Useful Tools
-        </h3>
-
-        <p>
-          Discover helpful everyday tools collected
-          together inside RAAZ AI HUB.
-        </p>
-
-        <span class="card-link">
-          View Tools →
-        </span>
-
-      </a>
-
-
-      <!-- ================= ABOUT ================= -->
-
-      <a href="/about.html" class="card">
-
-        <div class="card-top">
-
-          <div class="icon-box">
-            ✦
-          </div>
-
-          <div class="arrow">
-            ↗
-          </div>
-
-        </div>
-
-        <h3>
-          About RAAZ AI HUB
-        </h3>
-
-        <p>
-          A growing AI learning platform built to make
-          technology and education easier to access.
-        </p>
-
-        <span class="card-link">
-          Learn More →
-        </span>
-
-      </a>
-
-    </div>
-
-
-    <!-- ================= MINI FEATURES ================= -->
-
-    <div class="mini-features">
-
-      <div class="mini">
-
-        <div class="mini-icon">
-          ⚡
-        </div>
-
-        <h4>
-          Fast Assistance
-        </h4>
-
-        <p>
-          Get quick AI-powered help when you need it.
-        </p>
-
-      </div>
-
-
-      <div class="mini">
-
-        <div class="mini-icon">
-          🧠
-        </div>
-
-        <h4>
-          Learn Smarter
-        </h4>
-
-        <p>
-          Understand concepts instead of just memorizing them.
-        </p>
-
-      </div>
-
-
-      <div class="mini">
-
-        <div class="mini-icon">
-          📱
-        </div>
-
-        <h4>
-          Mobile Friendly
-        </h4>
-
-        <p>
-          Designed to work smoothly on phones and desktops.
-        </p>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- ================= CTA ================= -->
-
-  <section class="bottom-cta">
-
-    <h2>
-      Ready to learn with AI?
-    </h2>
-
-    <p>
-      Your next question could be the beginning of something new.
-    </p>
-
-    <a href="/chat.html" class="btn btn-primary">
-      Enter RAAZ AI HUB →
+<header>
+  <div class="logo">RAAZ <span>AI HUB</span></div>
+  <div class="header-badge"><span class="status-dot"></span>AI ONLINE</div>
+</header>
+
+<section class="hero">
+
+  <div class="badge">✦ AI POWERED LEARNING</div>
+
+  <h1>Your AI Tutor<br><span class="gradient-text">For Every Course</span></h1>
+
+  <p>
+    Learn smarter, ask questions, create notes and explore
+    powerful AI tools — all from one simple platform.
+  </p>
+
+  <div class="hero-buttons">
+    <a href="/chat.html" class="btn btn-primary">Start Learning →</a>
+    <a href="#features" class="btn btn-secondary">Explore Features</a>
+  </div>
+
+  <!-- RAAZ AI MASCOT -->
+  <div class="raaz-bubble" id="raazBubble">
+    <strong>Hi! I'm RAAZ 👋</strong>
+    <span>Need some AI help? Click me or start with AI Chat.</span>
+  </div>
+
+  <div class="raaz-mascot" id="raazMascot" title="Hi, I'm RAAZ!">
+    <img src="/raaz.png" alt="RAAZ AI mascot">
+    <div class="raaz-label">RAAZ AI</div>
+  </div>
+
+</section>
+
+<section class="section" id="features">
+  <div class="section-heading">
+    <small>EXPLORE RAAZ AI HUB</small>
+    <h2>Everything you need to learn</h2>
+    <p>Simple tools. Powerful AI. One learning space.</p>
+  </div>
+
+  <div class="cards">
+
+    <a href="/chat.html" class="card featured">
+      <div class="card-top"><div class="icon-box">🤖</div><div class="arrow">↗</div></div>
+      <h3>AI Chat</h3>
+      <p>Talk with your AI assistant, ask questions, understand difficult topics and get instant help whenever you need it.</p>
+      <span class="card-link">Open AI Chat →</span>
     </a>
 
-  </section>
+    <a href="/document-tutor.html" class="card document-featured">
+      <div class="document-content">
+        <div class="document-main">
+          <div class="card-top"><div class="icon-box">📚</div><div class="arrow">↗</div></div>
+          <h3>PDF & Photo Tutor</h3>
+          <p>Upload your books, PDFs or study-page photos. RAAZ AI can read the material, summarise it, explain difficult topics and create revision content.</p>
+          <div class="document-points">
+            <span class="document-point">📄 PDF</span><span class="document-point">🖼️ Photos</span>
+            <span class="document-point">🧠 Summary</span><span class="document-point">📝 Notes</span><span class="document-point">❓ Q&A</span>
+          </div>
+          <span class="card-link">Open PDF & Photo Tutor →</span>
+        </div>
+        <div class="document-visual">📖</div>
+      </div>
+    </a>
 
+    <a href="/study-tutor.html" class="card">
+      <div class="card-top"><div class="icon-box">🎓</div><div class="arrow">↗</div></div>
+      <h3>Study Tutor</h3>
+      <p>Learn subjects step-by-step with an AI tutor designed to explain concepts clearly.</p>
+      <span class="card-link">Start Studying →</span>
+    </a>
 
-  <!-- ================= FOOTER ================= -->
+    <a href="/study-tools.html" class="card">
+      <div class="card-top"><div class="icon-box">📚</div><div class="arrow">↗</div></div>
+      <h3>Study Tools</h3>
+      <p>Create summaries, notes, quizzes and flashcards to make your learning easier.</p>
+      <span class="card-link">Explore Tools →</span>
+    </a>
 
-  <footer>
+    <a href="/useful-tools.html" class="card">
+      <div class="card-top"><div class="icon-box">⚡</div><div class="arrow">↗</div></div>
+      <h3>Useful Tools</h3>
+      <p>Discover helpful everyday tools collected together inside RAAZ AI HUB.</p>
+      <span class="card-link">View Tools →</span>
+    </a>
 
-    © 2026
-    <strong>RAAZ AI HUB</strong>
-    · Learn Anything. Anywhere.
+    <a href="/about.html" class="card">
+      <div class="card-top"><div class="icon-box">✦</div><div class="arrow">↗</div></div>
+      <h3>About RAAZ AI HUB</h3>
+      <p>A growing AI learning platform built to make technology and education easier to access.</p>
+      <span class="card-link">Learn More →</span>
+    </a>
 
-  </footer>
+  </div>
 
+  <div class="mini-features">
+    <div class="mini"><div class="mini-icon">⚡</div><h4>Fast Assistance</h4><p>Get quick AI-powered help when you need it.</p></div>
+    <div class="mini"><div class="mini-icon">🧠</div><h4>Learn Smarter</h4><p>Understand concepts instead of just memorizing them.</p></div>
+    <div class="mini"><div class="mini-icon">📱</div><h4>Mobile Friendly</h4><p>Designed to work smoothly on phones and desktops.</p></div>
+  </div>
+</section>
 
-  <!-- ================= SCROLL REVEAL ================= -->
+<section class="bottom-cta">
+  <h2>Ready to learn with AI?</h2>
+  <p>Your next question could be the beginning of something new.</p>
+  <a href="/chat.html" class="btn btn-primary">Enter RAAZ AI HUB →</a>
+</section>
 
-  <script>
-    const cards = document.querySelectorAll(".card");
+<footer>© 2026 <strong>RAAZ AI HUB</strong> · Learn Anything. Anywhere.</footer>
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+<script>
+const cards=document.querySelectorAll(".card");
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:.08});
+cards.forEach((card,index)=>{
+  card.style.transitionDelay=Math.min(index*.06,.3)+"s";
+  observer.observe(card);
+});
 
-          if (entry.isIntersecting) {
-            entry.target.classList.add("show");
-            observer.unobserve(entry.target);
+const raaz=document.getElementById("raazMascot");
+const bubble=document.getElementById("raazBubble");
 
-          }
+function showRaaz(){
+  bubble.classList.add("show");
+  raaz.classList.remove("wave");
+  void raaz.offsetWidth;
+  raaz.classList.add("wave");
+}
 
-        });
-      },
-      {
-        threshold: 0.08
-      }
-    );
+setTimeout(showRaaz,1200);
 
-    cards.forEach((card, index) => {
+raaz.addEventListener("click",()=>{
+  bubble.classList.toggle("show");
+  raaz.classList.remove("wave");
+  void raaz.offsetWidth;
+  raaz.classList.add("wave");
+});
 
-      card.style.transitionDelay =
-        Math.min(index * 0.06, 0.3) + "s";
+bubble.addEventListener("click",()=>{
+  window.location.href="/chat.html";
+});
 
-      observer.observe(card);
-
-    });
-  </script>
+setInterval(()=>{
+  if(!bubble.classList.contains("show")) showRaaz();
+},12000);
+</script>
 
 </body>
 </html>
